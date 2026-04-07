@@ -1,0 +1,309 @@
+import Link from "next/link";
+import { getFeaturedProducts, products } from "@/lib/products";
+import ProductCard from "@/components/ProductCard";
+import EmailSignup from "@/components/EmailSignup";
+
+export default function HomePage() {
+  const featured = getFeaturedProducts();
+
+  return (
+    <div className="flex flex-col">
+      {/* ===== HERO ===== */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background grid pattern */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px)
+            `,
+            backgroundSize: "60px 60px",
+          }}
+        />
+
+        {/* Radial glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(201,168,76,0.08)_0%,_transparent_65%)]" />
+
+        {/* Side decorative lines */}
+        <div className="absolute left-8 top-1/2 -translate-y-1/2 h-64 w-[1px] bg-gradient-to-b from-transparent via-[#C9A84C]/30 to-transparent" />
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 h-64 w-[1px] bg-gradient-to-b from-transparent via-[#C9A84C]/30 to-transparent" />
+
+        {/* Content */}
+        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+          {/* Eyebrow */}
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="h-[1px] w-12 bg-[#C9A84C]/50" />
+            <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-[#C9A84C]">
+              Est. 2024 — Premium Streetwear
+            </span>
+            <div className="h-[1px] w-12 bg-[#C9A84C]/50" />
+          </div>
+
+          {/* Main title */}
+          <h1 className="font-black leading-none mb-2">
+            <span
+              className="block text-[clamp(4rem,15vw,14rem)] gold-shimmer leading-none"
+              style={{ fontWeight: 900 }}
+            >
+              THE 00s
+            </span>
+            <span
+              className="block text-[clamp(2rem,8vw,7rem)] text-neutral-200 tracking-[0.3em] uppercase"
+              style={{ fontWeight: 900 }}
+            >
+              VERSION
+            </span>
+          </h1>
+
+          {/* Tagline */}
+          <p className="text-neutral-400 text-base sm:text-lg mt-8 mb-10 max-w-md mx-auto leading-relaxed">
+            Premium streetwear rooted in early 2000s culture.
+            <br />
+            Every piece tells a story. Every drop is an era.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/products"
+              className="btn-gold px-10 py-4 text-sm rounded inline-block"
+            >
+              Shop the Collection
+            </Link>
+            <Link
+              href="/products?category=New"
+              className="btn-outline-gold px-10 py-4 text-sm rounded inline-block"
+            >
+              New Drops
+            </Link>
+          </div>
+
+          {/* Stats */}
+          <div className="flex items-center justify-center gap-8 sm:gap-16 mt-16 pt-16 border-t border-[#1a1a1a]">
+            {[
+              { value: "100%", label: "Premium Cotton" },
+              { value: "00s", label: "Era Inspired" },
+              { value: "Ltd.", label: "Drops Only" },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className="text-xl sm:text-2xl font-black gold-text">{stat.value}</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-600 mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#080808] to-transparent" />
+      </section>
+
+      {/* ===== MARQUEE TICKER ===== */}
+      <div className="bg-[#C9A84C] overflow-hidden py-3">
+        <div
+          className="flex gap-8 whitespace-nowrap"
+          style={{
+            animation: "marquee 25s linear infinite",
+          }}
+        >
+          {Array(3)
+            .fill(null)
+            .map((_, i) => (
+              <div key={i} className="flex gap-8 flex-shrink-0">
+                {[
+                  "New Drop Available",
+                  "Free Shipping on $150+",
+                  "Limited Edition Pieces",
+                  "Premium Quality",
+                  "Early 2000s Aesthetic",
+                  "Shop Now",
+                ].map((text, j) => (
+                  <span
+                    key={j}
+                    className="text-[#080808] text-[11px] font-black uppercase tracking-[0.2em] flex items-center gap-8"
+                  >
+                    {text}
+                    <span className="text-[#080808]/40">✦</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {/* ===== FEATURED PRODUCTS ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-[#C9A84C] mb-2">The Selection</p>
+            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">
+              Featured Pieces
+            </h2>
+          </div>
+          <Link
+            href="/products"
+            className="hidden sm:flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-neutral-400 hover:text-[#C9A84C] transition-colors"
+          >
+            View All
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {featured.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+
+        <div className="text-center mt-10 sm:hidden">
+          <Link href="/products" className="btn-outline-gold px-8 py-3 text-xs rounded inline-block">
+            View All Products
+          </Link>
+        </div>
+      </section>
+
+      {/* ===== BRAND STORY SECTION ===== */}
+      <section className="relative py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-[#0d0d0d]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_right,_rgba(201,168,76,0.06)_0%,_transparent_60%)]" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Text */}
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-[#C9A84C] mb-4">The Story</p>
+              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight leading-tight mb-6">
+                Born From
+                <br />
+                <span className="gold-text">The Era</span>
+              </h2>
+              <p className="text-neutral-400 leading-relaxed mb-6">
+                Early 2000s rap culture wasn't just music — it was an entire visual language.
+                Rocawear. Sean John. G-Unit. Those labels built something bigger than clothes.
+                They built an identity.
+              </p>
+              <p className="text-neutral-400 leading-relaxed mb-8">
+                The 00s Version is our tribute to that era, rebuilt with premium materials and
+                a modern cut. We didn't copy the aesthetic — we evolved it.
+              </p>
+              <Link href="/products" className="btn-gold px-8 py-4 text-sm rounded inline-block">
+                Shop the Vision
+              </Link>
+            </div>
+
+            {/* Visual element */}
+            <div className="relative">
+              <div className="aspect-square bg-[#111111] rounded-sm border border-[#1a1a1a] flex items-center justify-center relative overflow-hidden">
+                {/* Decorative gold elements */}
+                <div className="absolute inset-0 border-8 border-[#C9A84C]/5 m-6 rounded-sm" />
+                <div className="absolute inset-0 border border-[#C9A84C]/10 m-3" />
+                <div className="text-center z-10">
+                  <div className="gold-shimmer text-6xl sm:text-8xl font-black tracking-tighter leading-none mb-2">
+                    00s
+                  </div>
+                  <div className="text-neutral-600 text-sm uppercase tracking-[0.4em]">
+                    Version
+                  </div>
+                </div>
+                {/* Corner accents */}
+                {["top-3 left-3", "top-3 right-3", "bottom-3 left-3", "bottom-3 right-3"].map((pos, i) => (
+                  <div key={i} className={`absolute ${pos} w-4 h-4`}>
+                    <div className="w-full h-[1px] bg-[#C9A84C]/60" />
+                    <div className={`w-[1px] h-full bg-[#C9A84C]/60 ${i % 2 === 0 ? "ml-0" : "ml-auto"}`} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CATEGORIES STRIP ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center mb-12">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-[#C9A84C] mb-2">Browse</p>
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">
+            Shop by Category
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {[
+            { name: "Hoodies", count: "2 styles" },
+            { name: "T-Shirts", count: "2 styles" },
+            { name: "Bottoms", count: "2 styles" },
+            { name: "Outerwear", count: "1 style" },
+            { name: "Sets", count: "1 style" },
+            { name: "Accessories", count: "1 style" },
+          ].map((cat) => (
+            <Link
+              key={cat.name}
+              href={`/products?category=${cat.name}`}
+              className="group relative bg-[#111111] border border-[#1a1a1a] hover:border-[#C9A84C]/40 rounded-sm p-8 flex flex-col justify-between transition-all duration-200 hover:bg-[#111111]/80"
+            >
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-[#C9A84C] mb-2">{cat.count}</p>
+                <h3 className="text-lg font-black uppercase tracking-tight group-hover:text-[#C9A84C] transition-colors">
+                  {cat.name}
+                </h3>
+              </div>
+              <div className="flex items-center gap-2 mt-6 text-xs text-neutral-600 group-hover:text-neutral-400 transition-colors">
+                <span className="uppercase tracking-widest">Shop</span>
+                <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+
+              {/* Corner accent */}
+              <div className="absolute top-0 right-0 w-8 h-8 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-0 right-0 w-[1px] h-8 bg-[#C9A84C]" />
+                <div className="absolute top-0 right-0 w-8 h-[1px] bg-[#C9A84C]" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== ALL PRODUCTS ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-[#C9A84C] mb-2">Full Collection</p>
+            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">
+              All Pieces
+            </h2>
+          </div>
+          <span className="text-sm text-neutral-600">{products.length} items</span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
+
+      {/* ===== EMAIL SIGNUP ===== */}
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d] via-[#111111] to-[#0d0d0d]" />
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
+
+        <div className="relative max-w-xl mx-auto text-center px-4">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-[#C9A84C] mb-3">First to Know</p>
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight mb-4">
+            Join the Inner Circle
+          </h2>
+          <p className="text-neutral-500 text-sm mb-8 leading-relaxed">
+            Get early access to new drops, exclusive discounts,
+            and updates straight to your inbox.
+          </p>
+          <EmailSignup />
+        </div>
+      </section>
+
+    </div>
+  );
+}
