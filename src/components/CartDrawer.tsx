@@ -113,7 +113,7 @@ export default function CartDrawer() {
                         </button>
                       </div>
                       <span className="text-sm font-bold text-[#C9A84C]">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        €{(item.product.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -128,7 +128,7 @@ export default function CartDrawer() {
           <div className="border-t border-[#1a1a1a] px-6 py-6 space-y-4">
             <div className="flex justify-between items-center">
               <span className="text-sm text-neutral-400 uppercase tracking-wider">Subtotal</span>
-              <span className="text-lg font-bold">${subtotal.toFixed(2)}</span>
+              <span className="text-lg font-bold">€{subtotal.toFixed(2)}</span>
             </div>
             <p className="text-[11px] text-neutral-600">Shipping calculated at checkout</p>
             <Link
@@ -136,7 +136,7 @@ export default function CartDrawer() {
               onClick={closeCart}
               className="block w-full btn-gold px-6 py-4 text-center text-sm rounded"
             >
-              Checkout — ${subtotal.toFixed(2)}
+              Checkout — €{subtotal.toFixed(2)}
             </Link>
             <Link
               href="/cart"

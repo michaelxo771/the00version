@@ -4,6 +4,8 @@ import { CartProvider } from "@/context/CartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
+import EmailPopup from "@/components/EmailPopup";
+import StickyShopButton from "@/components/StickyShopButton";
 
 export const metadata: Metadata = {
   title: "The 00s Version — Premium Streetwear",
@@ -23,6 +25,8 @@ export default function RootLayout({
         <CartProvider>
           <Navbar />
           <CartDrawer />
+          <EmailPopup />
+          <StickyShopButton />
           <main className="flex-1">{children}</main>
           <Footer />
         </CartProvider>

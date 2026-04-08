@@ -15,7 +15,6 @@ export default function ProductCard({ product }: Props) {
         <div className="relative overflow-hidden bg-[#111111] aspect-[3/4] rounded-sm mb-4">
           {/* Placeholder visual */}
           <div className="product-img absolute inset-0 transition-transform duration-500 ease-out flex flex-col items-center justify-center gap-2 p-6">
-            {/* Stylized product placeholder */}
             <div className="w-full h-full flex flex-col items-center justify-center">
               <div className="border border-[#C9A84C]/20 rounded w-3/4 h-3/4 flex items-center justify-center group-hover:border-[#C9A84C]/40 transition-colors">
                 <div className="text-center px-3">
@@ -30,11 +29,11 @@ export default function ProductCard({ product }: Props) {
             </div>
           </div>
 
-          {/* Badge */}
-          {product.badge && (
-            <div className="absolute top-3 left-3 z-10">
+          {/* Badges — stacked top-left */}
+          <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
+            {product.badge && (
               <span
-                className={`text-[10px] font-black uppercase tracking-[0.12em] px-2.5 py-1 rounded-sm ${
+                className={`text-[10px] font-black uppercase tracking-[0.12em] px-2.5 py-1 rounded-sm w-fit ${
                   product.badge === "Sale"
                     ? "bg-red-600 text-white"
                     : product.badge === "Limited"
@@ -44,8 +43,13 @@ export default function ProductCard({ product }: Props) {
               >
                 {product.badge}
               </span>
-            </div>
-          )}
+            )}
+            {product.lowStock && (
+              <span className="text-[10px] font-black uppercase tracking-[0.12em] px-2.5 py-1 rounded-sm bg-red-600/90 text-white w-fit">
+                Low Stock
+              </span>
+            )}
+          </div>
 
           {/* Sold out overlay */}
           {product.soldOut && (
@@ -70,15 +74,20 @@ export default function ProductCard({ product }: Props) {
               <h3 className="text-sm font-semibold text-neutral-200 group-hover:text-white transition-colors line-clamp-2 leading-snug">
                 {product.name}
               </h3>
+              {product.lowStock && (
+                <p className="text-[10px] text-red-400 font-semibold mt-1 uppercase tracking-wider">
+                  Only a few left
+                </p>
+              )}
             </div>
             <div className="text-right flex-shrink-0">
               {product.originalPrice && (
                 <p className="text-xs text-neutral-600 line-through">
-                  ${product.originalPrice}
+                  €{product.originalPrice}
                 </p>
               )}
               <p className={`text-sm font-bold ${product.originalPrice ? "text-[#C9A84C]" : "text-neutral-200"}`}>
-                ${product.price}
+                €{product.price}
               </p>
             </div>
           </div>

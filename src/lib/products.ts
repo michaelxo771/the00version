@@ -12,6 +12,7 @@ export type Product = {
   badge?: string;
   featured?: boolean;
   soldOut?: boolean;
+  lowStock?: boolean;
 };
 
 export const products: Product[] = [
@@ -118,6 +119,7 @@ export const products: Product[] = [
     colors: ["Black", "Deep Navy"],
     images: ["/images/products/velour-1.jpg"],
     badge: "Limited",
+    lowStock: true,
   },
   {
     id: "bomber-jacket",
@@ -137,6 +139,7 @@ export const products: Product[] = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Black"],
     images: ["/images/products/bomber-1.jpg"],
+    lowStock: true,
   },
   {
     id: "chain-tee-white",

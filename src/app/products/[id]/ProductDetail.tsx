@@ -91,7 +91,7 @@ export default function ProductDetail({ product, related }: Props) {
                       {product.name}
                     </div>
                     <div className="mt-4 text-[#C9A84C] text-xl font-black">
-                      ${product.price}
+                      €{product.price}
                     </div>
                   </div>
                 </div>
@@ -146,15 +146,15 @@ export default function ProductDetail({ product, related }: Props) {
 
             {/* Price */}
             <div className="flex items-baseline gap-3 mb-6">
-              <span className="text-3xl font-black text-[#C9A84C]">${product.price}</span>
+              <span className="text-3xl font-black text-[#C9A84C]">€{product.price}</span>
               {product.originalPrice && (
                 <span className="text-lg text-neutral-600 line-through">
-                  ${product.originalPrice}
+                  €{product.originalPrice}
                 </span>
               )}
               {product.originalPrice && (
                 <span className="text-sm text-red-400 font-semibold">
-                  Save ${product.originalPrice - product.price}
+                  Save €{product.originalPrice - product.price}
                 </span>
               )}
             </div>
@@ -270,7 +270,7 @@ export default function ProductDetail({ product, related }: Props) {
               <svg className="w-3.5 h-3.5 text-[#C9A84C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Free shipping on orders over $150
+              Free shipping on orders over €150
             </div>
 
             {/* Details */}

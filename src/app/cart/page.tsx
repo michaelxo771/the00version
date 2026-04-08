@@ -71,7 +71,7 @@ export default function CartPage() {
                             {item.size} · {item.color}
                           </p>
                           <p className="text-sm font-bold text-[#C9A84C] mt-1">
-                            ${item.product.price}
+                            €{item.product.price}
                           </p>
                         </div>
                         <button
@@ -105,7 +105,7 @@ export default function CartPage() {
                     {/* Line total */}
                     <div className="text-right">
                       <span className="text-sm font-black text-neutral-100">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        €{(item.product.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   </li>
@@ -139,17 +139,17 @@ export default function CartPage() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between text-neutral-400">
                     <span>Subtotal ({totalItems} item{totalItems !== 1 ? "s" : ""})</span>
-                    <span className="text-neutral-200">${subtotal.toFixed(2)}</span>
+                    <span className="text-neutral-200">€{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-neutral-400">
                     <span>Shipping</span>
                     <span className={shipping === 0 ? "text-green-400" : "text-neutral-200"}>
-                      {shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}
+                      {shipping === 0 ? "FREE" : `€${shipping.toFixed(2)}`}
                     </span>
                   </div>
                   {subtotal < 150 && (
                     <div className="text-[11px] text-neutral-600 bg-[#111111] rounded px-3 py-2">
-                      Add ${(150 - subtotal).toFixed(2)} more for free shipping
+                      Add €{(150 - subtotal).toFixed(2)} more for free shipping
                     </div>
                   )}
                 </div>
@@ -157,9 +157,9 @@ export default function CartPage() {
                 <div className="border-t border-[#1a1a1a] mt-5 pt-5">
                   <div className="flex justify-between items-baseline">
                     <span className="text-sm font-bold uppercase tracking-wider">Total</span>
-                    <span className="text-2xl font-black text-[#C9A84C]">${total.toFixed(2)}</span>
+                    <span className="text-2xl font-black text-[#C9A84C]">€{total.toFixed(2)}</span>
                   </div>
-                  <p className="text-[10px] text-neutral-600 mt-1">USD · All taxes included</p>
+                  <p className="text-[10px] text-neutral-600 mt-1">EUR · All taxes included</p>
                 </div>
 
                 <Link

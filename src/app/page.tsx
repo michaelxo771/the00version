@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getFeaturedProducts, products } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 import EmailSignup from "@/components/EmailSignup";
+import CountdownTimer from "@/components/CountdownTimer";
+import CyclingText from "@/components/CyclingText";
 
 export default function HomePage() {
   const featured = getFeaturedProducts();
@@ -9,7 +11,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       {/* ===== HERO ===== */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative flex items-center justify-center overflow-hidden pt-24 pb-12 min-h-[92vh]">
         {/* Background grid pattern */}
         <div
           className="absolute inset-0"
@@ -26,85 +28,87 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(201,168,76,0.08)_0%,_transparent_65%)]" />
 
         {/* Side decorative lines */}
-        <div className="absolute left-8 top-1/2 -translate-y-1/2 h-64 w-[1px] bg-gradient-to-b from-transparent via-[#C9A84C]/30 to-transparent" />
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 h-64 w-[1px] bg-gradient-to-b from-transparent via-[#C9A84C]/30 to-transparent" />
+        <div className="absolute left-8 top-1/2 -translate-y-1/2 h-48 w-[1px] bg-gradient-to-b from-transparent via-[#C9A84C]/30 to-transparent hidden lg:block" />
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 h-48 w-[1px] bg-gradient-to-b from-transparent via-[#C9A84C]/30 to-transparent hidden lg:block" />
 
         {/* Content */}
-        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto w-full">
           {/* Eyebrow */}
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <div className="h-[1px] w-12 bg-[#C9A84C]/50" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-[#C9A84C]">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="h-[1px] w-10 bg-[#C9A84C]/50" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#C9A84C]">
               Est. 2024 — Premium Streetwear
             </span>
-            <div className="h-[1px] w-12 bg-[#C9A84C]/50" />
+            <div className="h-[1px] w-10 bg-[#C9A84C]/50" />
           </div>
 
           {/* Main title */}
-          <h1 className="font-black leading-none mb-2">
+          <h1 className="font-black leading-none mb-1">
             <span
-              className="block text-[clamp(4rem,15vw,14rem)] gold-shimmer leading-none"
-              style={{ fontWeight: 900 }}
+              className="block gold-shimmer leading-none"
+              style={{ fontWeight: 900, fontSize: "clamp(3rem,10vw,8rem)" }}
             >
               THE 00s
             </span>
             <span
-              className="block text-[clamp(2rem,8vw,7rem)] text-neutral-200 tracking-[0.3em] uppercase"
-              style={{ fontWeight: 900 }}
+              className="block text-neutral-200 tracking-[0.3em] uppercase"
+              style={{ fontWeight: 900, fontSize: "clamp(1.4rem,4.5vw,4rem)" }}
             >
               VERSION
             </span>
           </h1>
 
+          {/* Cycling era text */}
+          <p className="text-[#C9A84C]/80 text-sm sm:text-base font-semibold uppercase tracking-[0.2em] mt-4 mb-3 h-6">
+            <CyclingText />
+          </p>
+
           {/* Tagline */}
-          <p className="text-neutral-400 text-base sm:text-lg mt-8 mb-10 max-w-md mx-auto leading-relaxed">
+          <p className="text-neutral-500 text-sm mt-2 mb-7 max-w-sm mx-auto leading-relaxed">
             Premium streetwear rooted in early 2000s culture.
-            <br />
             Every piece tells a story. Every drop is an era.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/products"
-              className="btn-gold px-10 py-4 text-sm rounded inline-block"
+              className="btn-gold px-8 py-3.5 text-sm rounded inline-block"
             >
               Shop the Collection
             </Link>
             <Link
               href="/products?category=New"
-              className="btn-outline-gold px-10 py-4 text-sm rounded inline-block"
+              className="btn-outline-gold px-8 py-3.5 text-sm rounded inline-block"
             >
               New Drops
             </Link>
           </div>
 
           {/* Stats */}
-          <div className="flex items-center justify-center gap-8 sm:gap-16 mt-16 pt-16 border-t border-[#1a1a1a]">
+          <div className="flex items-center justify-center gap-8 sm:gap-16 mt-10 pt-8 border-t border-[#1a1a1a]">
             {[
               { value: "100%", label: "Premium Cotton" },
               { value: "00s", label: "Era Inspired" },
               { value: "Ltd.", label: "Drops Only" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <p className="text-xl sm:text-2xl font-black gold-text">{stat.value}</p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-600 mt-1">{stat.label}</p>
+                <p className="text-lg sm:text-xl font-black gold-text">{stat.value}</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-600 mt-0.5">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#080808] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#080808] to-transparent" />
       </section>
 
       {/* ===== MARQUEE TICKER ===== */}
       <div className="bg-[#C9A84C] overflow-hidden py-3">
         <div
           className="flex gap-8 whitespace-nowrap"
-          style={{
-            animation: "marquee 25s linear infinite",
-          }}
+          style={{ animation: "marquee 25s linear infinite" }}
         >
           {Array(3)
             .fill(null)
@@ -112,7 +116,7 @@ export default function HomePage() {
               <div key={i} className="flex gap-8 flex-shrink-0">
                 {[
                   "New Drop Available",
-                  "Free Shipping on $150+",
+                  "Free Shipping on €150+",
                   "Limited Edition Pieces",
                   "Premium Quality",
                   "Early 2000s Aesthetic",
@@ -164,6 +168,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== COUNTDOWN TIMER ===== */}
+      <CountdownTimer />
+
       {/* ===== BRAND STORY SECTION ===== */}
       <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0 bg-[#0d0d0d]" />
@@ -180,13 +187,13 @@ export default function HomePage() {
                 <span className="gold-text">The Era</span>
               </h2>
               <p className="text-neutral-400 leading-relaxed mb-6">
-                Early 2000s rap culture wasn't just music — it was an entire visual language.
+                Early 2000s rap culture wasn&apos;t just music — it was an entire visual language.
                 Rocawear. Sean John. G-Unit. Those labels built something bigger than clothes.
                 They built an identity.
               </p>
               <p className="text-neutral-400 leading-relaxed mb-8">
                 The 00s Version is our tribute to that era, rebuilt with premium materials and
-                a modern cut. We didn't copy the aesthetic — we evolved it.
+                a modern cut. We didn&apos;t copy the aesthetic — we evolved it.
               </p>
               <Link href="/products" className="btn-gold px-8 py-4 text-sm rounded inline-block">
                 Shop the Vision
@@ -196,7 +203,6 @@ export default function HomePage() {
             {/* Visual element */}
             <div className="relative">
               <div className="aspect-square bg-[#111111] rounded-sm border border-[#1a1a1a] flex items-center justify-center relative overflow-hidden">
-                {/* Decorative gold elements */}
                 <div className="absolute inset-0 border-8 border-[#C9A84C]/5 m-6 rounded-sm" />
                 <div className="absolute inset-0 border border-[#C9A84C]/10 m-3" />
                 <div className="text-center z-10">
@@ -207,7 +213,6 @@ export default function HomePage() {
                     Version
                   </div>
                 </div>
-                {/* Corner accents */}
                 {["top-3 left-3", "top-3 right-3", "bottom-3 left-3", "bottom-3 right-3"].map((pos, i) => (
                   <div key={i} className={`absolute ${pos} w-4 h-4`}>
                     <div className="w-full h-[1px] bg-[#C9A84C]/60" />
@@ -220,8 +225,90 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== CATEGORIES STRIP ===== */}
+      {/* ===== TESTIMONIALS ===== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center mb-12">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-[#C9A84C] mb-2">Reviews</p>
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">
+            What They&apos;re Saying
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            {
+              name: "Jordan M.",
+              location: "London, UK",
+              rating: 5,
+              review:
+                "Copped the OG Hoodie and it's insane quality. The weight of the fabric feels like proper premium — not that cheap stuff other brands pass off. The embroidery is clean and precise. Worth every penny.",
+              product: "OG Heavyweight Hoodie",
+              verified: true,
+            },
+            {
+              name: "Chris T.",
+              location: "Paris, FR",
+              rating: 5,
+              review:
+                "The Velour Tracksuit is everything. Brings back those 2000s vibes but feels current at the same time. Got so many compliments wearing it out. The fit is perfect — not boxy, not skinny. Just right.",
+              product: "Velour Tracksuit Set",
+              verified: true,
+            },
+            {
+              name: "Marcus L.",
+              location: "Amsterdam, NL",
+              rating: 5,
+              review:
+                "Slept on this brand until a friend put me on. The Platinum Tee is a different level of quality. Heavy, soft, and the gold foil print hasn't cracked after multiple washes. The 00s Version is the real thing.",
+              product: "Platinum Edition Tee",
+              verified: true,
+            },
+          ].map((review) => (
+            <div
+              key={review.name}
+              className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-6 flex flex-col gap-4 hover:border-[#C9A84C]/20 transition-colors"
+            >
+              {/* Stars */}
+              <div className="flex gap-1">
+                {Array(review.rating).fill(null).map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-[#C9A84C]" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+
+              {/* Review text */}
+              <p className="text-neutral-400 text-sm leading-relaxed flex-1">
+                &ldquo;{review.review}&rdquo;
+              </p>
+
+              {/* Gold divider */}
+              <div className="h-[1px] bg-gradient-to-r from-[#C9A84C]/30 to-transparent" />
+
+              {/* Author */}
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-bold text-neutral-200">{review.name}</p>
+                    {review.verified && (
+                      <span className="text-[9px] uppercase tracking-wider text-green-400/80 font-semibold">
+                        ✓ Verified
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-neutral-600 mt-0.5">{review.location}</p>
+                </div>
+                <p className="text-[10px] text-neutral-700 text-right leading-tight">
+                  {review.product}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== CATEGORIES STRIP ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-20">
         <div className="text-center mb-12">
           <p className="text-[11px] uppercase tracking-[0.3em] text-[#C9A84C] mb-2">Browse</p>
           <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">
@@ -255,8 +342,6 @@ export default function HomePage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>
-
-              {/* Corner accent */}
               <div className="absolute top-0 right-0 w-8 h-8 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity">
                 <div className="absolute top-0 right-0 w-[1px] h-8 bg-[#C9A84C]" />
                 <div className="absolute top-0 right-0 w-8 h-[1px] bg-[#C9A84C]" />
@@ -303,7 +388,6 @@ export default function HomePage() {
           <EmailSignup />
         </div>
       </section>
-
     </div>
   );
 }

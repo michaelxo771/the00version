@@ -79,7 +79,7 @@ export default function CheckoutPage() {
             </div>
             <div className="flex justify-between text-sm text-neutral-400">
               <span>Total paid</span>
-              <span className="text-[#C9A84C] font-black">${total.toFixed(2)}</span>
+              <span className="text-[#C9A84C] font-black">€{total.toFixed(2)}</span>
             </div>
           </div>
 
@@ -293,9 +293,9 @@ export default function CheckoutPage() {
 
                 <div className="space-y-3">
                   {[
-                    { id: "standard", label: "Standard Shipping", sub: "5–7 business days", price: subtotal >= 150 ? "FREE" : "$12.00" },
-                    { id: "express", label: "Express Shipping", sub: "2–3 business days", price: "$24.00" },
-                    { id: "overnight", label: "Overnight Shipping", sub: "Next business day", price: "$40.00" },
+                    { id: "standard", label: "Standard Shipping", sub: "5–7 business days", price: subtotal >= 150 ? "FREE" : "€12.00" },
+                    { id: "express", label: "Express Shipping", sub: "2–3 business days", price: "€24.00" },
+                    { id: "overnight", label: "Overnight Shipping", sub: "Next business day", price: "€40.00" },
                   ].map((method) => (
                     <label
                       key={method.id}
@@ -430,7 +430,7 @@ export default function CheckoutPage() {
                     type="submit"
                     className="btn-gold flex-1 py-4 text-sm rounded-sm"
                   >
-                    Place Order — ${total.toFixed(2)}
+                    Place Order — €{total.toFixed(2)}
                   </button>
                 </div>
               </form>
@@ -464,7 +464,7 @@ export default function CheckoutPage() {
                       <p className="text-[10px] text-neutral-600 mt-0.5">{item.size} · {item.color}</p>
                     </div>
                     <p className="text-xs font-bold text-[#C9A84C] flex-shrink-0">
-                      ${(item.product.price * item.quantity).toFixed(2)}
+                      €{(item.product.price * item.quantity).toFixed(2)}
                     </p>
                   </li>
                 ))}
@@ -473,18 +473,18 @@ export default function CheckoutPage() {
               <div className="border-t border-[#1a1a1a] pt-4 space-y-2.5">
                 <div className="flex justify-between text-xs text-neutral-500">
                   <span>Subtotal</span>
-                  <span className="text-neutral-300">${subtotal.toFixed(2)}</span>
+                  <span className="text-neutral-300">€{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-xs text-neutral-500">
                   <span>Shipping</span>
                   <span className={shipping === 0 ? "text-green-400" : "text-neutral-300"}>
-                    {shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}
+                    {shipping === 0 ? "FREE" : `€${shipping.toFixed(2)}`}
                   </span>
                 </div>
               </div>
               <div className="border-t border-[#1a1a1a] mt-4 pt-4 flex justify-between items-baseline">
                 <span className="text-sm font-bold uppercase tracking-wider">Total</span>
-                <span className="text-xl font-black text-[#C9A84C]">${total.toFixed(2)}</span>
+                <span className="text-xl font-black text-[#C9A84C]">€{total.toFixed(2)}</span>
               </div>
             </div>
           </div>
