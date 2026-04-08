@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { Resend } from "resend";
+import { buildOrderEmail } from "@/lib/orderEmail";
 
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -8,10 +10,13 @@ function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY);
 }
 
+function getResend() {
+  if (!process.env.RESEND_API_KEY) return null;
+  return new Resend(process.env.RESEND_API_KEY);
+}
+
 export async function POST(req: NextRequest) {
   const stripe = getStripe();
-  // Set this in your Stripe dashboard → Developers → Webhooks → signing secret
-  // and add it as STRIPE_WEBHOOK_SECRET in your environment.
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   const body = await req.text();
@@ -21,10 +26,8 @@ export async function POST(req: NextRequest) {
 
   try {
     if (webhookSecret && signature) {
-      // Verify webhook signature when secret is configured
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
     } else {
-      // Allow unsigned events in development (no webhook secret set)
       event = JSON.parse(body) as Stripe.Event;
     }
   } catch (err) {
@@ -36,44 +39,111 @@ export async function POST(req: NextRequest) {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
-
-      // Order confirmation email would be sent here.
-      // Example with your email provider:
-      //   await sendOrderConfirmationEmail({
-      //     to: session.customer_email,
-      //     name: session.metadata?.firstName,
-      //     orderNumber: session.id,
-      //     amount: session.amount_total,
-      //   });
-
-      console.log("Order completed:", {
-        sessionId: session.id,
-        customer: session.customer_email,
-        amount: session.amount_total,
-        currency: session.currency,
-        name: `${session.metadata?.firstName ?? ""} ${session.metadata?.lastName ?? ""}`.trim(),
-        shippingMethod: session.metadata?.shippingMethod,
-        itemCount: session.metadata?.itemCount,
-      });
+      await handleOrderCompleted(stripe, session);
       break;
     }
-
     case "checkout.session.expired": {
       const session = event.data.object as Stripe.Checkout.Session;
       console.log("Checkout session expired:", session.id);
       break;
     }
-
     case "payment_intent.payment_failed": {
       const intent = event.data.object as Stripe.PaymentIntent;
       console.error("Payment failed:", intent.id, intent.last_payment_error?.message);
       break;
     }
-
     default:
-      // Unhandled event type — safe to ignore
       break;
   }
 
   return NextResponse.json({ received: true });
+}
+
+async function handleOrderCompleted(stripe: Stripe, session: Stripe.Checkout.Session) {
+  // Retrieve session with expanded line items
+  const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
+    expand: ["line_items"],
+  });
+
+  const meta = fullSession.metadata ?? {};
+  const firstName = meta.firstName || "there";
+  const lastName = meta.lastName || "";
+  const customerEmail = fullSession.customer_email ?? fullSession.customer_details?.email;
+  const orderNumber = `#00S${session.id.slice(-6).toUpperCase()}`;
+  const shippingMethod = meta.shippingMethod || "standard";
+
+  // Parse amounts (in cents from Stripe)
+  const amountTotal = (fullSession.amount_total ?? 0) / 100;
+  const amountSubtotal = (fullSession.amount_subtotal ?? 0) / 100;
+  const discountAmount = amountSubtotal - amountTotal > 0
+    ? amountSubtotal - amountTotal
+    : 0;
+
+  // Determine shipping cost from the session
+  const shippingCosts: Record<string, number> = { standard: 12, express: 24, overnight: 40 };
+  const shippingCost = amountSubtotal >= 150 ? 0 : (shippingCosts[shippingMethod] ?? 12);
+
+  // Build items array from Stripe line items
+  const lineItems = fullSession.line_items?.data ?? [];
+  const items = lineItems.map((item) => {
+    const prod = item.price?.product;
+    const prodMeta =
+      prod && typeof prod !== "string" && "metadata" in prod
+        ? (prod as { metadata: Record<string, string> }).metadata
+        : {};
+    return {
+      name: item.description ?? "Item",
+      size: prodMeta.size ?? "",
+      color: prodMeta.color ?? "",
+      quantity: item.quantity ?? 1,
+      unitPrice: ((item.price?.unit_amount ?? 0) / 100),
+    };
+  });
+
+  console.log("Order completed:", {
+    sessionId: session.id,
+    orderNumber,
+    customer: customerEmail,
+    name: `${firstName} ${lastName}`.trim(),
+    amount: amountTotal,
+    shippingMethod,
+    itemCount: meta.itemCount,
+  });
+
+  // Send confirmation email via Resend
+  if (customerEmail) {
+    const resend = getResend();
+    if (resend) {
+      try {
+        const html = buildOrderEmail({
+          firstName,
+          orderNumber,
+          items,
+          subtotal: amountSubtotal,
+          discountAmount,
+          shippingCost,
+          total: amountTotal,
+          shippingMethod,
+        });
+
+        const { error } = await resend.emails.send({
+          from: "The 00s Version <orders@the00sversion.com>",
+          to: customerEmail,
+          subject: `Order Confirmed ${orderNumber} — The 00s Version`,
+          html,
+        });
+
+        if (error) {
+          console.error("Resend email error:", error);
+        } else {
+          console.log("Confirmation email sent to:", customerEmail);
+        }
+      } catch (err) {
+        // Non-fatal — log and continue
+        console.error("Failed to send confirmation email:", err);
+      }
+    } else {
+      console.log("RESEND_API_KEY not set — skipping confirmation email");
+    }
+  }
 }

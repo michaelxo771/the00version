@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { validatePromoCode } from "@/lib/promoCodes";
 
 type Step = "information" | "shipping" | "payment";
 
@@ -11,6 +12,13 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<Step>("information");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Promo code state
+  const [promoInput, setPromoInput] = useState("");
+  const [promoCode, setPromoCode] = useState<string | null>(null);
+  const [discountPercent, setDiscountPercent] = useState(0);
+  const [promoLabel, setPromoLabel] = useState("");
+  const [promoError, setPromoError] = useState<string | null>(null);
 
   const shippingCosts: Record<string, number> = {
     standard: subtotal >= 150 ? 0 : 12,
@@ -31,10 +39,40 @@ export default function CheckoutPage() {
   });
 
   const shipping = shippingCosts[form.shippingMethod] ?? 12;
-  const total = subtotal + shipping;
+  const discountAmount = discountPercent > 0 ? (subtotal * discountPercent) / 100 : 0;
+  const total = subtotal - discountAmount + shipping;
 
   function update(field: string, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  function applyPromo() {
+    setPromoError(null);
+    const trimmed = promoInput.trim().toUpperCase();
+    if (!trimmed) {
+      setPromoError("Please enter a promo code.");
+      return;
+    }
+    if (promoCode === trimmed) {
+      setPromoError("This code is already applied.");
+      return;
+    }
+    const result = validatePromoCode(trimmed);
+    if (!result) {
+      setPromoError("Invalid promo code. Please check and try again.");
+      return;
+    }
+    setPromoCode(result.code);
+    setDiscountPercent(result.discountPercent);
+    setPromoLabel(result.label);
+    setPromoInput("");
+  }
+
+  function removePromo() {
+    setPromoCode(null);
+    setDiscountPercent(0);
+    setPromoLabel("");
+    setPromoError(null);
   }
 
   async function handleStripeCheckout() {
@@ -57,6 +95,7 @@ export default function CheckoutPage() {
             phone: form.phone,
           },
           shippingMethod: form.shippingMethod,
+          promoCode: promoCode ?? undefined,
         }),
       });
 
@@ -66,7 +105,6 @@ export default function CheckoutPage() {
         throw new Error(data.error ?? "Failed to create checkout session");
       }
 
-      // Redirect to Stripe hosted checkout
       window.location.href = data.url;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -115,11 +153,7 @@ export default function CheckoutPage() {
                 >
                   {i < ["information", "shipping", "payment"].indexOf(step) ? "✓" : i + 1}
                 </div>
-                <span
-                  className={`text-[9px] uppercase tracking-wider mt-1 ${
-                    s === step ? "text-[#C9A84C]" : "text-neutral-600"
-                  }`}
-                >
+                <span className={`text-[9px] uppercase tracking-wider mt-1 ${s === step ? "text-[#C9A84C]" : "text-neutral-600"}`}>
                   {s}
                 </span>
               </div>
@@ -139,115 +173,51 @@ export default function CheckoutPage() {
                 </h2>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => update("email", e.target.value)}
-                      placeholder="your@email.com"
-                      className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors"
-                    />
+                    <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">Email Address</label>
+                    <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="your@email.com"
+                      className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors" />
                   </div>
-
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                        First Name
-                      </label>
-                      <input
-                        type="text"
-                        value={form.firstName}
-                        onChange={(e) => update("firstName", e.target.value)}
-                        placeholder="Jay"
-                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors"
-                      />
+                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">First Name</label>
+                      <input type="text" value={form.firstName} onChange={(e) => update("firstName", e.target.value)} placeholder="Jay"
+                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors" />
                     </div>
                     <div>
-                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        value={form.lastName}
-                        onChange={(e) => update("lastName", e.target.value)}
-                        placeholder="Carter"
-                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors"
-                      />
+                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">Last Name</label>
+                      <input type="text" value={form.lastName} onChange={(e) => update("lastName", e.target.value)} placeholder="Carter"
+                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors" />
                     </div>
                   </div>
-
                   <div>
-                    <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                      Street Address
-                    </label>
-                    <input
-                      type="text"
-                      value={form.address}
-                      onChange={(e) => update("address", e.target.value)}
-                      placeholder="1 Marcy Ave"
-                      className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors"
-                    />
+                    <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">Street Address</label>
+                    <input type="text" value={form.address} onChange={(e) => update("address", e.target.value)} placeholder="1 Marcy Ave"
+                      className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors" />
                   </div>
-
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                        City
-                      </label>
-                      <input
-                        type="text"
-                        value={form.city}
-                        onChange={(e) => update("city", e.target.value)}
-                        placeholder="Brooklyn"
-                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors"
-                      />
+                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">City</label>
+                      <input type="text" value={form.city} onChange={(e) => update("city", e.target.value)} placeholder="Brooklyn"
+                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors" />
                     </div>
                     <div>
-                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                        State / Region
-                      </label>
-                      <input
-                        type="text"
-                        value={form.state}
-                        onChange={(e) => update("state", e.target.value)}
-                        placeholder="NY"
-                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors"
-                      />
+                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">State / Region</label>
+                      <input type="text" value={form.state} onChange={(e) => update("state", e.target.value)} placeholder="NY"
+                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors" />
                     </div>
                     <div>
-                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                        ZIP / Postcode
-                      </label>
-                      <input
-                        type="text"
-                        value={form.zip}
-                        onChange={(e) => update("zip", e.target.value)}
-                        placeholder="11206"
-                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors"
-                      />
+                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">ZIP / Postcode</label>
+                      <input type="text" value={form.zip} onChange={(e) => update("zip", e.target.value)} placeholder="11206"
+                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors" />
                     </div>
                   </div>
-
                   <div>
-                    <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                      Phone (optional)
-                    </label>
-                    <input
-                      type="tel"
-                      value={form.phone}
-                      onChange={(e) => update("phone", e.target.value)}
-                      placeholder="+1 (555) 000-0000"
-                      className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors"
-                    />
+                    <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">Phone (optional)</label>
+                    <input type="tel" value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="+1 (555) 000-0000"
+                      className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors" />
                   </div>
                 </div>
-
-                <button
-                  onClick={() => setStep("shipping")}
-                  className="btn-gold w-full py-4 text-sm rounded-sm mt-8"
-                >
+                <button onClick={() => setStep("shipping")} className="btn-gold w-full py-4 text-sm rounded-sm mt-8">
                   Continue to Shipping
                 </button>
               </div>
@@ -257,8 +227,6 @@ export default function CheckoutPage() {
             {step === "shipping" && (
               <div>
                 <h2 className="text-xl font-black uppercase tracking-tight mb-6">Shipping Method</h2>
-
-                {/* Address recap */}
                 <div className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-4 mb-6 text-sm">
                   <div className="flex justify-between items-start">
                     <div className="text-neutral-400 space-y-0.5">
@@ -271,79 +239,37 @@ export default function CheckoutPage() {
                         {form.zip && ` ${form.zip}`}
                       </p>
                     </div>
-                    <button
-                      onClick={() => setStep("information")}
-                      className="text-[11px] text-[#C9A84C] hover:underline uppercase tracking-wider ml-4 flex-shrink-0"
-                    >
-                      Edit
-                    </button>
+                    <button onClick={() => setStep("information")} className="text-[11px] text-[#C9A84C] hover:underline uppercase tracking-wider ml-4 flex-shrink-0">Edit</button>
                   </div>
                 </div>
-
                 <div className="space-y-3">
                   {[
-                    {
-                      id: "standard",
-                      label: "Standard Shipping",
-                      sub: "5–7 business days",
-                      price: subtotal >= 150 ? "FREE" : "€12.00",
-                    },
+                    { id: "standard", label: "Standard Shipping", sub: "5–7 business days", price: subtotal >= 150 ? "FREE" : "€12.00" },
                     { id: "express", label: "Express Shipping", sub: "2–3 business days", price: "€24.00" },
                     { id: "overnight", label: "Overnight Shipping", sub: "Next business day", price: "€40.00" },
                   ].map((method) => (
-                    <label
-                      key={method.id}
-                      className={`flex items-center gap-4 border rounded-sm p-4 cursor-pointer transition-all ${
-                        form.shippingMethod === method.id
-                          ? "border-[#C9A84C] bg-[#C9A84C]/5"
-                          : "border-[#1a1a1a] hover:border-[#2a2a2a]"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="shipping"
-                        value={method.id}
-                        checked={form.shippingMethod === method.id}
-                        onChange={() => update("shippingMethod", method.id)}
-                        className="accent-[#C9A84C]"
-                      />
+                    <label key={method.id}
+                      className={`flex items-center gap-4 border rounded-sm p-4 cursor-pointer transition-all ${form.shippingMethod === method.id ? "border-[#C9A84C] bg-[#C9A84C]/5" : "border-[#1a1a1a] hover:border-[#2a2a2a]"}`}>
+                      <input type="radio" name="shipping" value={method.id} checked={form.shippingMethod === method.id} onChange={() => update("shippingMethod", method.id)} className="accent-[#C9A84C]" />
                       <div className="flex-1">
                         <p className="text-sm font-semibold">{method.label}</p>
                         <p className="text-[11px] text-neutral-600 mt-0.5">{method.sub}</p>
                       </div>
-                      <span
-                        className={`text-sm font-bold ${
-                          method.price === "FREE" ? "text-green-400" : "text-neutral-300"
-                        }`}
-                      >
-                        {method.price}
-                      </span>
+                      <span className={`text-sm font-bold ${method.price === "FREE" ? "text-green-400" : "text-neutral-300"}`}>{method.price}</span>
                     </label>
                   ))}
                 </div>
-
                 <div className="flex gap-3 mt-8">
-                  <button
-                    onClick={() => setStep("information")}
-                    className="btn-outline-gold px-6 py-4 text-xs rounded-sm"
-                  >
-                    Back
-                  </button>
-                  <button
-                    onClick={() => setStep("payment")}
-                    className="btn-gold flex-1 py-4 text-sm rounded-sm"
-                  >
-                    Continue to Payment
-                  </button>
+                  <button onClick={() => setStep("information")} className="btn-outline-gold px-6 py-4 text-xs rounded-sm">Back</button>
+                  <button onClick={() => setStep("payment")} className="btn-gold flex-1 py-4 text-sm rounded-sm">Continue to Payment</button>
                 </div>
               </div>
             )}
 
-            {/* PAYMENT — Stripe redirect */}
+            {/* PAYMENT */}
             {step === "payment" && (
               <div>
                 <h2 className="text-xl font-black uppercase tracking-tight mb-6">Payment</h2>
-
                 {/* Recap */}
                 <div className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-4 mb-6 text-sm space-y-1.5">
                   <div className="flex justify-between">
@@ -361,24 +287,13 @@ export default function CheckoutPage() {
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Shipping</span>
                     <span className="text-neutral-300">
-                      {form.shippingMethod === "standard"
-                        ? subtotal >= 150
-                          ? "Free Standard"
-                          : "Standard (5–7 days)"
-                        : form.shippingMethod === "express"
-                        ? "Express (2–3 days)"
-                        : "Overnight"}
+                      {form.shippingMethod === "standard" ? (subtotal >= 150 ? "Free Standard" : "Standard (5–7 days)") : form.shippingMethod === "express" ? "Express (2–3 days)" : "Overnight"}
                     </span>
                   </div>
-                  <button
-                    onClick={() => setStep("shipping")}
-                    className="text-[11px] text-[#C9A84C] hover:underline uppercase tracking-wider mt-1"
-                  >
-                    Edit
-                  </button>
+                  <button onClick={() => setStep("shipping")} className="text-[11px] text-[#C9A84C] hover:underline uppercase tracking-wider mt-1">Edit</button>
                 </div>
 
-                {/* Stripe payment box */}
+                {/* Stripe box */}
                 <div className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-6 mb-6">
                   <div className="flex items-center gap-2 text-[11px] text-neutral-500 mb-5">
                     <svg className="w-3.5 h-3.5 text-[#C9A84C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -386,9 +301,7 @@ export default function CheckoutPage() {
                     </svg>
                     Secure payment via Stripe — your card details never touch our servers
                   </div>
-
                   <div className="text-center py-4">
-                    {/* Stripe wordmark approximation */}
                     <div className="flex items-center justify-center gap-2 mb-3">
                       <div className="w-8 h-8 bg-[#635BFF] rounded flex items-center justify-center">
                         <span className="text-white font-black text-sm italic">S</span>
@@ -396,24 +309,16 @@ export default function CheckoutPage() {
                       <span className="text-neutral-300 text-lg font-semibold tracking-tight">stripe</span>
                     </div>
                     <p className="text-neutral-600 text-xs">
-                      You&apos;ll be redirected to Stripe&apos;s secure checkout page to complete your payment
+                      You&apos;ll be redirected to Stripe&apos;s secure checkout page
                     </p>
                   </div>
-
-                  {/* Accepted cards */}
                   <div className="flex items-center justify-center gap-2 mt-4">
-                    {["VISA", "MC", "AMEX", "IDEAL", "PayPal"].map((p) => (
-                      <span
-                        key={p}
-                        className="text-[8px] font-black text-neutral-600 border border-[#2a2a2a] px-1.5 py-0.5 rounded"
-                      >
-                        {p}
-                      </span>
+                    {["VISA", "MC", "AMEX", "iDEAL", "SEPA"].map((p) => (
+                      <span key={p} className="text-[8px] font-black text-neutral-600 border border-[#2a2a2a] px-1.5 py-0.5 rounded">{p}</span>
                     ))}
                   </div>
                 </div>
 
-                {/* Error message */}
                 {error && (
                   <div className="bg-red-900/20 border border-red-500/30 rounded-sm px-4 py-3 mb-4">
                     <p className="text-red-400 text-sm">{error}</p>
@@ -421,21 +326,10 @@ export default function CheckoutPage() {
                 )}
 
                 <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setStep("shipping")}
-                    disabled={loading}
-                    className="btn-outline-gold px-6 py-4 text-xs rounded-sm disabled:opacity-50"
-                  >
-                    Back
-                  </button>
-                  <button
-                    onClick={handleStripeCheckout}
-                    disabled={loading}
-                    className={`btn-gold flex-1 py-4 text-sm rounded-sm flex items-center justify-center gap-2 ${
-                      loading ? "opacity-80 cursor-wait" : ""
-                    }`}
-                  >
+                  <button type="button" onClick={() => setStep("shipping")} disabled={loading}
+                    className="btn-outline-gold px-6 py-4 text-xs rounded-sm disabled:opacity-50">Back</button>
+                  <button onClick={handleStripeCheckout} disabled={loading}
+                    className={`btn-gold flex-1 py-4 text-sm rounded-sm flex items-center justify-center gap-2 ${loading ? "opacity-80 cursor-wait" : ""}`}>
                     {loading ? (
                       <>
                         <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -459,14 +353,13 @@ export default function CheckoutPage() {
               <h2 className="text-sm font-black uppercase tracking-[0.15em] mb-5">Order Summary</h2>
               <div className="h-[1px] bg-gradient-to-r from-[#C9A84C]/40 to-transparent mb-5" />
 
+              {/* Items */}
               <ul className="space-y-4 mb-5">
                 {state.items.map((item, idx) => (
                   <li key={idx} className="flex gap-3 text-sm">
                     <div className="relative flex-shrink-0">
                       <div className="w-14 h-14 bg-[#111111] border border-[#1a1a1a] rounded-sm flex items-center justify-center">
-                        <span className="text-[7px] text-neutral-700 uppercase text-center leading-relaxed px-1">
-                          {item.product.category}
-                        </span>
+                        <span className="text-[7px] text-neutral-700 uppercase text-center leading-relaxed px-1">{item.product.category}</span>
                       </div>
                       <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#2a2a2a] rounded-full text-[9px] font-black flex items-center justify-center">
                         {item.quantity}
@@ -474,9 +367,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-xs leading-tight truncate">{item.product.name}</p>
-                      <p className="text-[10px] text-neutral-600 mt-0.5">
-                        {item.size} · {item.color}
-                      </p>
+                      <p className="text-[10px] text-neutral-600 mt-0.5">{item.size} · {item.color}</p>
                     </div>
                     <p className="text-xs font-bold text-[#C9A84C] flex-shrink-0">
                       €{(item.product.price * item.quantity).toFixed(2)}
@@ -485,11 +376,62 @@ export default function CheckoutPage() {
                 ))}
               </ul>
 
+              {/* Promo code input */}
+              <div className="border-t border-[#1a1a1a] pt-4 mb-4">
+                {promoCode ? (
+                  /* Applied promo */
+                  <div className="flex items-center justify-between bg-green-900/20 border border-green-500/30 rounded-sm px-3 py-2.5">
+                    <div>
+                      <p className="text-xs font-bold text-green-400 uppercase tracking-wider">{promoCode}</p>
+                      <p className="text-[10px] text-green-400/70 mt-0.5">{promoLabel}</p>
+                    </div>
+                    <button onClick={removePromo} className="text-green-400/50 hover:text-red-400 transition-colors ml-2 flex-shrink-0" aria-label="Remove promo">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  /* Promo input */
+                  <div>
+                    <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-600 mb-2">
+                      Promo Code
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={promoInput}
+                        onChange={(e) => { setPromoInput(e.target.value.toUpperCase()); setPromoError(null); }}
+                        onKeyDown={(e) => e.key === "Enter" && applyPromo()}
+                        placeholder="TIKTOK10"
+                        className="flex-1 bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-3 py-2.5 text-xs rounded-sm outline-none transition-colors uppercase font-mono tracking-wider"
+                      />
+                      <button
+                        onClick={applyPromo}
+                        className="btn-outline-gold px-4 py-2.5 text-xs rounded-sm whitespace-nowrap"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                    {promoError && (
+                      <p className="text-red-400 text-[11px] mt-1.5">{promoError}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Totals */}
               <div className="border-t border-[#1a1a1a] pt-4 space-y-2.5">
                 <div className="flex justify-between text-xs text-neutral-500">
                   <span>Subtotal</span>
                   <span className="text-neutral-300">€{subtotal.toFixed(2)}</span>
                 </div>
+                {discountAmount > 0 && (
+                  <div className="flex justify-between text-xs">
+                    <span className="text-green-400">Discount ({discountPercent}% off)</span>
+                    <span className="text-green-400 font-bold">−€{discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-xs text-neutral-500">
                   <span>Shipping</span>
                   <span className={shipping === 0 ? "text-green-400" : "text-neutral-300"}>

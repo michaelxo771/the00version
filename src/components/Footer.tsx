@@ -53,11 +53,20 @@ export default function Footer() {
           <div>
             <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#C9A84C] mb-4">Info</h4>
             <ul className="space-y-3">
-              {["About", "Size Guide", "Shipping & Returns", "Care Instructions", "Contact"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-sm text-neutral-500 hover:text-neutral-200 transition-colors">
-                    {item}
-                  </a>
+              {[
+                { label: "About", href: "#" },
+                { label: "Size Guide", href: "#" },
+                { label: "Shipping & Returns", href: "/returns" },
+                { label: "Care Instructions", href: "#" },
+                { label: "Contact", href: "#" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-neutral-500 hover:text-neutral-200 transition-colors"
+                  >
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -68,11 +77,19 @@ export default function Footer() {
           <p className="text-neutral-600 text-xs tracking-widest uppercase">
             &copy; {new Date().getFullYear()} The 00s Version. All rights reserved.
           </p>
-          <div className="flex gap-6">
-            {["Privacy Policy", "Terms of Service"].map((item) => (
-              <a key={item} href="#" className="text-neutral-600 text-xs hover:text-neutral-400 transition-colors">
-                {item}
-              </a>
+          <div className="flex flex-wrap justify-center sm:justify-end gap-5">
+            {[
+              { label: "Privacy Policy", href: "/privacy-policy" },
+              { label: "Terms of Service", href: "/terms" },
+              { label: "Returns Policy", href: "/returns" },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="text-neutral-600 text-xs hover:text-neutral-400 transition-colors"
+              >
+                {item.label}
+              </Link>
             ))}
           </div>
         </div>

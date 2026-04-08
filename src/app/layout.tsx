@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import EmailPopup from "@/components/EmailPopup";
 import StickyShopButton from "@/components/StickyShopButton";
+import CookieBanner from "@/components/CookieBanner";
 
 export const metadata: Metadata = {
   title: "The 00s Version — Premium Streetwear",
@@ -27,6 +28,7 @@ export default function RootLayout({
           <CartDrawer />
           <EmailPopup />
           <StickyShopButton />
+          <CookieBanner />
           <main className="flex-1">{children}</main>
           <Footer />
         </CartProvider>

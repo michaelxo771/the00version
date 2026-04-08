@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { CartItem } from "@/context/CartContext";
+import { validatePromoCode } from "@/lib/promoCodes";
 
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -22,13 +23,14 @@ type CheckoutBody = {
     phone: string;
   };
   shippingMethod: string;
+  promoCode?: string;
 };
 
 export async function POST(req: NextRequest) {
   try {
     const stripe = getStripe();
     const body: CheckoutBody = await req.json();
-    const { items, customerInfo, shippingMethod } = body;
+    const { items, customerInfo, shippingMethod, promoCode } = body;
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
@@ -75,10 +77,27 @@ export async function POST(req: NextRequest) {
 
     const origin = req.headers.get("origin") ?? "http://localhost:3000";
 
+    // Validate promo code server-side and create a one-time Stripe coupon
+    let discounts: { coupon: string }[] = [];
+    let validatedPromoCode = "";
+    if (promoCode) {
+      const promo = validatePromoCode(promoCode);
+      if (promo) {
+        const coupon = await stripe.coupons.create({
+          percent_off: promo.discountPercent,
+          duration: "once",
+          name: promo.label,
+        });
+        discounts = [{ coupon: coupon.id }];
+        validatedPromoCode = promo.code;
+      }
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: lineItems,
       customer_email: customerInfo.email || undefined,
+      ...(discounts.length > 0 ? { discounts } : { allow_promotion_codes: false }),
       metadata: {
         firstName: customerInfo.firstName,
         lastName: customerInfo.lastName,
@@ -89,6 +108,7 @@ export async function POST(req: NextRequest) {
         phone: customerInfo.phone,
         shippingMethod,
         itemCount: String(items.reduce((s, i) => s + i.quantity, 0)),
+        ...(validatedPromoCode ? { promoCode: validatedPromoCode } : {}),
       },
       shipping_options: shippingCostCents > 0
         ? [
