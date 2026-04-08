@@ -4,14 +4,19 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 
-type Step = "information" | "shipping" | "payment" | "confirmed";
+type Step = "information" | "shipping" | "payment";
 
 export default function CheckoutPage() {
-  const { state, subtotal, clearCart } = useCart();
+  const { state, subtotal } = useCart();
   const [step, setStep] = useState<Step>("information");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const shipping = subtotal >= 150 ? 0 : 12;
-  const total = subtotal + shipping;
+  const shippingCosts: Record<string, number> = {
+    standard: subtotal >= 150 ? 0 : 12,
+    express: 24,
+    overnight: 40,
+  };
 
   const [form, setForm] = useState({
     email: "",
@@ -21,76 +26,62 @@ export default function CheckoutPage() {
     city: "",
     state: "",
     zip: "",
-    country: "US",
     phone: "",
     shippingMethod: "standard",
-    cardNumber: "",
-    cardName: "",
-    expiry: "",
-    cvv: "",
   });
+
+  const shipping = shippingCosts[form.shippingMethod] ?? 12;
+  const total = subtotal + shipping;
 
   function update(field: string, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
-  function handlePlaceOrder(e: React.FormEvent) {
-    e.preventDefault();
-    setStep("confirmed");
-    clearCart();
+  async function handleStripeCheckout() {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: state.items,
+          customerInfo: {
+            email: form.email,
+            firstName: form.firstName,
+            lastName: form.lastName,
+            address: form.address,
+            city: form.city,
+            state: form.state,
+            zip: form.zip,
+            phone: form.phone,
+          },
+          shippingMethod: form.shippingMethod,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.url) {
+        throw new Error(data.error ?? "Failed to create checkout session");
+      }
+
+      // Redirect to Stripe hosted checkout
+      window.location.href = data.url;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setLoading(false);
+    }
   }
 
-  if (step === "confirmed") {
+  if (state.items.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 pt-20 pb-20">
-        <div className="max-w-md w-full text-center">
-          {/* Success icon */}
-          <div className="w-20 h-20 rounded-full border-2 border-[#C9A84C] flex items-center justify-center mx-auto mb-6">
-            <svg className="w-10 h-10 text-[#C9A84C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-
-          <p className="text-[11px] uppercase tracking-[0.3em] text-[#C9A84C] mb-3">
-            Order Confirmed
-          </p>
-          <h1 className="text-3xl font-black uppercase tracking-tight mb-4">
-            You&apos;re All Set
-          </h1>
-          <p className="text-neutral-400 text-sm leading-relaxed mb-2">
-            Thanks for your order, {form.firstName || "legend"}.
-          </p>
-          <p className="text-neutral-600 text-sm mb-8">
-            A confirmation email has been sent to{" "}
-            <span className="text-neutral-400">{form.email || "your inbox"}</span>.
-          </p>
-
-          <div className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-5 mb-8 text-left">
-            <div className="h-[1px] bg-gradient-to-r from-[#C9A84C]/40 to-transparent mb-4" />
-            <div className="flex justify-between text-sm text-neutral-400 mb-2">
-              <span>Order number</span>
-              <span className="text-neutral-200 font-mono">
-                #00S{Math.floor(Math.random() * 90000 + 10000)}
-              </span>
-            </div>
-            <div className="flex justify-between text-sm text-neutral-400 mb-2">
-              <span>Estimated delivery</span>
-              <span className="text-neutral-200">5–7 business days</span>
-            </div>
-            <div className="flex justify-between text-sm text-neutral-400">
-              <span>Total paid</span>
-              <span className="text-[#C9A84C] font-black">€{total.toFixed(2)}</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/" className="btn-gold px-8 py-3.5 text-sm rounded inline-block">
-              Back to Home
-            </Link>
-            <Link href="/products" className="btn-outline-gold px-8 py-3.5 text-sm rounded inline-block">
-              Keep Shopping
-            </Link>
-          </div>
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center max-w-sm">
+          <p className="text-neutral-500 text-sm mb-4">Your cart is empty.</p>
+          <Link href="/products" className="btn-gold px-8 py-3.5 text-sm rounded-sm inline-block">
+            Browse Collection
+          </Link>
         </div>
       </div>
     );
@@ -109,7 +100,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Progress steps */}
-        <div className="flex items-center justify-center gap-0 mb-10">
+        <div className="flex items-center justify-center mb-10">
           {(["information", "shipping", "payment"] as const).map((s, i) => (
             <div key={s} className="flex items-center">
               <div className="flex flex-col items-center">
@@ -117,18 +108,12 @@ export default function CheckoutPage() {
                   className={`w-7 h-7 rounded-full border flex items-center justify-center text-[10px] font-black transition-all ${
                     s === step
                       ? "border-[#C9A84C] bg-[#C9A84C] text-[#080808]"
-                      : ["information", "shipping", "payment"].indexOf(s) <
-                        ["information", "shipping", "payment"].indexOf(step)
+                      : i < ["information", "shipping", "payment"].indexOf(step)
                       ? "border-[#C9A84C] bg-[#C9A84C]/20 text-[#C9A84C]"
                       : "border-[#2a2a2a] text-neutral-600"
                   }`}
                 >
-                  {["information", "shipping", "payment"].indexOf(s) <
-                  ["information", "shipping", "payment"].indexOf(step) ? (
-                    "✓"
-                  ) : (
-                    i + 1
-                  )}
+                  {i < ["information", "shipping", "payment"].indexOf(step) ? "✓" : i + 1}
                 </div>
                 <span
                   className={`text-[9px] uppercase tracking-wider mt-1 ${
@@ -138,20 +123,20 @@ export default function CheckoutPage() {
                   {s}
                 </span>
               </div>
-              {i < 2 && (
-                <div className="w-16 sm:w-24 h-[1px] bg-[#2a2a2a] mx-2 mb-4" />
-              )}
+              {i < 2 && <div className="w-16 sm:w-24 h-[1px] bg-[#2a2a2a] mx-2 mb-4" />}
             </div>
           ))}
         </div>
 
         <div className="grid lg:grid-cols-[1fr_380px] gap-8 xl:gap-12">
-          {/* Forms */}
+          {/* ── Forms ── */}
           <div>
-            {/* ─── INFORMATION ─── */}
+            {/* INFORMATION */}
             {step === "information" && (
               <div>
-                <h2 className="text-xl font-black uppercase tracking-tight mb-6">Contact & Shipping Information</h2>
+                <h2 className="text-xl font-black uppercase tracking-tight mb-6">
+                  Contact &amp; Shipping Information
+                </h2>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
@@ -207,7 +192,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <div className="sm:col-span-1">
+                    <div>
                       <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
                         City
                       </label>
@@ -221,7 +206,7 @@ export default function CheckoutPage() {
                     </div>
                     <div>
                       <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                        State
+                        State / Region
                       </label>
                       <input
                         type="text"
@@ -233,7 +218,7 @@ export default function CheckoutPage() {
                     </div>
                     <div>
                       <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                        ZIP
+                        ZIP / Postcode
                       </label>
                       <input
                         type="text"
@@ -268,23 +253,27 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            {/* ─── SHIPPING ─── */}
+            {/* SHIPPING */}
             {step === "shipping" && (
               <div>
                 <h2 className="text-xl font-black uppercase tracking-tight mb-6">Shipping Method</h2>
 
-                {/* Delivery address recap */}
+                {/* Address recap */}
                 <div className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-4 mb-6 text-sm">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-neutral-400">{form.email}</p>
-                      <p className="text-neutral-400 mt-1">
-                        {form.firstName} {form.lastName} · {form.address}, {form.city} {form.state} {form.zip}
+                  <div className="flex justify-between items-start">
+                    <div className="text-neutral-400 space-y-0.5">
+                      <p>{form.email}</p>
+                      <p>
+                        {form.firstName} {form.lastName}
+                        {form.address && ` · ${form.address}`}
+                        {form.city && `, ${form.city}`}
+                        {form.state && ` ${form.state}`}
+                        {form.zip && ` ${form.zip}`}
                       </p>
                     </div>
                     <button
                       onClick={() => setStep("information")}
-                      className="text-[11px] text-[#C9A84C] hover:underline uppercase tracking-wider"
+                      className="text-[11px] text-[#C9A84C] hover:underline uppercase tracking-wider ml-4 flex-shrink-0"
                     >
                       Edit
                     </button>
@@ -293,7 +282,12 @@ export default function CheckoutPage() {
 
                 <div className="space-y-3">
                   {[
-                    { id: "standard", label: "Standard Shipping", sub: "5–7 business days", price: subtotal >= 150 ? "FREE" : "€12.00" },
+                    {
+                      id: "standard",
+                      label: "Standard Shipping",
+                      sub: "5–7 business days",
+                      price: subtotal >= 150 ? "FREE" : "€12.00",
+                    },
                     { id: "express", label: "Express Shipping", sub: "2–3 business days", price: "€24.00" },
                     { id: "overnight", label: "Overnight Shipping", sub: "Next business day", price: "€40.00" },
                   ].map((method) => (
@@ -317,7 +311,11 @@ export default function CheckoutPage() {
                         <p className="text-sm font-semibold">{method.label}</p>
                         <p className="text-[11px] text-neutral-600 mt-0.5">{method.sub}</p>
                       </div>
-                      <span className={`text-sm font-bold ${method.price === "FREE" ? "text-green-400" : "text-neutral-300"}`}>
+                      <span
+                        className={`text-sm font-bold ${
+                          method.price === "FREE" ? "text-green-400" : "text-neutral-300"
+                        }`}
+                      >
                         {method.price}
                       </span>
                     </label>
@@ -341,111 +339,126 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            {/* ─── PAYMENT ─── */}
+            {/* PAYMENT — Stripe redirect */}
             {step === "payment" && (
-              <form onSubmit={handlePlaceOrder}>
+              <div>
                 <h2 className="text-xl font-black uppercase tracking-tight mb-6">Payment</h2>
 
-                {/* Security badge */}
-                <div className="flex items-center gap-2 text-[11px] text-neutral-600 mb-6 bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm px-4 py-3">
-                  <svg className="w-3.5 h-3.5 text-[#C9A84C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                  All transactions are secure and encrypted
+                {/* Recap */}
+                <div className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-4 mb-6 text-sm space-y-1.5">
+                  <div className="flex justify-between">
+                    <span className="text-neutral-500">Contact</span>
+                    <span className="text-neutral-300">{form.email || "—"}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-neutral-500">Ship to</span>
+                    <span className="text-neutral-300 text-right ml-4 truncate max-w-[220px]">
+                      {[form.firstName, form.lastName].filter(Boolean).join(" ")}
+                      {form.city && `, ${form.city}`}
+                      {form.state && ` ${form.state}`}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-neutral-500">Shipping</span>
+                    <span className="text-neutral-300">
+                      {form.shippingMethod === "standard"
+                        ? subtotal >= 150
+                          ? "Free Standard"
+                          : "Standard (5–7 days)"
+                        : form.shippingMethod === "express"
+                        ? "Express (2–3 days)"
+                        : "Overnight"}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setStep("shipping")}
+                    className="text-[11px] text-[#C9A84C] hover:underline uppercase tracking-wider mt-1"
+                  >
+                    Edit
+                  </button>
                 </div>
 
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                      Card Number
-                    </label>
-                    <input
-                      type="text"
-                      value={form.cardNumber}
-                      onChange={(e) => update("cardNumber", e.target.value)}
-                      placeholder="1234 5678 9012 3456"
-                      maxLength={19}
-                      className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors font-mono tracking-wider"
-                    />
+                {/* Stripe payment box */}
+                <div className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-6 mb-6">
+                  <div className="flex items-center gap-2 text-[11px] text-neutral-500 mb-5">
+                    <svg className="w-3.5 h-3.5 text-[#C9A84C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    Secure payment via Stripe — your card details never touch our servers
                   </div>
 
-                  <div>
-                    <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                      Name on Card
-                    </label>
-                    <input
-                      type="text"
-                      value={form.cardName}
-                      onChange={(e) => update("cardName", e.target.value)}
-                      placeholder="JAY CARTER"
-                      className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors uppercase"
-                    />
+                  <div className="text-center py-4">
+                    {/* Stripe wordmark approximation */}
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <div className="w-8 h-8 bg-[#635BFF] rounded flex items-center justify-center">
+                        <span className="text-white font-black text-sm italic">S</span>
+                      </div>
+                      <span className="text-neutral-300 text-lg font-semibold tracking-tight">stripe</span>
+                    </div>
+                    <p className="text-neutral-600 text-xs">
+                      You&apos;ll be redirected to Stripe&apos;s secure checkout page to complete your payment
+                    </p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                        Expiry Date
-                      </label>
-                      <input
-                        type="text"
-                        value={form.expiry}
-                        onChange={(e) => update("expiry", e.target.value)}
-                        placeholder="MM / YY"
-                        maxLength={7}
-                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors font-mono"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">
-                        CVV
-                      </label>
-                      <input
-                        type="text"
-                        value={form.cvv}
-                        onChange={(e) => update("cvv", e.target.value)}
-                        placeholder="• • •"
-                        maxLength={4}
-                        className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors font-mono"
-                      />
-                    </div>
+                  {/* Accepted cards */}
+                  <div className="flex items-center justify-center gap-2 mt-4">
+                    {["VISA", "MC", "AMEX", "IDEAL", "PayPal"].map((p) => (
+                      <span
+                        key={p}
+                        className="text-[8px] font-black text-neutral-600 border border-[#2a2a2a] px-1.5 py-0.5 rounded"
+                      >
+                        {p}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
-                {/* Billing same as shipping */}
-                <label className="flex items-center gap-3 mt-5 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="accent-[#C9A84C] w-4 h-4" />
-                  <span className="text-sm text-neutral-400">Billing address same as shipping</span>
-                </label>
+                {/* Error message */}
+                {error && (
+                  <div className="bg-red-900/20 border border-red-500/30 rounded-sm px-4 py-3 mb-4">
+                    <p className="text-red-400 text-sm">{error}</p>
+                  </div>
+                )}
 
-                <div className="flex gap-3 mt-8">
+                <div className="flex gap-3">
                   <button
                     type="button"
                     onClick={() => setStep("shipping")}
-                    className="btn-outline-gold px-6 py-4 text-xs rounded-sm"
+                    disabled={loading}
+                    className="btn-outline-gold px-6 py-4 text-xs rounded-sm disabled:opacity-50"
                   >
                     Back
                   </button>
                   <button
-                    type="submit"
-                    className="btn-gold flex-1 py-4 text-sm rounded-sm"
+                    onClick={handleStripeCheckout}
+                    disabled={loading}
+                    className={`btn-gold flex-1 py-4 text-sm rounded-sm flex items-center justify-center gap-2 ${
+                      loading ? "opacity-80 cursor-wait" : ""
+                    }`}
                   >
-                    Place Order — €{total.toFixed(2)}
+                    {loading ? (
+                      <>
+                        <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                        </svg>
+                        Redirecting to Stripe…
+                      </>
+                    ) : (
+                      <>Pay Securely — €{total.toFixed(2)}</>
+                    )}
                   </button>
                 </div>
-              </form>
+              </div>
             )}
           </div>
 
-          {/* Order summary sidebar */}
+          {/* ── Order summary sidebar ── */}
           <div>
             <div className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-6 sticky top-24">
-              <h2 className="text-sm font-black uppercase tracking-[0.15em] mb-5">
-                Order Summary
-              </h2>
+              <h2 className="text-sm font-black uppercase tracking-[0.15em] mb-5">Order Summary</h2>
               <div className="h-[1px] bg-gradient-to-r from-[#C9A84C]/40 to-transparent mb-5" />
 
-              {/* Items */}
               <ul className="space-y-4 mb-5">
                 {state.items.map((item, idx) => (
                   <li key={idx} className="flex gap-3 text-sm">
@@ -461,7 +474,9 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-xs leading-tight truncate">{item.product.name}</p>
-                      <p className="text-[10px] text-neutral-600 mt-0.5">{item.size} · {item.color}</p>
+                      <p className="text-[10px] text-neutral-600 mt-0.5">
+                        {item.size} · {item.color}
+                      </p>
                     </div>
                     <p className="text-xs font-bold text-[#C9A84C] flex-shrink-0">
                       €{(item.product.price * item.quantity).toFixed(2)}
