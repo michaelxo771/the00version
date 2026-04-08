@@ -75,6 +75,24 @@ export default function CheckoutPage() {
     setPromoError(null);
   }
 
+  function saveCartForRecovery() {
+    if (!form.email || !form.email.includes("@")) return;
+    fetch("/api/save-cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: form.email,
+        firstName: form.firstName,
+        items: state.items.map((i) => ({
+          name: i.product.name,
+          price: i.product.price,
+          quantity: i.quantity,
+        })),
+        subtotal,
+      }),
+    }).catch(() => {/* non-fatal */});
+  }
+
   async function handleStripeCheckout() {
     setLoading(true);
     setError(null);
@@ -174,7 +192,8 @@ export default function CheckoutPage() {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-[11px] uppercase tracking-[0.15em] text-neutral-500 mb-2">Email Address</label>
-                    <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="your@email.com"
+                    <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} onBlur={saveCartForRecovery} placeholder="your@email.com"
+                      aria-label="Email address" aria-required="true"
                       className="w-full bg-[#111111] border border-[#2a2a2a] focus:border-[#C9A84C] text-neutral-200 placeholder-neutral-700 px-4 py-3 text-sm rounded-sm outline-none transition-colors" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
@@ -442,6 +461,61 @@ export default function CheckoutPage() {
               <div className="border-t border-[#1a1a1a] mt-4 pt-4 flex justify-between items-baseline">
                 <span className="text-sm font-bold uppercase tracking-wider">Total</span>
                 <span className="text-xl font-black text-[#C9A84C]">€{total.toFixed(2)}</span>
+              </div>
+
+              {/* Trust badges */}
+              <div className="mt-6 pt-6 border-t border-[#1a1a1a]">
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    {
+                      icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                      ),
+                      label: "SSL Secured",
+                      sub: "256-bit encryption",
+                    },
+                    {
+                      icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                        </svg>
+                      ),
+                      label: "Easy Returns",
+                      sub: "14-day free returns",
+                    },
+                    {
+                      icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+                        </svg>
+                      ),
+                      label: "EU Protected",
+                      sub: "Consumer rights act",
+                    },
+                    {
+                      icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                      ),
+                      label: "Secure Payment",
+                      sub: "Powered by Stripe",
+                    },
+                  ].map((badge) => (
+                    <div
+                      key={badge.label}
+                      className="flex items-start gap-2.5 bg-[#0d0d0d] border border-[#1a1a1a] rounded-sm p-3"
+                    >
+                      <span className="text-[#C9A84C] flex-shrink-0 mt-0.5">{badge.icon}</span>
+                      <div>
+                        <p className="text-[11px] font-bold uppercase tracking-wider text-neutral-200">{badge.label}</p>
+                        <p className="text-[10px] text-neutral-600 mt-0.5">{badge.sub}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

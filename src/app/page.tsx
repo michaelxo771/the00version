@@ -370,6 +370,65 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== AS SEEN ON TIKTOK ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-[#1a1a1a]">
+        <div className="text-center mb-10">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-[#C9A84C] mb-2">Social</p>
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight mb-2">
+            As Seen On TikTok
+          </h2>
+          <a
+            href="https://tiktok.com/@the00sversion"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow @the00sversion on TikTok"
+            className="inline-flex items-center gap-2 text-sm text-[#C9A84C] hover:text-[#C9A84C]/80 transition-colors font-semibold"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.01a8.17 8.17 0 004.78 1.52V7.08a4.85 4.85 0 01-1.01-.39z"/>
+            </svg>
+            @the00sversion
+          </a>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <a
+              key={i}
+              href="https://tiktok.com/@the00sversion"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Watch video ${i} on TikTok`}
+              className="group relative bg-[#111111] aspect-[9/16] sm:aspect-square rounded-sm border border-[#1a1a1a] hover:border-[#C9A84C]/40 overflow-hidden transition-all"
+            >
+              {/* Placeholder thumbnail */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/30 flex items-center justify-center group-hover:bg-[#C9A84C]/20 transition-colors">
+                  <svg className="w-5 h-5 text-[#C9A84C] ml-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+                <span className="text-[10px] uppercase tracking-widest text-neutral-600">Watch on TikTok</span>
+              </div>
+              {/* Corner decoration */}
+              <div className="absolute top-2 left-2 text-[9px] uppercase tracking-widest text-[#C9A84C]/40 font-bold">@the00sversion</div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            </a>
+          ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <a
+            href="https://tiktok.com/@the00sversion"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-outline-gold px-8 py-3 text-xs rounded inline-block"
+          >
+            Follow Us on TikTok
+          </a>
+        </div>
+      </section>
+
       {/* ===== EMAIL SIGNUP ===== */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d] via-[#111111] to-[#0d0d0d]" />

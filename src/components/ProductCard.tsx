@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { Product } from "@/lib/products";
+import { getStockLabel, isOutOfStock } from "@/lib/stock";
 
 type Props = {
   product: Product;
 };
 
 export default function ProductCard({ product }: Props) {
+  const stockLabel = getStockLabel(product.id);
+  const outOfStock = isOutOfStock(product.id) || !!product.soldOut;
+
   return (
     <Link href={`/products/${product.id}`} className="group block">
       <div className="product-card relative">
@@ -44,18 +48,18 @@ export default function ProductCard({ product }: Props) {
                 {product.badge}
               </span>
             )}
-            {product.lowStock && (
+            {stockLabel && stockLabel !== "Out of Stock" && (
               <span className="text-[10px] font-black uppercase tracking-[0.12em] px-2.5 py-1 rounded-sm bg-red-600/90 text-white w-fit">
-                Low Stock
+                {stockLabel}
               </span>
             )}
           </div>
 
-          {/* Sold out overlay */}
-          {product.soldOut && (
+          {/* Out of stock overlay */}
+          {outOfStock && (
             <div className="absolute inset-0 bg-[#080808]/70 flex items-center justify-center z-10">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400 border border-neutral-600 px-4 py-2">
-                Sold Out
+                Out of Stock
               </span>
             </div>
           )}
@@ -74,9 +78,9 @@ export default function ProductCard({ product }: Props) {
               <h3 className="text-sm font-semibold text-neutral-200 group-hover:text-white transition-colors line-clamp-2 leading-snug">
                 {product.name}
               </h3>
-              {product.lowStock && (
-                <p className="text-[10px] text-red-400 font-semibold mt-1 uppercase tracking-wider">
-                  Only a few left
+              {stockLabel && (
+                <p className={`text-[10px] font-semibold mt-1 uppercase tracking-wider ${outOfStock ? "text-neutral-600" : "text-red-400"}`}>
+                  {stockLabel}
                 </p>
               )}
             </div>

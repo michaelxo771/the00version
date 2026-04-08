@@ -5,13 +5,16 @@ import Link from "next/link";
 import { Product } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
+import { getStock, getStockLabel, isOutOfStock } from "@/lib/stock";
+import ReviewSection, { Review } from "@/components/ReviewSection";
 
 type Props = {
   product: Product;
   related: Product[];
+  initialReviews: Review[];
 };
 
-export default function ProductDetail({ product, related }: Props) {
+export default function ProductDetail({ product, related, initialReviews }: Props) {
   const { addItem, openCart } = useCart();
   const [selectedSize, setSelectedSize] = useState<string | null>(
     product.sizes.length === 1 ? product.sizes[0] : null
@@ -21,7 +24,12 @@ export default function ProductDetail({ product, related }: Props) {
   const [addedFeedback, setAddedFeedback] = useState(false);
   const [sizeError, setSizeError] = useState(false);
 
+  const stockLabel = getStockLabel(product.id);
+  const outOfStock = isOutOfStock(product.id) || !!product.soldOut;
+  const stockQty = getStock(product.id);
+
   function handleAddToCart() {
+    if (outOfStock) return;
     if (!selectedSize) {
       setSizeError(true);
       setTimeout(() => setSizeError(false), 2000);
@@ -145,7 +153,7 @@ export default function ProductDetail({ product, related }: Props) {
             </h1>
 
             {/* Price */}
-            <div className="flex items-baseline gap-3 mb-6">
+            <div className="flex items-baseline gap-3 mb-4">
               <span className="text-3xl font-black text-[#C9A84C]">€{product.price}</span>
               {product.originalPrice && (
                 <span className="text-lg text-neutral-600 line-through">
@@ -158,6 +166,20 @@ export default function ProductDetail({ product, related }: Props) {
                 </span>
               )}
             </div>
+
+            {/* Stock status */}
+            {stockLabel && (
+              <div className={`inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-sm mb-4 ${
+                outOfStock
+                  ? "bg-neutral-800 text-neutral-500"
+                  : stockQty <= 2
+                  ? "bg-red-600/20 text-red-400 border border-red-600/30"
+                  : "bg-amber-600/20 text-amber-400 border border-amber-600/30"
+              }`}>
+                <span>{outOfStock ? "⊘" : "!"}</span>
+                {stockLabel}
+              </div>
+            )}
 
             {/* Description */}
             <p className="text-neutral-400 leading-relaxed mb-8 text-sm">
@@ -198,9 +220,9 @@ export default function ProductDetail({ product, related }: Props) {
                     <span className="text-neutral-200 ml-1">{selectedSize}</span>
                   )}
                 </p>
-                <button className="text-[10px] uppercase tracking-wider text-[#C9A84C] hover:underline">
+                <Link href="/size-guide" className="text-[10px] uppercase tracking-wider text-[#C9A84C] hover:underline">
                   Size Guide
-                </button>
+                </Link>
               </div>
               <div className="flex flex-wrap gap-2">
                 {product.sizes.map((size) => (
@@ -248,17 +270,18 @@ export default function ProductDetail({ product, related }: Props) {
               {/* Add to cart */}
               <button
                 onClick={handleAddToCart}
-                disabled={product.soldOut}
+                disabled={outOfStock}
+                aria-label={outOfStock ? "Out of stock" : "Add to cart"}
                 className={`flex-1 h-12 text-sm rounded-sm font-bold uppercase tracking-[0.1em] transition-all ${
-                  product.soldOut
+                  outOfStock
                     ? "bg-[#1a1a1a] text-neutral-600 cursor-not-allowed border border-[#2a2a2a]"
                     : addedFeedback
                     ? "bg-green-600 text-white"
                     : "btn-gold"
                 }`}
               >
-                {product.soldOut
-                  ? "Sold Out"
+                {outOfStock
+                  ? "Out of Stock"
                   : addedFeedback
                   ? "Added to Cart ✓"
                   : "Add to Cart"}
@@ -287,6 +310,11 @@ export default function ProductDetail({ product, related }: Props) {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Reviews */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ReviewSection productId={product.id} initialReviews={initialReviews} />
       </div>
 
       {/* Related products */}

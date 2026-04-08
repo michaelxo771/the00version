@@ -8,11 +8,39 @@ import EmailPopup from "@/components/EmailPopup";
 import StickyShopButton from "@/components/StickyShopButton";
 import CookieBanner from "@/components/CookieBanner";
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://the00sversion.com";
+
 export const metadata: Metadata = {
-  title: "The 00s Version — Premium Streetwear",
+  title: {
+    default: "The 00s Version — Premium Streetwear",
+    template: "%s — The 00s Version",
+  },
   description:
     "Premium streetwear rooted in early 2000s culture. Every piece tells a story. Every drop is an era.",
-  keywords: ["streetwear", "clothing", "early 2000s", "rap aesthetic", "premium fashion"],
+  keywords: ["streetwear", "clothing", "early 2000s", "rap aesthetic", "premium fashion", "EU fashion"],
+  metadataBase: new URL(BASE_URL),
+  openGraph: {
+    type: "website",
+    siteName: "The 00s Version",
+    title: "The 00s Version — Premium Streetwear",
+    description:
+      "Premium streetwear rooted in early 2000s culture. Every piece tells a story. Every drop is an era.",
+    url: BASE_URL,
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "The 00s Version — Premium Streetwear",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The 00s Version — Premium Streetwear",
+    description: "Premium streetwear rooted in early 2000s culture.",
+    images: ["/og-image.png"],
+  },
   icons: {
     icon: "/favicon.svg",
   },
