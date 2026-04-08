@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   description:
     "Premium streetwear rooted in early 2000s culture. Every piece tells a story. Every drop is an era.",
   keywords: ["streetwear", "clothing", "early 2000s", "rap aesthetic", "premium fashion"],
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
