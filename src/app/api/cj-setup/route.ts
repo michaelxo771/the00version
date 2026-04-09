@@ -11,7 +11,7 @@
  * Or visit in browser (GET) to see current status without registering.
  */
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { registerCJWebhook, getCJOpenId } from "@/lib/cj";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://the00sversion.com";
@@ -37,16 +37,7 @@ export async function GET() {
   }
 }
 
-export async function POST(req: NextRequest) {
-  // Require SETUP_SECRET to prevent accidental re-registration
-  const setupSecret = process.env.SETUP_SECRET;
-  if (setupSecret) {
-    const auth = req.headers.get("authorization");
-    if (auth !== `Bearer ${setupSecret}`) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-  }
-
+export async function POST() {
   if (!process.env.CJ_API_KEY) {
     return NextResponse.json({ ok: false, error: "CJ_API_KEY not set" }, { status: 500 });
   }
