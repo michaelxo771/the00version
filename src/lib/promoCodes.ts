@@ -11,6 +11,7 @@ const PROMO_CODES: PromoCode[] = [
   { code: "TIKTOK10",  discountPercent: 10, label: "TikTok 10% off" },
   { code: "WELCOME15", discountPercent: 15, label: "Welcome 15% off" },
   { code: "DROP20",    discountPercent: 20, label: "Limited drop 20% off" },
+  { code: "CART10",    discountPercent: 10, label: "Cart recovery 10% off" },
 ];
 
 export function validatePromoCode(code: string): PromoCode | null {
