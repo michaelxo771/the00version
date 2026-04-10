@@ -17,21 +17,31 @@
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 50%);pointer-events:none;opacity:0;transition:opacity 0.3s;" class="product-card-overlay"></div>
 
     <!-- Badges top-left -->
-    <div style="position:absolute;top:0.75rem;left:0.75rem;display:flex;flex-direction:column;gap:0.35rem;z-index:2;">
-      {%- if product.tags contains 'sale' -%}
-        <span style="display:inline-block;background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Sale</span>
+    {%- assign total_inventory = 0 -%}
+    {%- for variant in product.variants -%}
+      {%- if variant.inventory_management == 'shopify' -%}
+        {%- assign total_inventory = total_inventory | plus: variant.inventory_quantity -%}
       {%- endif -%}
-      {%- if product.tags contains 'limited' -%}
-        <span style="display:inline-block;background:#C9A84C;color:#080808;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Limited</span>
+    {%- endfor -%}
+    <div style="position:absolute;top:0.75rem;left:0.75rem;display:flex;flex-direction:column;gap:0.35rem;z-index:2;">
+      {%- if product.tags contains 'sale' or product.compare_at_price > product.price -%}
+        <span style="display:inline-block;background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Sale</span>
       {%- endif -%}
       {%- if product.tags contains 'new' -%}
         <span style="display:inline-block;background:#e5e5e5;color:#080808;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">New</span>
       {%- endif -%}
       {%- if product.tags contains 'bestseller' -%}
-        <span style="display:inline-block;background:#e5e5e5;color:#080808;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Bestseller</span>
+        <span style="display:inline-block;background:#C9A84C;color:#080808;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Bestseller</span>
       {%- endif -%}
-      {%- if product.tags contains 'low-stock' -%}
-        <span style="display:inline-block;background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Only a few left</span>
+      {%- if product.tags contains 'limited' -%}
+        <span style="display:inline-block;background:#1a1a1a;color:#C9A84C;border:1px solid #C9A84C;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Limited</span>
+      {%- endif -%}
+      {%- if product.available and total_inventory > 0 and total_inventory <= 5 -%}
+        <span style="display:inline-block;background:#7c2d12;color:#fed7aa;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Only {{ total_inventory }} left</span>
+      {%- elsif product.available and total_inventory > 5 and total_inventory <= 10 -%}
+        <span style="display:inline-block;background:#7c2d12;color:#fed7aa;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Low Stock</span>
+      {%- elsif product.tags contains 'low-stock' -%}
+        <span style="display:inline-block;background:#7c2d12;color:#fed7aa;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Low Stock</span>
       {%- endif -%}
     </div>
 

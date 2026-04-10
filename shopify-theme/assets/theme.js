@@ -348,10 +348,10 @@
   }
 
   /* ─── Countdown timer ─────────────────────────────────────────────────── */
-  var cdDays = qs('#cd-days');
-  var cdHours = qs('#cd-hours');
-  var cdMins = qs('#cd-mins');
-  var cdSecs = qs('#cd-secs');
+  var cdDays = qs('#countdown-days');
+  var cdHours = qs('#countdown-hours');
+  var cdMins = qs('#countdown-minutes');
+  var cdSecs = qs('#countdown-seconds');
 
   function getNextFriday() {
     var now = new Date();
