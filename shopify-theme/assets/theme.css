@@ -187,7 +187,7 @@ ul { list-style: none; }
   display: none;
   gap: 2rem;
 }
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .header-nav-left,
   .header-nav-links { display: flex; }
 }
@@ -210,7 +210,7 @@ ul { list-style: none; }
   align-items: center;
   gap: 1rem;
 }
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .header-nav-right { display: flex; }
 }
 
@@ -269,7 +269,7 @@ ul { list-style: none; }
   align-items: center;
   gap: 0.5rem;
 }
-@media (min-width: 1024px) { .header-mobile { display: none; } }
+@media (min-width: 768px) { .header-mobile { display: none; } }
 
 /* Hamburger */
 .hamburger {
@@ -861,7 +861,7 @@ ul { list-style: none; }
 }
 .sticky-shop-btn:hover { opacity: 0.9; transform: translateX(-50%) translateY(-2px); }
 .sticky-shop-btn[hidden] { display: none; }
-@media (min-width: 1024px) { .sticky-shop-btn { display: none; } }
+@media (min-width: 768px) { .sticky-shop-btn { display: none; } }
 
 /* ─── Marquee ticker ──────────────────────────────────────────────────────── */
 .marquee-track {
