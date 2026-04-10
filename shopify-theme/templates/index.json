@@ -1,0 +1,51 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "marquee-ticker": {
+      "type": "marquee-ticker",
+      "settings": {}
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {}
+    },
+    "category-strip": {
+      "type": "category-strip",
+      "settings": {}
+    },
+    "brand-story": {
+      "type": "brand-story",
+      "settings": {}
+    },
+    "countdown-timer": {
+      "type": "countdown-timer",
+      "settings": {}
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {}
+    },
+    "tiktok-banner": {
+      "type": "tiktok-banner",
+      "settings": {}
+    },
+    "email-signup": {
+      "type": "email-signup",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "marquee-ticker",
+    "featured-products",
+    "category-strip",
+    "brand-story",
+    "countdown-timer",
+    "testimonials",
+    "tiktok-banner",
+    "email-signup"
+  ]
+}

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+
+  <title>
+    {%- if page_title == shop.name -%}
+      {{ shop.name }} — Premium Streetwear
+    {%- else -%}
+      {{ page_title }} — {{ shop.name }}
+    {%- endif -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.origin }}{{ request.path }}">
+  {%- if page_image -%}
+    <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+  {%- endif -%}
+
+  {{ content_for_header }}
+
+  <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+  <link rel="icon" href="{{ 'favicon.svg' | asset_url }}" type="image/svg+xml">
+</head>
+
+<body class="site-body">
+  <!-- Gold top stripe -->
+  <div class="gold-stripe" aria-hidden="true"></div>
+
+  <!-- Skip to content -->
+  <a class="skip-link" href="#MainContent">Skip to content</a>
+
+  {%- sections 'header' -%}
+
+  <!-- Search overlay -->
+  <div id="search-overlay" class="search-overlay" role="dialog" aria-modal="true" aria-label="Search" hidden>
+    <button class="search-close" id="search-close" aria-label="Close search">
+      <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="search-inner">
+      <p class="search-eyebrow">Search</p>
+      <form action="/search" method="get" class="search-form" role="search">
+        <div class="search-input-wrap">
+          <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input type="search" name="q" id="search-input" placeholder="Search products..." aria-label="Search products" autocomplete="off" class="search-input">
+        </div>
+      </form>
+      <div id="search-results" class="search-results"></div>
+      <div id="search-suggestions" class="search-suggestions">
+        <p class="search-suggestions-label">Popular categories</p>
+        <div class="search-pills">
+          <a href="/collections/hoodies" class="search-pill">Hoodies</a>
+          <a href="/collections/t-shirts" class="search-pill">T-Shirts</a>
+          <a href="/collections/bottoms" class="search-pill">Bottoms</a>
+          <a href="/collections/outerwear" class="search-pill">Outerwear</a>
+          <a href="/collections/sets" class="search-pill">Sets</a>
+          <a href="/collections/accessories" class="search-pill">Accessories</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart drawer -->
+  <div id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" aria-label="Shopping cart" hidden>
+    <div class="cart-drawer-overlay" id="cart-overlay"></div>
+    <div class="cart-drawer-panel">
+      <div class="cart-drawer-header">
+        <h2 class="cart-drawer-title">Your Cart <span id="cart-count-badge" class="cart-badge"></span></h2>
+        <button class="cart-drawer-close" id="cart-close" aria-label="Close cart">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div id="cart-drawer-items" class="cart-drawer-items"></div>
+      <div id="cart-drawer-footer" class="cart-drawer-footer" hidden>
+        <div class="cart-drawer-totals">
+          <span>Subtotal</span>
+          <span id="cart-subtotal"></span>
+        </div>
+        <p class="cart-shipping-note">Shipping calculated at checkout</p>
+        <a href="/checkout" class="btn-gold cart-checkout-btn">Proceed to Checkout</a>
+        <a href="/cart" class="cart-view-link">View full cart</a>
+      </div>
+      <div id="cart-empty" class="cart-empty">
+        <p>Your cart is empty.</p>
+        <a href="/collections/all" class="btn-gold" style="display:inline-block;margin-top:1rem">Shop Now</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {%- sections 'footer' -%}
+
+  <!-- Cookie banner -->
+  <div id="cookie-banner" class="cookie-banner" hidden>
+    <div class="cookie-banner-inner">
+      <p class="cookie-text">
+        We use essential cookies to make our site work. By clicking "Accept All" you agree to our
+        <a href="/pages/cookie-policy" class="cookie-link">Cookie Policy</a>.
+      </p>
+      <div class="cookie-actions">
+        <button id="cookie-accept" class="btn-gold cookie-btn">Accept All</button>
+        <button id="cookie-decline" class="cookie-decline">Decline</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky mobile shop button -->
+  <a href="/collections/all" id="sticky-shop-btn" class="sticky-shop-btn" aria-label="Shop Now" hidden>
+    SHOP NOW
+  </a>
+
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+</body>
+</html>

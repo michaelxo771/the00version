@@ -1,0 +1,281 @@
+<section style="background-color:#080808;min-height:100vh;padding:2rem 0 4rem;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem">
+
+    <!-- Breadcrumb -->
+    <nav style="margin-bottom:2rem;font-family:Arial,sans-serif;font-size:0.75rem;letter-spacing:0.08em;color:#525252;">
+      <a href="/" style="color:#525252;text-decoration:none;">Home</a>
+      <span style="margin:0 0.5rem;color:#333;">/</span>
+      <a href="/collections" style="color:#525252;text-decoration:none;">Collections</a>
+      <span style="margin:0 0.5rem;color:#333;">/</span>
+      {%- if collection -%}
+        <a href="{{ collection.url }}" style="color:#525252;text-decoration:none;">{{ collection.title }}</a>
+        <span style="margin:0 0.5rem;color:#333;">/</span>
+      {%- endif -%}
+      <span style="color:#a3a3a3;">{{ product.title }}</span>
+    </nav>
+
+    <!-- Two-column layout -->
+    <div id="two-col-product" style="display:grid;grid-template-columns:1fr;gap:3rem;">
+
+      <!-- LEFT: Images -->
+      <div style="position:relative;">
+
+        <!-- Badges -->
+        <div style="position:absolute;top:1rem;left:1rem;z-index:10;display:flex;flex-direction:column;gap:0.5rem;">
+          {%- if product.tags contains 'sale' -%}
+            <span style="background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">Sale</span>
+          {%- endif -%}
+          {%- if product.tags contains 'limited' -%}
+            <span style="background:#C9A84C;color:#080808;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">Limited</span>
+          {%- endif -%}
+          {%- if product.tags contains 'new' -%}
+            <span style="background:#e5e5e5;color:#080808;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">New</span>
+          {%- endif -%}
+          {%- if product.tags contains 'bestseller' -%}
+            <span style="background:#e5e5e5;color:#080808;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">Bestseller</span>
+          {%- endif -%}
+        </div>
+
+        <!-- Main image -->
+        <div style="aspect-ratio:3/4;background:#111;border-radius:4px;overflow:hidden;position:relative;">
+          {%- if product.featured_image -%}
+            {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'eager', class: 'product-main-image', style: 'width:100%;height:100%;object-fit:cover;display:block;' }}
+          {%- else -%}
+            <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#333;">
+              <span style="font-family:Arial,sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;">{{ product.type }}</span>
+              <span style="font-family:'Arial Black',Arial,sans-serif;font-size:1rem;font-weight:900;color:#525252;margin-top:0.5rem;">{{ product.title }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <!-- Thumbnail strip -->
+        {%- if product.images.size > 1 -%}
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;overflow-x:auto;padding-bottom:0.5rem;">
+            {%- for image in product.images -%}
+              <button
+                onclick="document.querySelector('.product-main-image').src='{{ image | image_url: width: 800 }}';"
+                style="flex-shrink:0;width:80px;height:80px;border:2px solid {%- if forloop.first -%}#C9A84C{%- else -%}#1a1a1a{%- endif -%};border-radius:3px;overflow:hidden;background:#111;padding:0;cursor:pointer;"
+                aria-label="View image {{ forloop.index }}"
+              >
+                {{ image | image_url: width: 160 | image_tag: loading: 'lazy', style: 'width:100%;height:100%;object-fit:cover;display:block;' }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- RIGHT: Product info -->
+      <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+        <!-- Category -->
+        {%- if product.type != blank -%}
+          <p style="margin:0;font-family:Arial,sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;font-variant:small-caps;">{{ product.type }}</p>
+        {%- endif -%}
+
+        <!-- Title -->
+        <h1 style="margin:0;font-family:'Arial Black',Arial,sans-serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:900;color:#e5e5e5;line-height:1.1;text-transform:uppercase;letter-spacing:-0.01em;">{{ product.title }}</h1>
+
+        <!-- Price -->
+        <div style="display:flex;align-items:baseline;gap:0.75rem;">
+          <span style="font-family:'Arial Black',Arial,sans-serif;font-size:1.75rem;font-weight:900;color:#C9A84C;" id="product-price">{{ product.price | money }}</span>
+          {%- if product.compare_at_price > product.price -%}
+            <span style="font-family:Arial,sans-serif;font-size:1.1rem;color:#dc2626;text-decoration:line-through;">{{ product.compare_at_price | money }}</span>
+            <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;background:#dc2626;color:#fff;padding:0.15rem 0.4rem;border-radius:2px;">
+              SAVE {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%
+            </span>
+          {%- endif -%}
+        </div>
+
+        <!-- Description -->
+        {%- if product.description != blank -%}
+          <div style="font-family:Arial,sans-serif;font-size:0.9rem;color:#a3a3a3;line-height:1.7;">{{ product.description | truncate: 300 }}</div>
+        {%- endif -%}
+
+        <!-- Divider -->
+        <div style="height:1px;background:linear-gradient(to right,#C9A84C,#C9A84C33,transparent);margin:0.25rem 0;"></div>
+
+        <!-- Variant form -->
+        {%- form 'product', product, id: 'product-form', data-product-id: product.id -%}
+          <input type="hidden" name="id" id="variant-id" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="hidden" name="quantity" id="quantity-input" value="1">
+
+          {%- for option in product.options_with_values -%}
+            {%- assign option_name_lower = option.name | downcase -%}
+
+            {%- if option_name_lower == 'color' or option_name_lower == 'colour' -%}
+              <!-- Color selector -->
+              <div style="margin-bottom:1rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                  <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#e5e5e5;">Colour: <span style="color:#C9A84C;" id="selected-color">{{ option.selected_value }}</span></span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                  {%- for value in option.values -%}
+                    <button
+                      type="button"
+                      class="color-btn"
+                      data-option-position="{{ option.position }}"
+                      data-value="{{ value }}"
+                      onclick="selectOption(this, 'color', '{{ value | escape }}')"
+                      style="padding:0.4rem 1rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#080808;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
+                    >{{ value }}</button>
+                  {%- endfor -%}
+                </div>
+              </div>
+
+            {%- elsif option_name_lower == 'size' -%}
+              <!-- Size selector -->
+              <div style="margin-bottom:1rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                  <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#e5e5e5;">Size: <span style="color:#C9A84C;" id="selected-size">{{ option.selected_value }}</span></span>
+                  <a href="/pages/size-guide" style="font-family:Arial,sans-serif;font-size:0.7rem;color:#C9A84C;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid #C9A84C33;">Size Guide</a>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                  {%- for value in option.values -%}
+                    <button
+                      type="button"
+                      class="size-btn"
+                      data-option-position="{{ option.position }}"
+                      data-value="{{ value }}"
+                      onclick="selectOption(this, 'size', '{{ value | escape }}')"
+                      style="width:52px;height:52px;font-family:'Arial Black',Arial,sans-serif;font-size:0.75rem;font-weight:900;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#080808;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
+                    >{{ value }}</button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+
+          <!-- Stock badge -->
+          {%- assign current_variant = product.selected_or_first_available_variant -%}
+          <div id="stock-badge" style="margin-bottom:0.75rem;">
+            {%- if current_variant.available -%}
+              {%- if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity < 5 -%}
+                <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;color:#f59e0b;">&#9679; Only {{ current_variant.inventory_quantity }} left in stock</span>
+              {%- endif -%}
+            {%- else -%}
+              <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;color:#737373;">&#9679; Out of Stock</span>
+            {%- endif -%}
+          </div>
+
+          <!-- Quantity stepper -->
+          <div style="margin-bottom:1rem;">
+            <span style="display:block;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#e5e5e5;margin-bottom:0.5rem;">Quantity</span>
+            <div style="display:flex;align-items:center;gap:0;border:2px solid #2a2a2a;border-radius:3px;width:fit-content;">
+              <button
+                type="button"
+                onclick="adjustQty(-1)"
+                style="width:44px;height:44px;background:transparent;border:none;color:#e5e5e5;font-size:1.25rem;cursor:pointer;font-family:'Arial Black',Arial,sans-serif;display:flex;align-items:center;justify-content:center;"
+                aria-label="Decrease quantity"
+              >&#8722;</button>
+              <span id="qty-display" style="min-width:40px;text-align:center;font-family:'Arial Black',Arial,sans-serif;font-size:0.9rem;font-weight:900;color:#e5e5e5;">1</span>
+              <button
+                type="button"
+                onclick="adjustQty(1)"
+                style="width:44px;height:44px;background:transparent;border:none;color:#e5e5e5;font-size:1.25rem;cursor:pointer;font-family:'Arial Black',Arial,sans-serif;display:flex;align-items:center;justify-content:center;"
+                aria-label="Increase quantity"
+              >&#43;</button>
+            </div>
+          </div>
+
+          <!-- Add to Cart / Out of Stock -->
+          {%- if current_variant.available -%}
+            <button type="submit" class="btn-gold" style="width:100%;padding:1rem;font-size:0.85rem;letter-spacing:0.15em;">Add to Cart</button>
+          {%- else -%}
+            <button type="button" disabled style="width:100%;padding:1rem;background:#1a1a1a;color:#525252;font-family:'Arial Black',Arial,sans-serif;font-size:0.85rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;border:2px solid #2a2a2a;border-radius:3px;cursor:not-allowed;">Out of Stock</button>
+          {%- endif -%}
+
+        {%- endform -%}
+
+        <!-- Free shipping note -->
+        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.75rem;background:#0d0d0d;border:1px solid #1a1a1a;border-radius:3px;">
+          <span style="color:#C9A84C;font-size:0.9rem;">&#10003;</span>
+          <span style="font-family:Arial,sans-serif;font-size:0.8rem;color:#737373;">Free shipping on orders over <strong style="color:#e5e5e5;">€150</strong></span>
+        </div>
+
+        <!-- Divider -->
+        <div style="height:1px;background:#1a1a1a;"></div>
+
+        <!-- Product details -->
+        <div>
+          <p style="margin:0 0 0.75rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#e5e5e5;">Product Details</p>
+          <div style="font-family:Arial,sans-serif;font-size:0.85rem;color:#737373;line-height:1.9;">
+            {%- if product.description != blank -%}
+              {%- assign detail_lines = product.description | newline_to_br | split: '<br />' -%}
+              {%- for line in detail_lines limit: 6 -%}
+                {%- if line != blank -%}
+                  <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>{{ line | strip_html | strip }}</span></div>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- else -%}
+              <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>100% Premium Cotton</span></div>
+              <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Pre-washed &amp; pre-shrunk</span></div>
+              <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Machine washable at 30&deg;C</span></div>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <!-- Shipping note -->
+        <div style="padding:1rem;background:#0d0d0d;border:1px solid #1a1a1a;border-radius:3px;">
+          <p style="margin:0 0 0.25rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#e5e5e5;">Shipping</p>
+          <p style="margin:0;font-family:Arial,sans-serif;font-size:0.8rem;color:#737373;line-height:1.6;">Standard delivery 5&ndash;7 working days. Express 2&ndash;3 days. Free standard shipping on all EU orders over &euro;150.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media(min-width:1024px){
+    #product-layout { grid-template-columns: 1fr 1fr !important; }
+  }
+</style>
+
+<!-- Inline responsive two-column override via JS -->
+<script>
+  (function(){
+    var el = document.querySelector('[data-product-layout]');
+    function setLayout(){
+      var twoCol = document.getElementById('two-col-product');
+      if(twoCol){ twoCol.style.gridTemplateColumns = window.innerWidth >= 1024 ? '1fr 1fr' : '1fr'; }
+    }
+    setLayout();
+    window.addEventListener('resize', setLayout);
+  })();
+
+  var _qty = 1;
+  function adjustQty(delta){
+    _qty = Math.max(1, _qty + delta);
+    document.getElementById('qty-display').textContent = _qty;
+    document.getElementById('quantity-input').value = _qty;
+  }
+
+  function selectOption(btn, type, value){
+    var cls = type === 'color' ? '.color-btn' : '.size-btn';
+    var labelId = type === 'color' ? 'selected-color' : 'selected-size';
+    document.querySelectorAll(cls).forEach(function(b){
+      b.style.background = 'transparent';
+      b.style.color = '#a3a3a3';
+      b.style.borderColor = '#2a2a2a';
+    });
+    btn.style.background = '#C9A84C';
+    btn.style.color = '#080808';
+    btn.style.borderColor = '#C9A84C';
+    var lbl = document.getElementById(labelId);
+    if(lbl) lbl.textContent = value;
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Main Product",
+  "tag": "main-product",
+  "limit": 1,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Main Product"
+    }
+  ]
+}
+{% endschema %}

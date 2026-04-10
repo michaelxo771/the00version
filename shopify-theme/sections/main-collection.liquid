@@ -1,0 +1,115 @@
+{%- paginate collection.products by 16 -%}
+
+<section style="background-color:#080808;min-height:100vh;padding:3rem 0 5rem;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem">
+
+    <!-- Page header -->
+    <div style="text-align:center;margin-bottom:3rem;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1.25rem;">
+        <div style="height:1px;width:40px;background:#C9A84C;"></div>
+        <span style="font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.25em;text-transform:uppercase;color:#C9A84C;">{{ collection.title | default: 'Full Collection' }}</span>
+        <div style="height:1px;width:40px;background:#C9A84C;"></div>
+      </div>
+      <h1 style="margin:0 0 0.75rem;font-family:'Arial Black',Arial,sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#e5e5e5;text-transform:uppercase;letter-spacing:-0.02em;">{{ collection.title | default: 'All Products' }}</h1>
+      <p style="margin:0;font-family:Arial,sans-serif;font-size:0.8rem;color:#525252;letter-spacing:0.08em;">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
+    </div>
+
+    <!-- Filter tabs -->
+    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-bottom:2rem;">
+      {%- assign categories = 'all,hoodies,t-shirts,bottoms,outerwear,sets,accessories' | split: ',' -%}
+      {%- assign category_labels = 'All,Hoodies,T-Shirts,Bottoms,Outerwear,Sets,Accessories' | split: ',' -%}
+      {%- for cat in categories -%}
+        {%- assign cat_label = category_labels[forloop.index0] -%}
+        {%- assign is_active = false -%}
+        {%- if cat == 'all' and collection.handle == 'all' -%}{%- assign is_active = true -%}
+        {%- elsif collection.handle == cat -%}{%- assign is_active = true -%}
+        {%- endif -%}
+        <a
+          href="/collections/{{ cat }}"
+          style="display:inline-block;font-family:Arial,sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;padding:0.4rem 1rem;border-radius:2px;transition:all 0.15s;
+          {%- if is_active -%}
+            background:#C9A84C;color:#080808;border:2px solid #C9A84C;
+          {%- else -%}
+            background:transparent;color:#a3a3a3;border:2px solid #2a2a2a;
+          {%- endif -%}"
+        >{{ cat_label }}</a>
+      {%- endfor -%}
+    </div>
+
+    <!-- Sort bar -->
+    <div style="display:flex;justify-content:flex-end;margin-bottom:2rem;">
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <label for="sort-select" style="font-family:Arial,sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#525252;">Sort by</label>
+        <select
+          id="sort-select"
+          name="sort_by"
+          onchange="window.location = '?sort_by=' + this.value;"
+          style="background:#0d0d0d;border:1px solid #2a2a2a;color:#e5e5e5;font-family:Arial,sans-serif;font-size:0.75rem;padding:0.4rem 0.75rem;border-radius:3px;cursor:pointer;"
+        >
+          <option value="manual" {%- if collection.sort_by == 'manual' -%} selected{%- endif -%}>Featured</option>
+          <option value="price-ascending" {%- if collection.sort_by == 'price-ascending' -%} selected{%- endif -%}>Price: Low to High</option>
+          <option value="price-descending" {%- if collection.sort_by == 'price-descending' -%} selected{%- endif -%}>Price: High to Low</option>
+          <option value="title-ascending" {%- if collection.sort_by == 'title-ascending' -%} selected{%- endif -%}>Name: A&ndash;Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Product grid -->
+    {%- if collection.products.size > 0 -%}
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;" id="product-grid">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <!-- Empty state -->
+      <div style="text-align:center;padding:6rem 1.5rem;">
+        <p style="font-family:'Arial Black',Arial,sans-serif;font-size:1.5rem;font-weight:900;color:#2a2a2a;text-transform:uppercase;margin:0 0 1rem;">No products found</p>
+        <p style="font-family:Arial,sans-serif;font-size:0.9rem;color:#525252;margin:0 0 2rem;">Try browsing a different category or check back soon for new drops.</p>
+        <a href="/collections/all" class="btn-gold">Browse All Products</a>
+      </div>
+    {%- endif -%}
+
+    <!-- Pagination -->
+    {%- if paginate.pages > 1 -%}
+      <div style="display:flex;justify-content:center;align-items:center;gap:0.5rem;margin-top:3rem;">
+        {%- if paginate.previous -%}
+          <a href="{{ paginate.previous.url }}" style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid #2a2a2a;border-radius:3px;color:#a3a3a3;text-decoration:none;font-family:Arial,sans-serif;font-size:0.8rem;transition:border-color 0.15s;">&larr;</a>
+        {%- endif -%}
+        {%- for part in paginate.parts -%}
+          {%- if part.is_link -%}
+            <a href="{{ part.url }}" style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid #2a2a2a;border-radius:3px;color:#a3a3a3;text-decoration:none;font-family:Arial,sans-serif;font-size:0.8rem;transition:all 0.15s;">{{ part.title }}</a>
+          {%- elsif part.title == paginate.current_page -%}
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid #C9A84C;border-radius:3px;background:#C9A84C;color:#080808;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;">{{ part.title }}</span>
+          {%- else -%}
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;color:#333;font-family:Arial,sans-serif;font-size:0.8rem;">&hellip;</span>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if paginate.next -%}
+          <a href="{{ paginate.next.url }}" style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid #2a2a2a;border-radius:3px;color:#a3a3a3;text-decoration:none;font-family:Arial,sans-serif;font-size:0.8rem;transition:border-color 0.15s;">&rarr;</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  @media(min-width:768px){ #product-grid { grid-template-columns: repeat(4,1fr) !important; } }
+</style>
+
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Main Collection",
+  "tag": "main-collection",
+  "limit": 1,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Main Collection"
+    }
+  ]
+}
+{% endschema %}

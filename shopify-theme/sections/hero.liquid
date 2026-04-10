@@ -1,0 +1,205 @@
+<section
+  id="hero"
+  style="
+    position: relative;
+    min-height: 92vh;
+    background-color: #080808;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  "
+>
+
+  <!-- Radial gold glow -->
+  <div
+    aria-hidden="true"
+    style="
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    "
+  ></div>
+
+  <!-- Grid dot pattern -->
+  <div
+    aria-hidden="true"
+    style="
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(201,168,76,0.12) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "
+  ></div>
+
+  <!-- Content wrapper -->
+  <div
+    style="
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      text-align: center;
+      width: 100%;
+    "
+  >
+
+    <!-- Eyebrow -->
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 2rem;
+      "
+    >
+      <div style="height: 1px; width: 48px; background-color: #C9A84C;"></div>
+      <span
+        style="
+          font-family: Arial, sans-serif;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #C9A84C;
+        "
+      >Est. 2024 &mdash; Premium Streetwear</span>
+      <div style="height: 1px; width: 48px; background-color: #C9A84C;"></div>
+    </div>
+
+    <!-- H1: THE 00s -->
+    <h1 style="margin: 0; line-height: 1; font-family: 'Arial Black', Arial, sans-serif;">
+      <span
+        class="gold-shimmer"
+        style="
+          display: block;
+          font-size: clamp(3rem, 10vw, 8rem);
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: -0.02em;
+        "
+      >THE 00s</span>
+      <span
+        style="
+          display: block;
+          font-size: clamp(1.5rem, 5vw, 4rem);
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: 0.35em;
+          color: #e5e5e5;
+          margin-top: 0.25rem;
+        "
+      >VERSION</span>
+    </h1>
+
+    <!-- Cycling era text -->
+    <p
+      style="
+        margin: 1.5rem 0 0;
+        font-family: Arial, sans-serif;
+        font-size: clamp(1rem, 2.5vw, 1.375rem);
+        color: #737373;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        min-height: 2em;
+      "
+    >
+      <span id="cycling-text" style="color: #C9A84C; font-weight: 700;">Rocawear Era.</span>
+    </p>
+
+    <!-- Tagline -->
+    <p
+      style="
+        margin: 1.25rem auto 0;
+        max-width: 520px;
+        font-family: Arial, sans-serif;
+        font-size: clamp(0.875rem, 1.5vw, 1rem);
+        color: #737373;
+        line-height: 1.7;
+      "
+    >
+      Premium streetwear rooted in early 2000s culture.
+      Every piece tells a story. Every drop is an era.
+    </p>
+
+    <!-- CTAs -->
+    <div
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: center;
+        margin-top: 2.5rem;
+      "
+    >
+      <a href="/collections/all" class="btn-gold">Shop the Collection</a>
+      <a href="/collections/new-drops" class="btn-outline-gold">New Drops</a>
+    </div>
+
+    <!-- Stats -->
+    <div
+      style="
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid #1a1a1a;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem 4rem;
+      "
+    >
+      {%- assign stats = '100% Premium Cotton,00s Era Inspired,Ltd. Drops Only' | split: ',' -%}
+      {%- for stat in stats -%}
+        <div style="text-align: center;">
+          <p
+            style="
+              margin: 0;
+              font-family: 'Arial Black', Arial, sans-serif;
+              font-size: 0.75rem;
+              font-weight: 900;
+              letter-spacing: 0.15em;
+              text-transform: uppercase;
+              color: #e5e5e5;
+            "
+          >{{ stat }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+
+  <!-- Bottom fade overlay -->
+  <div
+    aria-hidden="true"
+    style="
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, #080808);
+      pointer-events: none;
+    "
+  ></div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "limit": 1,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

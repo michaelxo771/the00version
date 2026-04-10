@@ -1,0 +1,151 @@
+<section style="background-color:#080808;min-height:100vh;padding:3rem 0 5rem;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem">
+
+    {%- if cart.item_count == 0 -%}
+      <!-- Empty cart -->
+      <div style="text-align:center;padding:8rem 1.5rem;">
+        <div style="font-size:3rem;margin-bottom:1.5rem;opacity:0.2;">&#128722;</div>
+        <h1 style="margin:0 0 1rem;font-family:'Arial Black',Arial,sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#e5e5e5;text-transform:uppercase;letter-spacing:-0.01em;">Your Cart is Empty</h1>
+        <p style="margin:0 0 2.5rem;font-family:Arial,sans-serif;font-size:0.95rem;color:#525252;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7;">Looks like you haven&rsquo;t added anything yet. Browse the collection and find your next piece.</p>
+        <a href="/collections/all" class="btn-gold">Browse Collection</a>
+      </div>
+
+    {%- else -%}
+
+      <!-- Cart header -->
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:3rem;">
+        <h1 style="margin:0;font-family:'Arial Black',Arial,sans-serif;font-size:clamp(1.75rem,4vw,2.5rem);font-weight:900;color:#e5e5e5;text-transform:uppercase;letter-spacing:-0.01em;">Your Cart</h1>
+        <span style="display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 0.4rem;background:#C9A84C;color:#080808;font-family:'Arial Black',Arial,sans-serif;font-size:0.75rem;font-weight:900;border-radius:999px;">{{ cart.item_count }}</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:2.5rem;" id="cart-layout">
+
+        <!-- Cart items -->
+        <div>
+          {%- for item in cart.items -%}
+            <div style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid #1a1a1a;align-items:flex-start;">
+
+              <!-- Thumbnail -->
+              <a href="{{ item.url }}" style="flex-shrink:0;display:block;width:96px;height:96px;border-radius:3px;overflow:hidden;background:#111;">
+                {%- if item.image -%}
+                  {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', style: 'width:100%;height:100%;object-fit:cover;display:block;' }}
+                {%- else -%}
+                  <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#111;">
+                    <span style="font-family:Arial,sans-serif;font-size:0.6rem;color:#333;text-transform:uppercase;letter-spacing:0.1em;">{{ item.product_type }}</span>
+                  </div>
+                {%- endif -%}
+              </a>
+
+              <!-- Item info -->
+              <div style="flex:1;min-width:0;">
+                <a href="{{ item.url }}" style="text-decoration:none;">
+                  <p style="margin:0 0 0.2rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.9rem;font-weight:900;color:#e5e5e5;text-transform:uppercase;letter-spacing:0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ item.product.title }}</p>
+                </a>
+                {%- if item.variant.title != 'Default Title' -%}
+                  <p style="margin:0 0 0.5rem;font-family:Arial,sans-serif;font-size:0.75rem;color:#525252;letter-spacing:0.08em;">{{ item.variant.title }}</p>
+                {%- endif -%}
+                <p style="margin:0 0 0.75rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.95rem;font-weight:900;color:#C9A84C;">{{ item.line_price | money }}</p>
+
+                <!-- Quantity stepper + remove -->
+                <div style="display:flex;align-items:center;gap:1rem;">
+                  <form action="/cart/change" method="post" style="display:flex;align-items:center;gap:0;border:1px solid #2a2a2a;border-radius:3px;">
+                    <input type="hidden" name="id" value="{{ item.key }}">
+                    <button type="submit" name="quantity" value="{{ item.quantity | minus: 1 }}" style="width:32px;height:32px;background:transparent;border:none;color:#e5e5e5;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;" aria-label="Decrease">&#8722;</button>
+                    <span style="min-width:28px;text-align:center;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;color:#e5e5e5;">{{ item.quantity }}</span>
+                    <button type="submit" name="quantity" value="{{ item.quantity | plus: 1 }}" style="width:32px;height:32px;background:transparent;border:none;color:#e5e5e5;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;" aria-label="Increase">&#43;</button>
+                  </form>
+                  <a href="/cart/change?id={{ item.key }}&quantity=0" style="font-family:Arial,sans-serif;font-size:0.7rem;color:#525252;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid #2a2a2a;">Remove</a>
+                </div>
+              </div>
+
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <!-- Order summary sidebar -->
+        <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:4px;padding:1.75rem;display:flex;flex-direction:column;gap:1.25rem;height:fit-content;">
+
+          <p style="margin:0;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;color:#e5e5e5;">Order Summary</p>
+
+          <!-- Subtotal -->
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:Arial,sans-serif;font-size:0.85rem;color:#737373;">Subtotal</span>
+            <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.95rem;font-weight:900;color:#e5e5e5;">{{ cart.total_price | money }}</span>
+          </div>
+
+          <!-- Shipping note -->
+          {%- if cart.total_price >= 15000 -%}
+            <div style="display:flex;align-items:center;gap:0.5rem;padding:0.6rem 0.75rem;background:#0a1a0a;border:1px solid #1a3a1a;border-radius:3px;">
+              <span style="color:#22c55e;font-size:0.85rem;">&#10003;</span>
+              <span style="font-family:Arial,sans-serif;font-size:0.75rem;color:#22c55e;">Free shipping unlocked!</span>
+            </div>
+          {%- else -%}
+            <div style="display:flex;align-items:center;gap:0.5rem;padding:0.6rem 0.75rem;background:#111;border:1px solid #1a1a1a;border-radius:3px;">
+              <span style="font-family:Arial,sans-serif;font-size:0.75rem;color:#737373;">Add <strong style="color:#C9A84C;">{{ 15000 | minus: cart.total_price | money }}</strong> more for free shipping</span>
+            </div>
+          {%- endif -%}
+
+          <!-- Divider -->
+          <div style="height:1px;background:#1a1a1a;"></div>
+
+          <!-- Discount code note -->
+          <div style="padding:0.75rem;background:#111;border:1px solid #1a1a1a;border-radius:3px;border-left:2px solid #C9A84C33;">
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:0.75rem;color:#525252;line-height:1.6;">
+              <span style="color:#C9A84C;">&#37;</span> Discount codes can be applied at checkout
+            </p>
+          </div>
+
+          <!-- Total -->
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:0.5rem;border-top:1px solid #1a1a1a;">
+            <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;color:#e5e5e5;">Total</span>
+            <div style="text-align:right;">
+              <span style="font-family:'Arial Black',Arial,sans-serif;font-size:1.25rem;font-weight:900;color:#C9A84C;">{{ cart.total_price | money }}</span>
+              <p style="margin:0;font-family:Arial,sans-serif;font-size:0.65rem;color:#525252;letter-spacing:0.08em;">Tax included where applicable</p>
+            </div>
+          </div>
+
+          <!-- Trust badges -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            {%- assign trust_badges = 'SSL Secured,Easy Returns,EU Protected,Secure Payment' | split: ',' -%}
+            {%- assign trust_icons = '&#128274;,&#8635;,&#127466;&#127482;,&#128179;' | split: ',' -%}
+            {%- for badge in trust_badges -%}
+              <div style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem;background:#111;border:1px solid #1a1a1a;border-radius:3px;">
+                <span style="color:#C9A84C;font-size:0.8rem;">{{ trust_icons[forloop.index0] }}</span>
+                <span style="font-family:Arial,sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.06em;color:#737373;text-transform:uppercase;">{{ badge }}</span>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <!-- Checkout button -->
+          <a href="/checkout" class="btn-gold" style="display:block;text-align:center;text-decoration:none;padding:1rem;font-size:0.85rem;letter-spacing:0.15em;">Checkout</a>
+
+          <!-- Continue shopping -->
+          <a href="/collections/all" style="display:block;text-align:center;font-family:Arial,sans-serif;font-size:0.75rem;color:#525252;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid transparent;transition:color 0.15s;">
+            &larr; Continue Shopping
+          </a>
+
+        </div>
+      </div>
+
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  @media(min-width:1024px){ #cart-layout { grid-template-columns: 1fr 400px !important; } }
+</style>
+
+{% schema %}
+{
+  "name": "Main Cart",
+  "tag": "main-cart",
+  "limit": 1,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Main Cart"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,105 @@
+<section style="background-color:#080808;min-height:100vh;padding:4rem 0 5rem;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem">
+
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:3.5rem;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1.25rem;">
+        <div style="height:1px;width:40px;background:#C9A84C;"></div>
+        <span style="font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.25em;text-transform:uppercase;color:#C9A84C;">Policy</span>
+        <div style="height:1px;width:40px;background:#C9A84C;"></div>
+      </div>
+      <h1 style="margin:0;font-family:'Arial Black',Arial,sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#e5e5e5;text-transform:uppercase;letter-spacing:-0.02em;">Returns &amp; Refunds</h1>
+    </div>
+
+    <!-- Three summary cards -->
+    <div style="display:grid;grid-template-columns:1fr;gap:1rem;margin-bottom:3.5rem;max-width:900px;margin-left:auto;margin-right:auto;" id="returns-cards">
+
+      <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:4px;padding:2rem;text-align:center;">
+        <p class="gold-shimmer" style="margin:0 0 0.5rem;font-family:'Arial Black',Arial,sans-serif;font-size:2.5rem;font-weight:900;letter-spacing:-0.02em;">14 Days</p>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#737373;">Return Window</p>
+      </div>
+
+      <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:4px;padding:2rem;text-align:center;">
+        <p class="gold-shimmer" style="margin:0 0 0.5rem;font-family:'Arial Black',Arial,sans-serif;font-size:2.5rem;font-weight:900;letter-spacing:-0.02em;">Free</p>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#737373;">Returns (EU Orders)</p>
+      </div>
+
+      <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:4px;padding:2rem;text-align:center;">
+        <p class="gold-shimmer" style="margin:0 0 0.5rem;font-family:'Arial Black',Arial,sans-serif;font-size:2.5rem;font-weight:900;letter-spacing:-0.02em;">Full</p>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#737373;">Refund to Original Payment</p>
+      </div>
+
+    </div>
+
+    <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:2.5rem;" id="returns-content">
+
+      <!-- How to Return steps -->
+      <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:4px;padding:2rem;">
+        <p style="margin:0 0 1.5rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;">How to Return</p>
+        <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:1.25rem;">
+          {%- assign steps = 'Email returns@the00sversion.com with your order number and reason for return.|We will send you a prepaid return label within 24 hours.|Pack the items securely in their original packaging.|Drop the parcel off at any post office using the prepaid label.|Your refund will be processed within 14 business days of us receiving the return.' | split: '|' -%}
+          {%- for step in steps -%}
+            <li style="display:flex;gap:1rem;align-items:flex-start;">
+              <span style="flex-shrink:0;display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#C9A84C;color:#080808;font-family:'Arial Black',Arial,sans-serif;font-size:0.7rem;font-weight:900;border-radius:50%;margin-top:0.1rem;">{{ forloop.index }}</span>
+              <span style="font-family:Arial,sans-serif;font-size:0.875rem;color:#a3a3a3;line-height:1.7;padding-top:0.2rem;">{{ step }}</span>
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+
+      <!-- Condition requirements -->
+      <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:4px;padding:2rem;">
+        <p style="margin:0 0 1rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;">Return Condition Requirements</p>
+        <p style="margin:0 0 1rem;font-family:Arial,sans-serif;font-size:0.875rem;color:#737373;line-height:1.6;">To be eligible for a return, items must be:</p>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:0.6rem;">
+          {%- assign conditions = 'Unworn and unwashed|All original tags still attached|In original packaging|Returned within the 14-day window' | split: '|' -%}
+          {%- for cond in conditions -%}
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;">
+              <span style="color:#C9A84C;font-size:0.9rem;flex-shrink:0;margin-top:0.15rem;">&#10003;</span>
+              <span style="font-family:Arial,sans-serif;font-size:0.875rem;color:#a3a3a3;line-height:1.6;">{{ cond }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <!-- Non-returnable -->
+      <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-left:2px solid #dc2626;border-radius:4px;padding:2rem;">
+        <p style="margin:0 0 0.75rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;color:#dc2626;">Non-Returnable Items</p>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:0.875rem;color:#a3a3a3;line-height:1.7;">Items marked as <strong style="color:#e5e5e5;">Final Sale</strong> are not eligible for return or exchange. This will always be clearly noted on the product page before purchase.</p>
+      </div>
+
+      <!-- Faulty items -->
+      <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:4px;padding:2rem;">
+        <p style="margin:0 0 0.75rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;">Faulty or Damaged Items</p>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:0.875rem;color:#a3a3a3;line-height:1.7;">If your item arrives damaged or faulty, please contact us within <strong style="color:#e5e5e5;">30 days</strong> of delivery at <a href="mailto:support@the00sversion.com" style="color:#C9A84C;text-decoration:none;">support@the00sversion.com</a> with photos. We will arrange a replacement or full refund at no cost to you.</p>
+      </div>
+
+      <!-- EU Guarantee -->
+      <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-left:2px solid #C9A84C;border-radius:4px;padding:2rem;">
+        <p style="margin:0 0 0.75rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;">2-Year EU Statutory Guarantee</p>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:0.875rem;color:#a3a3a3;line-height:1.7;">Under the EU Sale of Goods Directive, all products are covered by a 2-year statutory guarantee. If your item develops a defect within this period, you are entitled to a repair, replacement, or refund. This is in addition to our standard returns policy and does not affect your statutory rights.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  @media(min-width:768px){
+    #returns-cards { grid-template-columns: repeat(3,1fr) !important; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Page Returns",
+  "limit": 1,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Returns Policy"
+    }
+  ]
+}
+{% endschema %}

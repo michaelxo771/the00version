@@ -1,0 +1,137 @@
+<section
+  id="featured-products"
+  style="
+    background-color: #080808;
+    padding: 80px 0;
+  "
+>
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 1.5rem;">
+
+    <!-- Section header -->
+    <div
+      style="
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      "
+    >
+      <div>
+        <!-- Eyebrow -->
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 0.75rem;">
+          <div style="height: 1px; width: 32px; background-color: #C9A84C;"></div>
+          <span
+            style="
+              font-family: Arial, sans-serif;
+              font-size: 11px;
+              font-weight: 900;
+              letter-spacing: 0.2em;
+              text-transform: uppercase;
+              color: #C9A84C;
+            "
+          >The Selection</span>
+        </div>
+        <!-- H2 -->
+        <h2
+          style="
+            margin: 0;
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            color: #e5e5e5;
+          "
+        >Featured Pieces</h2>
+      </div>
+
+      <!-- View All — hidden on mobile -->
+      <a
+        href="/collections/all"
+        style="
+          display: none;
+          font-family: Arial, sans-serif;
+          font-size: 0.8125rem;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #C9A84C;
+          text-decoration: none;
+          border-bottom: 1px solid rgba(201,168,76,0.4);
+          padding-bottom: 2px;
+          white-space: nowrap;
+        "
+        class="featured-view-all-desktop"
+      >View All &rarr;</a>
+    </div>
+
+    <!-- Product grid -->
+    {%- assign featured_collection = collections['featured'] | default: collections.all -%}
+
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      "
+      class="featured-products-grid"
+    >
+      {%- for product in featured_collection.products limit: 4 -%}
+        {% render 'product-card', product: product %}
+      {%- else -%}
+        {%- comment -%}Fallback placeholder cards when no products are available{%- endcomment -%}
+        {%- for i in (1..4) -%}
+          <div
+            style="
+              background-color: #0d0d0d;
+              border: 1px solid #1a1a1a;
+              border-radius: 2px;
+              aspect-ratio: 3/4;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <span style="color: #737373; font-size: 0.75rem; font-family: Arial, sans-serif;">No product</span>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- View All — mobile only, shown below grid -->
+    <div style="text-align: center; margin-top: 2.5rem;" class="featured-view-all-mobile">
+      <a href="/collections/all" class="btn-outline-gold">View All Products</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  @media (min-width: 768px) {
+    .featured-products-grid {
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 20px !important;
+    }
+    .featured-view-all-desktop {
+      display: inline !important;
+    }
+    .featured-view-all-mobile {
+      display: none !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "limit": 1,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}

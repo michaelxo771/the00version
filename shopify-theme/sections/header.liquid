@@ -1,0 +1,77 @@
+<header class="site-header" id="site-header" role="banner">
+  <div class="header-inner">
+    <!-- Left nav (desktop) -->
+    <nav class="header-nav-left" aria-label="Main navigation left">
+      <a href="/collections/all" class="nav-link">Shop</a>
+      <a href="/collections/new-drops" class="nav-link">New Drops</a>
+      <a href="/collections/sets" class="nav-link">Sets</a>
+    </nav>
+
+    <!-- Logo -->
+    <a href="/" class="header-logo" aria-label="{{ shop.name }} — Home">
+      <span class="logo-main gold-shimmer">THE 00s</span>
+      <span class="logo-sub">VERSION</span>
+    </a>
+
+    <!-- Right nav (desktop) -->
+    <div class="header-nav-right">
+      <nav class="header-nav-links" aria-label="Main navigation right">
+        <a href="/collections/accessories" class="nav-link">Accessories</a>
+        <a href="/collections/outerwear" class="nav-link">Outerwear</a>
+      </nav>
+      <button class="header-icon-btn" id="search-open" aria-label="Search products">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </button>
+      <button class="header-icon-btn header-cart-btn" id="cart-open" aria-label="Open cart">
+        Cart
+        <span class="cart-count" id="cart-count" style="display:none"></span>
+      </button>
+    </div>
+
+    <!-- Mobile controls -->
+    <div class="header-mobile">
+      <button class="header-icon-btn" id="search-open-mobile" aria-label="Search products">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </button>
+      <button class="header-icon-btn header-cart-btn" id="cart-open-mobile" aria-label="Open cart">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        <span class="cart-count mobile" id="cart-count-mobile" style="display:none"></span>
+      </button>
+      <button class="hamburger" id="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false">
+        <svg class="hamburger-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg class="close-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+      <a href="/collections/all" class="mobile-nav-link">Shop</a>
+      <a href="/collections/new-drops" class="mobile-nav-link">New Drops</a>
+      <a href="/collections/sets" class="mobile-nav-link">Sets</a>
+      <a href="/collections/accessories" class="mobile-nav-link">Accessories</a>
+      <a href="/collections/outerwear" class="mobile-nav-link">Outerwear</a>
+      <a href="/pages/size-guide" class="mobile-nav-link">Size Guide</a>
+      <a href="/pages/track-order" class="mobile-nav-link">Track Order</a>
+    </nav>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "limit": 1,
+  "settings": []
+}
+{% endschema %}

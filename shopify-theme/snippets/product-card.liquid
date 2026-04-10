@@ -1,0 +1,73 @@
+<a href="{{ product.url }}" class="product-card-link" style="display:block;text-decoration:none;color:inherit;background:#080808;">
+
+  <!-- Image container -->
+  <div style="position:relative;aspect-ratio:3/4;background:#111111;overflow:hidden;border-radius:3px;">
+
+    {%- if product.featured_image -%}
+      {{ product.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: product.title, style: 'width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s ease;' }}
+    {%- else -%}
+      <!-- Placeholder -->
+      <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;padding:1.5rem;box-sizing:border-box;">
+        <span style="font-family:Arial,sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#333;">{{ product.type }}</span>
+        <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.875rem;font-weight:900;color:#2a2a2a;text-align:center;line-height:1.3;text-transform:uppercase;">{{ product.title }}</span>
+      </div>
+    {%- endif -%}
+
+    <!-- Hover overlay gradient -->
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 50%);pointer-events:none;opacity:0;transition:opacity 0.3s;" class="product-card-overlay"></div>
+
+    <!-- Badges top-left -->
+    <div style="position:absolute;top:0.75rem;left:0.75rem;display:flex;flex-direction:column;gap:0.35rem;z-index:2;">
+      {%- if product.tags contains 'sale' -%}
+        <span style="display:inline-block;background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Sale</span>
+      {%- endif -%}
+      {%- if product.tags contains 'limited' -%}
+        <span style="display:inline-block;background:#C9A84C;color:#080808;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Limited</span>
+      {%- endif -%}
+      {%- if product.tags contains 'new' -%}
+        <span style="display:inline-block;background:#e5e5e5;color:#080808;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">New</span>
+      {%- endif -%}
+      {%- if product.tags contains 'bestseller' -%}
+        <span style="display:inline-block;background:#e5e5e5;color:#080808;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Bestseller</span>
+      {%- endif -%}
+      {%- if product.tags contains 'low-stock' -%}
+        <span style="display:inline-block;background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Only a few left</span>
+      {%- endif -%}
+    </div>
+
+    <!-- Out of Stock overlay -->
+    {%- unless product.available -%}
+      <div style="position:absolute;inset:0;background:rgba(8,8,8,0.65);display:flex;align-items:center;justify-content:center;z-index:3;">
+        <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.7rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;color:#525252;border:1px solid #333;padding:0.4rem 0.85rem;border-radius:2px;background:rgba(8,8,8,0.8);">Out of Stock</span>
+      </div>
+    {%- endunless -%}
+
+  </div>
+
+  <!-- Product info below image -->
+  <div style="padding:0.85rem 0.25rem 0;">
+
+    {%- if product.type != blank -%}
+      <p style="margin:0 0 0.2rem;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;">{{ product.type }}</p>
+    {%- endif -%}
+
+    <p style="margin:0 0 0.5rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.85rem;font-weight:900;color:#e5e5e5;text-transform:uppercase;letter-spacing:0.01em;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ product.title }}</p>
+
+    <!-- Price -->
+    {%- if product.compare_at_price > product.price -%}
+      <div style="display:flex;align-items:baseline;gap:0.5rem;flex-wrap:wrap;">
+        <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.9rem;font-weight:900;color:#C9A84C;">{{ product.price | money }}</span>
+        <span style="font-family:Arial,sans-serif;font-size:0.8rem;color:#525252;text-decoration:line-through;">{{ product.compare_at_price | money }}</span>
+      </div>
+    {%- else -%}
+      <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.9rem;font-weight:900;color:#a3a3a3;">{{ product.price | money }}</span>
+    {%- endif -%}
+
+  </div>
+
+</a>
+
+<style>
+  .product-card-link:hover .product-card-overlay { opacity: 1; }
+  .product-card-link:hover img { transform: scale(1.04); }
+</style>

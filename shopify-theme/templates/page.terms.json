@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "page-terms": {
+      "type": "page-terms",
+      "settings": {}
+    }
+  },
+  "order": [
+    "page-terms"
+  ]
+}
