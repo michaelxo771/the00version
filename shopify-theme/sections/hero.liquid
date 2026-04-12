@@ -3,14 +3,29 @@
   style="
     position: relative;
     min-height: 92vh;
-    background-color: #0a0a0a;
+    background-color: #080808;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    padding: 96px 0 48px;
   "
 >
+
+  <!-- Background grid pattern -->
+  <div
+    aria-hidden="true"
+    style="
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    "
+  ></div>
 
   <!-- Radial gold glow -->
   <div
@@ -18,31 +33,47 @@
     style="
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.07) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 65%);
       pointer-events: none;
     "
   ></div>
 
-  <!-- Grid dot pattern -->
+  <!-- Side decorative lines (desktop only) -->
   <div
     aria-hidden="true"
+    class="hero-side-line hero-side-left"
     style="
       position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle, rgba(201,168,76,0.12) 1px, transparent 1px);
-      background-size: 32px 32px;
-      pointer-events: none;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+      left: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 192px;
+      background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.3), transparent);
+      display: none;
+    "
+  ></div>
+  <div
+    aria-hidden="true"
+    class="hero-side-line hero-side-right"
+    style="
+      position: absolute;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 192px;
+      background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.3), transparent);
+      display: none;
     "
   ></div>
 
-  <!-- Content wrapper -->
+  <!-- Content -->
   <div
     style="
       position: relative;
       z-index: 1;
-      max-width: 1280px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 0 1.5rem;
       text-align: center;
@@ -56,25 +87,25 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 16px;
-        margin-bottom: 2rem;
+        gap: 12px;
+        margin-bottom: 1rem;
       "
     >
-      <div style="height: 1px; width: 48px; background-color: #C9A84C;"></div>
+      <div style="height: 1px; width: 40px; background-color: rgba(201,168,76,0.5);"></div>
       <span
         style="
           font-family: Arial, sans-serif;
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 900;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.4em;
           text-transform: uppercase;
           color: #C9A84C;
         "
       >Est. 2024 &mdash; Premium Streetwear</span>
-      <div style="height: 1px; width: 48px; background-color: #C9A84C;"></div>
+      <div style="height: 1px; width: 40px; background-color: rgba(201,168,76,0.5);"></div>
     </div>
 
-    <!-- H1: THE 00s -->
+    <!-- H1 -->
     <h1 style="margin: 0; line-height: 1; font-family: 'Arial Black', Arial, sans-serif;">
       <span
         class="gold-shimmer"
@@ -84,17 +115,18 @@
           font-weight: 900;
           text-transform: uppercase;
           letter-spacing: -0.02em;
+          line-height: 1;
         "
       >THE 00s</span>
       <span
         style="
           display: block;
-          font-size: clamp(1.5rem, 5vw, 4rem);
+          font-size: clamp(1.4rem, 4.5vw, 4rem);
           font-weight: 900;
           text-transform: uppercase;
-          letter-spacing: 0.35em;
+          letter-spacing: 0.3em;
           color: #e5e5e5;
-          margin-top: 0.25rem;
+          margin-top: 0.125rem;
         "
       >VERSION</span>
     </h1>
@@ -102,26 +134,27 @@
     <!-- Cycling era text -->
     <p
       style="
-        margin: 1.5rem 0 0;
+        margin: 1rem 0 0.75rem;
         font-family: Arial, sans-serif;
-        font-size: clamp(1rem, 2.5vw, 1.375rem);
-        color: #737373;
-        font-weight: 400;
-        letter-spacing: 0.05em;
-        min-height: 2em;
+        font-size: clamp(0.875rem, 2vw, 1rem);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: rgba(201,168,76,0.8);
+        min-height: 1.5em;
       "
     >
-      <span id="cycling-text" style="color: #C9A84C; font-weight: 700;">Sean John Era.</span>
+      <span id="cycling-text">Sean John Era.</span>
     </p>
 
     <!-- Tagline -->
     <p
       style="
-        margin: 1.25rem auto 0;
-        max-width: 520px;
+        margin: 0.5rem auto 1.75rem;
+        max-width: 380px;
         font-family: Arial, sans-serif;
-        font-size: clamp(0.875rem, 1.5vw, 1rem);
-        color: #737373;
+        font-size: 0.875rem;
+        color: #525252;
         line-height: 1.7;
       "
     >
@@ -134,45 +167,98 @@
       style="
         display: flex;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
         justify-content: center;
-        margin-top: 2.5rem;
       "
     >
       <a href="/collections/all" class="btn-gold">Shop the Collection</a>
       <a href="/collections/new-drops" class="btn-outline-gold">New Drops</a>
     </div>
 
-    <!-- Stats -->
+    <!-- Stats — three items with value + label two-line format -->
     <div
       style="
-        margin-top: 4rem;
+        margin-top: 2.5rem;
         padding-top: 2rem;
         border-top: 1px solid #1a1a1a;
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
         justify-content: center;
         gap: 2rem 4rem;
       "
     >
-      {%- assign stats = '100% Premium Cotton,00s Era Inspired,Ltd. Drops Only' | split: ',' -%}
-      {%- for stat in stats -%}
-        <div style="text-align: center;">
-          <p
-            style="
-              margin: 0;
-              font-family: 'Arial Black', Arial, sans-serif;
-              font-size: 0.75rem;
-              font-weight: 900;
-              letter-spacing: 0.15em;
-              text-transform: uppercase;
-              color: #e5e5e5;
-            "
-          >{{ stat }}</p>
-        </div>
-      {%- endfor -%}
-    </div>
 
+      <div style="text-align: center;">
+        <p
+          class="gold-text"
+          style="
+            margin: 0;
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 900;
+          "
+        >100%</p>
+        <p
+          style="
+            margin: 2px 0 0;
+            font-family: Arial, sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #525252;
+          "
+        >Premium Cotton</p>
+      </div>
+
+      <div style="text-align: center;">
+        <p
+          class="gold-text"
+          style="
+            margin: 0;
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 900;
+          "
+        >00s</p>
+        <p
+          style="
+            margin: 2px 0 0;
+            font-family: Arial, sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #525252;
+          "
+        >Era Inspired</p>
+      </div>
+
+      <div style="text-align: center;">
+        <p
+          class="gold-text"
+          style="
+            margin: 0;
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 900;
+          "
+        >Ltd.</p>
+        <p
+          style="
+            margin: 2px 0 0;
+            font-family: Arial, sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #525252;
+          "
+        >Drops Only</p>
+      </div>
+
+    </div>
   </div>
 
   <!-- Bottom fade overlay -->
@@ -183,13 +269,19 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 120px;
-      background: linear-gradient(to bottom, transparent, #0a0a0a);
+      height: 96px;
+      background: linear-gradient(to bottom, transparent, #080808);
       pointer-events: none;
     "
   ></div>
 
 </section>
+
+<style>
+  @media (min-width: 1024px) {
+    .hero-side-line { display: block !important; }
+  }
+</style>
 
 {% schema %}
 {

@@ -2,47 +2,86 @@
   id="countdown-timer"
   style="
     position: relative;
-    background-color: #0a0a0a;
-    padding: 96px 0;
+    background-color: #0d0d0d;
+    padding: 80px 0;
     overflow: hidden;
   "
 >
 
-  <!-- Subtle gold radial glow -->
+  <!-- Radial gold glow -->
   <div
     aria-hidden="true"
     style="
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(201,168,76,0.07) 0%, transparent 65%);
       pointer-events: none;
     "
   ></div>
 
-  <div style="position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; text-align: center;">
+  <!-- Grid pattern -->
+  <div
+    aria-hidden="true"
+    style="
+      position: absolute;
+      inset: 0;
+      opacity: 0.3;
+      background-image: linear-gradient(rgba(201,168,76,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    "
+  ></div>
+
+  <!-- Top gold rule -->
+  <div
+    aria-hidden="true"
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent);
+    "
+  ></div>
+
+  <!-- Bottom gold rule -->
+  <div
+    aria-hidden="true"
+    style="
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent);
+    "
+  ></div>
+
+  <div style="position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 1.5rem; text-align: center;">
 
     <!-- Eyebrow -->
-    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 0.75rem;">
-      <div style="height: 1px; width: 32px; background-color: #C9A84C;"></div>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 1rem;">
+      <div style="height: 1px; width: 40px; background-color: rgba(201,168,76,0.5);"></div>
       <span
         style="
           font-family: Arial, sans-serif;
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 900;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.4em;
           text-transform: uppercase;
           color: #C9A84C;
         "
-      >Next Drop</span>
-      <div style="height: 1px; width: 32px; background-color: #C9A84C;"></div>
+      >Limited Drop</span>
+      <div style="height: 1px; width: 40px; background-color: rgba(201,168,76,0.5);"></div>
     </div>
 
     <!-- H2 -->
     <h2
       style="
-        margin: 0 0 3rem;
+        margin: 0 0 0.5rem;
         font-family: 'Arial Black', Arial, sans-serif;
-        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-size: clamp(1.75rem, 4vw, 3rem);
         font-weight: 900;
         text-transform: uppercase;
         color: #e5e5e5;
@@ -50,215 +89,284 @@
       "
     >Next Drop</h2>
 
+    <!-- Subtitle -->
+    <p
+      style="
+        margin: 0 0 2.5rem;
+        font-family: Arial, sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #525252;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+      "
+    >Every Friday at midnight</p>
+
     <!-- Countdown display -->
     <div
       style="
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0;
-        flex-wrap: wrap;
+        gap: 12px;
+        flex-wrap: nowrap;
       "
     >
 
       <!-- Days -->
-      <div style="display: flex; flex-direction: column; align-items: center; padding: 0 8px;">
+      <div style="display: flex; flex-direction: column; align-items: center;">
         <div
           style="
-            background-color: #0d0d0d;
-            border: 1px solid #1a1a1a;
-            padding: 20px 28px;
-            min-width: 88px;
-            text-align: center;
+            position: relative;
+            background-color: #111111;
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 2px;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
           "
+          class="countdown-card"
         >
+          <!-- Shine top line -->
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.6),transparent);"></div>
           <span
             id="countdown-days"
             style="
-              display: block;
               font-family: 'Arial Black', Arial, sans-serif;
-              font-size: 2rem;
+              font-size: 1.75rem;
               font-weight: 900;
               color: #C9A84C;
               line-height: 1;
               letter-spacing: -0.02em;
               font-variant-numeric: tabular-nums;
+              background: linear-gradient(135deg, #C9A84C 0%, #f3d97a 50%, #C9A84C 100%);
+              -webkit-background-clip: text;
+              background-clip: text;
+              -webkit-text-fill-color: transparent;
             "
           >00</span>
         </div>
         <span
           style="
-            margin-top: 10px;
+            margin-top: 8px;
             font-family: Arial, sans-serif;
-            font-size: 0.6875rem;
+            font-size: 0.625rem;
             font-weight: 700;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #737373;
+            color: #525252;
           "
         >Days</span>
       </div>
 
-      <!-- Colon separator -->
+      <!-- Colon -->
       <span
         aria-hidden="true"
         style="
           font-family: 'Arial Black', Arial, sans-serif;
-          font-size: 1.75rem;
+          font-size: 1.5rem;
           font-weight: 900;
-          color: #C9A84C;
-          padding: 0 4px;
-          margin-bottom: 28px;
+          color: rgba(201,168,76,0.4);
+          margin-bottom: 20px;
           line-height: 1;
         "
       >:</span>
 
       <!-- Hours -->
-      <div style="display: flex; flex-direction: column; align-items: center; padding: 0 8px;">
+      <div style="display: flex; flex-direction: column; align-items: center;">
         <div
           style="
-            background-color: #0d0d0d;
-            border: 1px solid #1a1a1a;
-            padding: 20px 28px;
-            min-width: 88px;
-            text-align: center;
+            position: relative;
+            background-color: #111111;
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 2px;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
           "
+          class="countdown-card"
         >
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.6),transparent);"></div>
           <span
             id="countdown-hours"
             style="
-              display: block;
               font-family: 'Arial Black', Arial, sans-serif;
-              font-size: 2rem;
+              font-size: 1.75rem;
               font-weight: 900;
-              color: #C9A84C;
               line-height: 1;
               letter-spacing: -0.02em;
               font-variant-numeric: tabular-nums;
+              background: linear-gradient(135deg, #C9A84C 0%, #f3d97a 50%, #C9A84C 100%);
+              -webkit-background-clip: text;
+              background-clip: text;
+              -webkit-text-fill-color: transparent;
             "
           >00</span>
         </div>
         <span
           style="
-            margin-top: 10px;
+            margin-top: 8px;
             font-family: Arial, sans-serif;
-            font-size: 0.6875rem;
+            font-size: 0.625rem;
             font-weight: 700;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #737373;
+            color: #525252;
           "
         >Hours</span>
       </div>
 
-      <!-- Colon separator -->
+      <!-- Colon -->
       <span
         aria-hidden="true"
         style="
           font-family: 'Arial Black', Arial, sans-serif;
-          font-size: 1.75rem;
+          font-size: 1.5rem;
           font-weight: 900;
-          color: #C9A84C;
-          padding: 0 4px;
-          margin-bottom: 28px;
+          color: rgba(201,168,76,0.4);
+          margin-bottom: 20px;
           line-height: 1;
         "
       >:</span>
 
       <!-- Minutes -->
-      <div style="display: flex; flex-direction: column; align-items: center; padding: 0 8px;">
+      <div style="display: flex; flex-direction: column; align-items: center;">
         <div
           style="
-            background-color: #0d0d0d;
-            border: 1px solid #1a1a1a;
-            padding: 20px 28px;
-            min-width: 88px;
-            text-align: center;
+            position: relative;
+            background-color: #111111;
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 2px;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
           "
+          class="countdown-card"
         >
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.6),transparent);"></div>
           <span
             id="countdown-minutes"
             style="
-              display: block;
               font-family: 'Arial Black', Arial, sans-serif;
-              font-size: 2rem;
+              font-size: 1.75rem;
               font-weight: 900;
-              color: #C9A84C;
               line-height: 1;
               letter-spacing: -0.02em;
               font-variant-numeric: tabular-nums;
+              background: linear-gradient(135deg, #C9A84C 0%, #f3d97a 50%, #C9A84C 100%);
+              -webkit-background-clip: text;
+              background-clip: text;
+              -webkit-text-fill-color: transparent;
             "
           >00</span>
         </div>
         <span
           style="
-            margin-top: 10px;
+            margin-top: 8px;
             font-family: Arial, sans-serif;
-            font-size: 0.6875rem;
+            font-size: 0.625rem;
             font-weight: 700;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #737373;
+            color: #525252;
           "
-        >Minutes</span>
+        >Mins</span>
       </div>
 
-      <!-- Colon separator -->
+      <!-- Colon -->
       <span
         aria-hidden="true"
         style="
           font-family: 'Arial Black', Arial, sans-serif;
-          font-size: 1.75rem;
+          font-size: 1.5rem;
           font-weight: 900;
-          color: #C9A84C;
-          padding: 0 4px;
-          margin-bottom: 28px;
+          color: rgba(201,168,76,0.4);
+          margin-bottom: 20px;
           line-height: 1;
         "
       >:</span>
 
       <!-- Seconds -->
-      <div style="display: flex; flex-direction: column; align-items: center; padding: 0 8px;">
+      <div style="display: flex; flex-direction: column; align-items: center;">
         <div
           style="
-            background-color: #0d0d0d;
-            border: 1px solid #1a1a1a;
-            padding: 20px 28px;
-            min-width: 88px;
-            text-align: center;
+            position: relative;
+            background-color: #111111;
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 2px;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
           "
+          class="countdown-card"
         >
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.6),transparent);"></div>
           <span
             id="countdown-seconds"
             style="
-              display: block;
               font-family: 'Arial Black', Arial, sans-serif;
-              font-size: 2rem;
+              font-size: 1.75rem;
               font-weight: 900;
-              color: #C9A84C;
               line-height: 1;
               letter-spacing: -0.02em;
               font-variant-numeric: tabular-nums;
+              background: linear-gradient(135deg, #C9A84C 0%, #f3d97a 50%, #C9A84C 100%);
+              -webkit-background-clip: text;
+              background-clip: text;
+              -webkit-text-fill-color: transparent;
             "
           >00</span>
         </div>
         <span
           style="
-            margin-top: 10px;
+            margin-top: 8px;
             font-family: Arial, sans-serif;
-            font-size: 0.6875rem;
+            font-size: 0.625rem;
             font-weight: 700;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #737373;
+            color: #525252;
           "
-        >Seconds</span>
+        >Secs</span>
       </div>
 
     </div>
 
+    <!-- Footer note -->
+    <p
+      style="
+        margin: 2.5rem 0 0;
+        font-family: Arial, sans-serif;
+        font-size: 0.6875rem;
+        color: #404040;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+      "
+    >New pieces drop every Friday &mdash; sign up to get notified first</p>
+
   </div>
 </section>
+
+<style>
+  @media (min-width: 640px) {
+    .countdown-card { width: 96px !important; height: 96px !important; }
+    #countdown-days, #countdown-hours, #countdown-minutes, #countdown-seconds {
+      font-size: 3rem !important;
+    }
+  }
+</style>
 
 {% schema %}
 {

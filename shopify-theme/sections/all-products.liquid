@@ -1,0 +1,105 @@
+<section
+  id="all-products"
+  style="
+    background-color: #0a0a0a;
+    padding: 0 0 80px;
+  "
+>
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 1.5rem;">
+
+    <!-- Section header -->
+    <div
+      style="
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      "
+    >
+      <div>
+        <p
+          style="
+            margin: 0 0 0.5rem;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #C9A84C;
+          "
+        >Full Collection</p>
+        <h2
+          style="
+            margin: 0;
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            color: #e5e5e5;
+          "
+        >All Pieces</h2>
+      </div>
+      <span
+        style="
+          font-family: Arial, sans-serif;
+          font-size: 0.875rem;
+          color: #525252;
+          letter-spacing: 0.05em;
+        "
+      >
+        {%- assign all_col = collections['all'] -%}
+        {{ all_col.products_count }} items
+      </span>
+    </div>
+
+    <!-- Product grid -->
+    {%- assign all_col = collections['all'] -%}
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      "
+      class="all-products-grid"
+    >
+      {%- for product in all_col.products limit: 12 -%}
+        {% render 'product-card', product: product %}
+      {%- else -%}
+        <div style="grid-column:1/-1;text-align:center;padding:4rem 0;">
+          <p style="font-family:Arial,sans-serif;font-size:0.875rem;color:#525252;">No products found.</p>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- View All CTA -->
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="/collections/all" class="btn-outline-gold">View All Products</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  @media (min-width: 640px) {
+    .all-products-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 20px !important; }
+  }
+  @media (min-width: 1024px) {
+    .all-products-grid { grid-template-columns: repeat(4, 1fr) !important; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "All Products",
+  "limit": 1,
+  "settings": [],
+  "presets": [
+    {
+      "name": "All Products"
+    }
+  ]
+}
+{% endschema %}

@@ -1,48 +1,146 @@
 <section
   id="category-strip"
-  style="background-color: #0a0a0a; padding: 96px 0;"
+  style="background-color: #0a0a0a; padding: 40px 0 80px;"
 >
   <div style="max-width: 1280px; margin: 0 auto; padding: 0 1.5rem;">
 
     <!-- Header -->
-    <div style="margin-bottom: 3rem;">
-      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 0.75rem;">
-        <div style="height: 1px; width: 32px; background-color: #C9A84C;"></div>
-        <span style="font-family: Arial, sans-serif; font-size: 11px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; color: #C9A84C;">Browse</span>
-      </div>
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <p
+        style="
+          margin: 0 0 0.5rem;
+          font-family: Arial, sans-serif;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          color: #C9A84C;
+        "
+      >Browse</p>
       <h2 style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 900; text-transform: uppercase; color: #e5e5e5; letter-spacing: -0.01em;">Shop by Category</h2>
     </div>
 
-    <!-- Category grid -->
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;" class="category-grid">
+    <!-- Category grid — 6 categories matching Next.js exactly -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;" class="category-grid">
 
-      {%- assign categories = 'Tops|tops,Bottoms|bottoms,Sets|sets,Jackets|jackets,Accessories|accessories,New Drops|new-drops' | split: ',' -%}
+      {%- assign cat_data = 'Hoodies|hoodies|2 styles,T-Shirts|t-shirts|2 styles,Bottoms|bottoms|2 styles,Outerwear|outerwear|1 style,Sets|sets|1 style,Accessories|accessories|1 style' | split: ',' -%}
 
-      {%- for cat in categories -%}
-        {%- assign parts = cat | split: '|' -%}
-        {%- assign cat_name   = parts[0] -%}
+      {%- for item in cat_data -%}
+        {%- assign parts      = item | split: '|' -%}
+        {%- assign cat_label  = parts[0] -%}
         {%- assign cat_handle = parts[1] -%}
-        {%- assign cat_col    = collections[cat_handle] -%}
-        {%- assign cat_count  = cat_col.products_count | default: 0 -%}
+        {%- assign cat_count  = parts[2] -%}
 
         <a
           href="/collections/{{ cat_handle }}"
-          style="position:relative;display:block;background-color:#111111;border:1px solid #1a1a1a;border-radius:2px;padding:32px;text-decoration:none;overflow:hidden;transition:border-color 0.2s ease;"
+          style="
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #111111;
+            border: 1px solid #1a1a1a;
+            border-radius: 2px;
+            padding: 32px;
+            text-decoration: none;
+            overflow: hidden;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+          "
           class="category-card"
-          onmouseenter="this.style.borderColor='rgba(201,168,76,0.40)';this.querySelector('.cat-corner').style.opacity='1';this.querySelector('.cat-name').style.color='#C9A84C';this.querySelector('.cat-arrow').style.transform='translateX(4px)'"
-          onmouseleave="this.style.borderColor='#1a1a1a';this.querySelector('.cat-corner').style.opacity='0';this.querySelector('.cat-name').style.color='#e5e5e5';this.querySelector('.cat-arrow').style.transform='translateX(0)'"
+          onmouseenter="
+            this.style.borderColor='rgba(201,168,76,0.40)';
+            this.style.backgroundColor='rgba(17,17,17,0.8)';
+            this.querySelector('.cat-corner').style.opacity='1';
+            this.querySelector('.cat-name').style.color='#C9A84C';
+            this.querySelector('.cat-arrow').style.transform='translateX(4px)';
+          "
+          onmouseleave="
+            this.style.borderColor='#1a1a1a';
+            this.style.backgroundColor='#111111';
+            this.querySelector('.cat-corner').style.opacity='0';
+            this.querySelector('.cat-name').style.color='#e5e5e5';
+            this.querySelector('.cat-arrow').style.transform='translateX(0)';
+          "
         >
-          <div class="cat-corner" aria-hidden="true" style="position:absolute;top:10px;right:10px;width:14px;height:14px;border-top:2px solid #C9A84C;border-right:2px solid #C9A84C;opacity:0;transition:opacity 0.2s ease;"></div>
+          <!-- Top-right corner accent -->
+          <div
+            class="cat-corner"
+            aria-hidden="true"
+            style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              width: 0;
+              height: 0;
+              overflow: hidden;
+              opacity: 0;
+              transition: opacity 0.2s ease;
+            "
+          >
+            <div style="position: absolute; top: 0; right: 0; width: 1px; height: 32px; background: #C9A84C;"></div>
+            <div style="position: absolute; top: 0; right: 0; width: 32px; height: 1px; background: #C9A84C;"></div>
+          </div>
 
-          {%- if cat_count > 0 -%}
-            <p style="margin:0 0 6px;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;color:#C9A84C;letter-spacing:0.08em;">
-              {{ cat_count }} {{ cat_count | pluralize: 'piece', 'pieces' }}
-            </p>
-          {%- endif -%}
+          <div>
+            <p
+              style="
+                margin: 0 0 8px;
+                font-family: Arial, sans-serif;
+                font-size: 0.625rem;
+                font-weight: 700;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: #C9A84C;
+              "
+            >{{ cat_count }}</p>
+            <h3
+              class="cat-name"
+              style="
+                margin: 0;
+                font-family: 'Arial Black', Arial, sans-serif;
+                font-size: 1.125rem;
+                font-weight: 900;
+                text-transform: uppercase;
+                letter-spacing: 0.02em;
+                color: #e5e5e5;
+                transition: color 0.2s ease;
+              "
+            >{{ cat_label }}</h3>
+          </div>
 
-          <p class="cat-name" style="margin:0 0 12px;font-family:'Arial Black',Arial,sans-serif;font-size:1rem;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;color:#e5e5e5;transition:color 0.2s ease;">{{ cat_name }}</p>
-          <span class="cat-arrow" style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;color:#C9A84C;display:inline-block;transition:transform 0.2s ease;">Shop &rarr;</span>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-top: 24px;
+            "
+          >
+            <span
+              style="
+                font-family: Arial, sans-serif;
+                font-size: 0.6875rem;
+                font-weight: 700;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: #525252;
+              "
+            >Shop</span>
+            <svg
+              class="cat-arrow"
+              width="12"
+              height="12"
+              fill="none"
+              stroke="#525252"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              style="transition: transform 0.2s ease;"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </div>
         </a>
+
       {%- endfor -%}
 
     </div>

@@ -1115,3 +1115,134 @@ ul { list-style: none; }
 /* ─── Product accordion (details/summary) ────────────────────────────────── */
 .product-accordion summary::-webkit-details-marker { display: none; }
 .product-accordion[open] .accordion-chevron { transform: rotate(180deg); }
+
+/* ─── Gold text gradient (static, no animation) ──────────────────────────── */
+.gold-text {
+  background: linear-gradient(135deg, #C9A84C 0%, #f3d97a 50%, #C9A84C 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Announcement bar / top stripe ──────────────────────────────────────── */
+.announcement-bar {
+  background-color: #C9A84C;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+/* ─── Featured products grid responsive ──────────────────────────────────── */
+.featured-products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (min-width: 768px) {
+  .featured-products-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .featured-view-all-desktop { display: inline !important; }
+  .featured-view-all-mobile { display: none !important; }
+}
+
+/* ─── All products grid (homepage) ───────────────────────────────────────── */
+.all-products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (min-width: 640px) {
+  .all-products-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+}
+@media (min-width: 1024px) {
+  .all-products-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ─── Brand story grid ────────────────────────────────────────────────────── */
+.brand-story-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .brand-story-grid { grid-template-columns: 1fr 1fr; gap: 80px; }
+}
+
+/* ─── TikTok grid ─────────────────────────────────────────────────────────── */
+.tiktok-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.tiktok-thumb { aspect-ratio: 9/16; }
+@media (min-width: 640px) {
+  .tiktok-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .tiktok-thumb { aspect-ratio: 1/1 !important; }
+}
+
+/* ─── Email signup row ────────────────────────────────────────────────────── */
+.email-signup-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+@media (min-width: 480px) {
+  .email-signup-row { flex-direction: row; }
+  .email-signup-row button { width: auto !important; }
+}
+
+/* ─── Category card hover ─────────────────────────────────────────────────── */
+.category-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #111111;
+  border: 1px solid #1a1a1a;
+  border-radius: 2px;
+  padding: 32px;
+  text-decoration: none;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* ─── Countdown cards ─────────────────────────────────────────────────────── */
+.countdown-card {
+  background-color: #111111;
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 2px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+@media (min-width: 640px) {
+  .countdown-card { width: 96px; height: 96px; }
+}
+
+/* ─── Section separator utility ───────────────────────────────────────────── */
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent);
+}
+
+/* ─── Product accordion ───────────────────────────────────────────────────── */
+.product-accordion {
+  border-top: 1px solid #1a1a1a;
+}
+.product-accordion summary::-webkit-details-marker { display: none; }
+.product-accordion[open] .accordion-chevron { transform: rotate(180deg); }
+
+/* ─── Testimonials grid ───────────────────────────────────────────────────── */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 768px) {
+  .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
+}

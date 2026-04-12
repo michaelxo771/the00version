@@ -12,20 +12,24 @@
       "type": "featured-products",
       "settings": {}
     },
-    "category-strip": {
-      "type": "category-strip",
+    "countdown-timer": {
+      "type": "countdown-timer",
       "settings": {}
     },
     "brand-story": {
       "type": "brand-story",
       "settings": {}
     },
-    "countdown-timer": {
-      "type": "countdown-timer",
-      "settings": {}
-    },
     "testimonials": {
       "type": "testimonials",
+      "settings": {}
+    },
+    "category-strip": {
+      "type": "category-strip",
+      "settings": {}
+    },
+    "all-products": {
+      "type": "all-products",
       "settings": {}
     },
     "tiktok-banner": {
@@ -41,10 +45,11 @@
     "hero",
     "marquee-ticker",
     "featured-products",
-    "category-strip",
-    "brand-story",
     "countdown-timer",
+    "brand-story",
     "testimonials",
+    "category-strip",
+    "all-products",
     "tiktok-banner",
     "email-signup"
   ]

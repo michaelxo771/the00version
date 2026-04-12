@@ -2,27 +2,24 @@
   id="testimonials"
   style="
     background-color: #0a0a0a;
-    padding: 96px 0;
+    padding: 80px 0;
   "
 >
   <div style="max-width: 1280px; margin: 0 auto; padding: 0 1.5rem;">
 
     <!-- Header -->
-    <div style="text-align: center; margin-bottom: 3.5rem;">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 0.75rem;">
-        <div style="height: 1px; width: 32px; background-color: #C9A84C;"></div>
-        <span
-          style="
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-            font-weight: 900;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #C9A84C;
-          "
-        >Reviews</span>
-        <div style="height: 1px; width: 32px; background-color: #C9A84C;"></div>
-      </div>
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <p
+        style="
+          margin: 0 0 0.5rem;
+          font-family: Arial, sans-serif;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          color: #C9A84C;
+        "
+      >Reviews</p>
       <h2
         style="
           margin: 0;
@@ -46,22 +43,25 @@
       class="testimonials-grid"
     >
 
-      {%- comment -%}--- Review 1 ---{%- endcomment -%}
+      <!-- Review 1: Jordan M. -->
       <article
         style="
           background-color: #0d0d0d;
           border: 1px solid #1a1a1a;
           border-radius: 2px;
           padding: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
           transition: border-color 0.2s ease;
         "
         onmouseenter="this.style.borderColor='rgba(201,168,76,0.20)'"
         onmouseleave="this.style.borderColor='#1a1a1a'"
       >
         <!-- Stars -->
-        <div style="display: flex; gap: 4px; margin-bottom: 1rem;">
+        <div style="display: flex; gap: 4px;">
           {%- for i in (1..5) -%}
-            <svg width="16" height="16" viewBox="0 0 18 18" fill="#C9A84C" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="#C9A84C" aria-hidden="true">
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
             </svg>
           {%- endfor -%}
@@ -70,58 +70,59 @@
         <!-- Review text -->
         <p
           style="
-            margin: 0 0 1.25rem;
+            margin: 0;
             font-family: Arial, sans-serif;
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             line-height: 1.7;
             color: #a3a3a3;
+            flex: 1;
           "
-        >&ldquo;Exactly what I have been looking for. The hoodie is heavy, well-cut, and the
-        quality is something else. Feels like the era never ended. Already ordered a second one.&rdquo;</p>
+        >&ldquo;Copped the OG Hoodie and it&rsquo;s insane quality. The weight of the fabric feels like proper premium &mdash; not that cheap stuff other brands pass off. The embroidery is clean and precise. Worth every penny.&rdquo;</p>
 
         <!-- Gold divider -->
-        <div style="height: 1px; background-color: #C9A84C; opacity: 0.25; margin-bottom: 1.25rem;"></div>
+        <div style="height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.3), transparent);"></div>
 
         <!-- Reviewer -->
-        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;">
           <div>
-            <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.875rem; font-weight: 900; color: #e5e5e5;">Jordan M.</p>
-            <p style="margin: 0; font-family: Arial, sans-serif; font-size: 0.75rem; color: #737373;">London, UK</p>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.875rem; font-weight: 900; color: #e5e5e5;">Jordan M.</p>
+              <span
+                style="
+                  font-family: Arial, sans-serif;
+                  font-size: 0.625rem;
+                  font-weight: 700;
+                  letter-spacing: 0.05em;
+                  text-transform: uppercase;
+                  color: #4ade80;
+                "
+              >&#10003; Verified</span>
+            </div>
+            <p style="margin: 0; font-family: Arial, sans-serif; font-size: 0.6875rem; color: #525252;">London, UK</p>
           </div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-            <span
-              style="
-                font-family: Arial, sans-serif;
-                font-size: 0.6875rem;
-                font-weight: 700;
-                letter-spacing: 0.05em;
-                color: #22c55e;
-                background-color: rgba(34,197,94,0.1);
-                padding: 2px 8px;
-                border-radius: 9999px;
-              "
-            >&#10003; Verified</span>
-            <span style="font-family: Arial, sans-serif; font-size: 0.6875rem; color: #737373;">OG Heavyweight Hoodie</span>
-          </div>
+          <p style="margin: 0; font-family: Arial, sans-serif; font-size: 0.6875rem; color: #404040; text-align: right; line-height: 1.4;">OG Heavyweight Hoodie</p>
         </div>
       </article>
 
-      {%- comment -%}--- Review 2 ---{%- endcomment -%}
+      <!-- Review 2: Chris T. -->
       <article
         style="
           background-color: #0d0d0d;
           border: 1px solid #1a1a1a;
           border-radius: 2px;
           padding: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
           transition: border-color 0.2s ease;
         "
         onmouseenter="this.style.borderColor='rgba(201,168,76,0.20)'"
         onmouseleave="this.style.borderColor='#1a1a1a'"
       >
         <!-- Stars -->
-        <div style="display: flex; gap: 4px; margin-bottom: 1rem;">
+        <div style="display: flex; gap: 4px;">
           {%- for i in (1..5) -%}
-            <svg width="16" height="16" viewBox="0 0 18 18" fill="#C9A84C" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="#C9A84C" aria-hidden="true">
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
             </svg>
           {%- endfor -%}
@@ -130,58 +131,59 @@
         <!-- Review text -->
         <p
           style="
-            margin: 0 0 1.25rem;
+            margin: 0;
             font-family: Arial, sans-serif;
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             line-height: 1.7;
             color: #a3a3a3;
+            flex: 1;
           "
-        >&ldquo;Le velour tracksuit est parfait. La coupe, la texture, le poids du tissu &mdash; tout est juste.
-        Delivery was fast to Paris. This brand understands what premium really means.&rdquo;</p>
+        >&ldquo;The Velour Tracksuit is everything. Brings back those 2000s vibes but feels current at the same time. Got so many compliments wearing it out. The fit is perfect &mdash; not boxy, not skinny. Just right.&rdquo;</p>
 
         <!-- Gold divider -->
-        <div style="height: 1px; background-color: #C9A84C; opacity: 0.25; margin-bottom: 1.25rem;"></div>
+        <div style="height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.3), transparent);"></div>
 
         <!-- Reviewer -->
-        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;">
           <div>
-            <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.875rem; font-weight: 900; color: #e5e5e5;">Chris T.</p>
-            <p style="margin: 0; font-family: Arial, sans-serif; font-size: 0.75rem; color: #737373;">Paris, FR</p>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.875rem; font-weight: 900; color: #e5e5e5;">Chris T.</p>
+              <span
+                style="
+                  font-family: Arial, sans-serif;
+                  font-size: 0.625rem;
+                  font-weight: 700;
+                  letter-spacing: 0.05em;
+                  text-transform: uppercase;
+                  color: #4ade80;
+                "
+              >&#10003; Verified</span>
+            </div>
+            <p style="margin: 0; font-family: Arial, sans-serif; font-size: 0.6875rem; color: #525252;">Paris, FR</p>
           </div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-            <span
-              style="
-                font-family: Arial, sans-serif;
-                font-size: 0.6875rem;
-                font-weight: 700;
-                letter-spacing: 0.05em;
-                color: #22c55e;
-                background-color: rgba(34,197,94,0.1);
-                padding: 2px 8px;
-                border-radius: 9999px;
-              "
-            >&#10003; Verified</span>
-            <span style="font-family: Arial, sans-serif; font-size: 0.6875rem; color: #737373;">Velour Tracksuit Set</span>
-          </div>
+          <p style="margin: 0; font-family: Arial, sans-serif; font-size: 0.6875rem; color: #404040; text-align: right; line-height: 1.4;">Velour Tracksuit Set</p>
         </div>
       </article>
 
-      {%- comment -%}--- Review 3 ---{%- endcomment -%}
+      <!-- Review 3: Marcus L. -->
       <article
         style="
           background-color: #0d0d0d;
           border: 1px solid #1a1a1a;
           border-radius: 2px;
           padding: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
           transition: border-color 0.2s ease;
         "
         onmouseenter="this.style.borderColor='rgba(201,168,76,0.20)'"
         onmouseleave="this.style.borderColor='#1a1a1a'"
       >
         <!-- Stars -->
-        <div style="display: flex; gap: 4px; margin-bottom: 1rem;">
+        <div style="display: flex; gap: 4px;">
           {%- for i in (1..5) -%}
-            <svg width="16" height="16" viewBox="0 0 18 18" fill="#C9A84C" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="#C9A84C" aria-hidden="true">
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
             </svg>
           {%- endfor -%}
@@ -190,39 +192,37 @@
         <!-- Review text -->
         <p
           style="
-            margin: 0 0 1.25rem;
+            margin: 0;
             font-family: Arial, sans-serif;
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             line-height: 1.7;
             color: #a3a3a3;
+            flex: 1;
           "
-        >&ldquo;Wore the Platinum Edition Tee to a set and got asked where it was from at least a dozen times.
-        The weight is different from anything on the market. Proper 00s energy, no shortcuts.&rdquo;</p>
+        >&ldquo;Slept on this brand until a friend put me on. The Platinum Tee is a different level of quality. Heavy, soft, and the gold foil print hasn&rsquo;t cracked after multiple washes. The 00s Version is the real thing.&rdquo;</p>
 
         <!-- Gold divider -->
-        <div style="height: 1px; background-color: #C9A84C; opacity: 0.25; margin-bottom: 1.25rem;"></div>
+        <div style="height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.3), transparent);"></div>
 
         <!-- Reviewer -->
-        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;">
           <div>
-            <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.875rem; font-weight: 900; color: #e5e5e5;">Marcus L.</p>
-            <p style="margin: 0; font-family: Arial, sans-serif; font-size: 0.75rem; color: #737373;">Amsterdam, NL</p>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.875rem; font-weight: 900; color: #e5e5e5;">Marcus L.</p>
+              <span
+                style="
+                  font-family: Arial, sans-serif;
+                  font-size: 0.625rem;
+                  font-weight: 700;
+                  letter-spacing: 0.05em;
+                  text-transform: uppercase;
+                  color: #4ade80;
+                "
+              >&#10003; Verified</span>
+            </div>
+            <p style="margin: 0; font-family: Arial, sans-serif; font-size: 0.6875rem; color: #525252;">Amsterdam, NL</p>
           </div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-            <span
-              style="
-                font-family: Arial, sans-serif;
-                font-size: 0.6875rem;
-                font-weight: 700;
-                letter-spacing: 0.05em;
-                color: #22c55e;
-                background-color: rgba(34,197,94,0.1);
-                padding: 2px 8px;
-                border-radius: 9999px;
-              "
-            >&#10003; Verified</span>
-            <span style="font-family: Arial, sans-serif; font-size: 0.6875rem; color: #737373;">Platinum Edition Tee</span>
-          </div>
+          <p style="margin: 0; font-family: Arial, sans-serif; font-size: 0.6875rem; color: #404040; text-align: right; line-height: 1.4;">Platinum Edition Tee</p>
         </div>
       </article>
 
