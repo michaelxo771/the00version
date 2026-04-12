@@ -38,19 +38,20 @@
         </div>
 
         <!-- Main image -->
+        {%- assign main_img = product.selected_or_first_available_variant.image | default: product.featured_image | default: product.images.first -%}
         <div style="background:#111;border-radius:4px;overflow:hidden;position:relative;" id="main-image-wrap">
-          {%- if product.featured_image -%}
+          {%- if main_img -%}
             <img
               id="product-main-image"
-              src="{{ product.selected_or_first_available_variant.image | default: product.featured_image | image_url: width: 800 }}"
+              src="{{ main_img | image_url: width: 800 }}"
               alt="{{ product.title | escape }}"
               loading="eager"
               style="width:100%;height:auto;max-height:640px;object-fit:contain;display:block;transition:opacity 0.2s ease;"
             >
           {%- else -%}
-            <div style="width:100%;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#333;">
-              <span style="font-family:Arial,sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;">{{ product.type }}</span>
-              <span style="font-family:'Arial Black',Arial,sans-serif;font-size:1rem;font-weight:900;color:#525252;margin-top:0.5rem;">{{ product.title }}</span>
+            <div style="width:100%;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;">
+              <span style="font-family:Arial,sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#525252;">{{ product.type }}</span>
+              <span style="font-family:'Arial Black',Arial,sans-serif;font-size:1rem;font-weight:900;color:#737373;">{{ product.title }}</span>
             </div>
           {%- endif -%}
         </div>
@@ -277,7 +278,7 @@
       option1: {{ v.option1 | json }},
       option2: {{ v.option2 | json }},
       option3: {{ v.option3 | json }},
-      image: {% if v.image %}{{ v.image | image_url: width: 800 | json }}{% else %}null{% endif %}
+      image: {% if v.image %}{{ v.image | image_url: width: 800 | json }}{% elsif product.featured_image %}{{ product.featured_image | image_url: width: 800 | json }}{% else %}null{% endif %}
     }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ];

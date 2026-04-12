@@ -62,11 +62,11 @@
       <div id="search-suggestions" class="search-suggestions">
         <p class="search-suggestions-label">Popular categories</p>
         <div class="search-pills">
-          <a href="/collections/hoodies" class="search-pill">Hoodies</a>
-          <a href="/collections/t-shirts" class="search-pill">T-Shirts</a>
+          <a href="/collections/new-drops" class="search-pill">New Drops</a>
+          <a href="/collections/tops" class="search-pill">Tops</a>
           <a href="/collections/bottoms" class="search-pill">Bottoms</a>
-          <a href="/collections/outerwear" class="search-pill">Outerwear</a>
           <a href="/collections/sets" class="search-pill">Sets</a>
+          <a href="/collections/jackets" class="search-pill">Jackets</a>
           <a href="/collections/accessories" class="search-pill">Accessories</a>
         </div>
       </div>
@@ -128,5 +128,52 @@
   </a>
 
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+  <!-- Email popup -->
+  <div id="email-popup" class="email-popup" hidden>
+    <div class="email-popup-overlay" id="email-popup-overlay"></div>
+    <div class="email-popup-panel">
+      <button class="email-popup-close" id="email-popup-close" aria-label="Close popup">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="email-popup-eyebrow-row">
+        <div class="email-popup-rule"></div>
+        <span class="email-popup-eyebrow">Exclusive Access</span>
+        <div class="email-popup-rule"></div>
+      </div>
+      <h2 class="email-popup-title">JOIN THE INNER CIRCLE</h2>
+      <p class="email-popup-subtitle">Get 10% off your first order + early access to every drop. No spam, ever.</p>
+      <form id="email-popup-form" class="email-popup-form">
+        <input type="email" name="email" class="email-popup-input" placeholder="Enter your email" required aria-label="Email address">
+        <button type="submit" class="btn-gold email-popup-submit">CLAIM MY 10% OFF</button>
+      </form>
+      <button class="email-popup-dismiss" id="email-popup-dismiss">NO THANKS, I'LL PAY FULL PRICE</button>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var KEY = 'ic_popup_v1';
+    var popup = document.getElementById('email-popup');
+    if (!popup) return;
+    if (localStorage.getItem(KEY)) return;
+    setTimeout(function(){ popup.removeAttribute('hidden'); }, 2500);
+    function close() {
+      popup.setAttribute('hidden', '');
+      localStorage.setItem(KEY, '1');
+    }
+    document.getElementById('email-popup-close').addEventListener('click', close);
+    document.getElementById('email-popup-dismiss').addEventListener('click', close);
+    document.getElementById('email-popup-overlay').addEventListener('click', close);
+    document.getElementById('email-popup-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var form = this;
+      form.innerHTML = '<p class="email-popup-success">You\'re in. Check your inbox for your 10% off code.</p>';
+      setTimeout(close, 3000);
+    });
+  })();
+  </script>
 </body>
 </html>

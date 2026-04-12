@@ -3,13 +3,19 @@
   <!-- Image container -->
   <div style="position:relative;aspect-ratio:3/4;background:#111111;overflow:hidden;border-radius:3px;">
 
-    {%- if product.featured_image -%}
-      {{ product.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: product.title, style: 'width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s ease;' }}
+    {%- assign card_img = product.featured_image | default: product.images.first -%}
+    {%- if card_img -%}
+      <img
+        src="{{ card_img | image_url: width: 600 }}"
+        alt="{{ product.title | escape }}"
+        loading="lazy"
+        style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s ease;"
+      >
     {%- else -%}
       <!-- Placeholder -->
       <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;padding:1.5rem;box-sizing:border-box;">
-        <span style="font-family:Arial,sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#333;">{{ product.type }}</span>
-        <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.875rem;font-weight:900;color:#2a2a2a;text-align:center;line-height:1.3;text-transform:uppercase;">{{ product.title }}</span>
+        <span style="font-family:Arial,sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#525252;">{{ product.type }}</span>
+        <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.875rem;font-weight:900;color:#737373;text-align:center;line-height:1.3;text-transform:uppercase;">{{ product.title }}</span>
       </div>
     {%- endif -%}
 
