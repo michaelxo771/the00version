@@ -1,4 +1,4 @@
-<a href="{{ product.url }}" class="product-card-link" style="display:block;text-decoration:none;color:inherit;background:#080808;">
+<a href="{{ product.url }}" class="product-card-link" style="display:block;text-decoration:none;color:inherit;background:#0a0a0a;">
 
   <!-- Image container -->
   <div style="position:relative;aspect-ratio:3/4;background:#111111;overflow:hidden;border-radius:3px;">
@@ -34,10 +34,10 @@
         <span style="display:inline-block;background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Sale</span>
       {%- endif -%}
       {%- if product.tags contains 'new' -%}
-        <span style="display:inline-block;background:#e5e5e5;color:#080808;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">New</span>
+        <span style="display:inline-block;background:#e5e5e5;color:#0a0a0a;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">New</span>
       {%- endif -%}
       {%- if product.tags contains 'bestseller' -%}
-        <span style="display:inline-block;background:#C9A84C;color:#080808;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Bestseller</span>
+        <span style="display:inline-block;background:#C9A84C;color:#0a0a0a;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Bestseller</span>
       {%- endif -%}
       {%- if product.tags contains 'limited' -%}
         <span style="display:inline-block;background:#1a1a1a;color:#C9A84C;border:1px solid #C9A84C;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;line-height:1.4;">Limited</span>
@@ -62,10 +62,6 @@
 
   <!-- Product info below image -->
   <div style="padding:0.85rem 0.25rem 0;">
-
-    {%- if product.type != blank -%}
-      <p style="margin:0 0 0.2rem;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;">{{ product.type }}</p>
-    {%- endif -%}
 
     <p style="margin:0 0 0.5rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.85rem;font-weight:900;color:#e5e5e5;text-transform:uppercase;letter-spacing:0.01em;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ product.title }}</p>
 

@@ -1,6 +1,6 @@
 {%- paginate collection.products by 16 -%}
 
-<section style="background-color:#080808;min-height:100vh;padding:3rem 0 5rem;">
+<section style="background-color:#0a0a0a;min-height:100vh;padding:3rem 0 5rem;">
   <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem">
 
     <!-- Page header -->
@@ -28,7 +28,7 @@
           href="/collections/{{ cat }}"
           style="display:inline-block;font-family:Arial,sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;padding:0.4rem 1rem;border-radius:2px;transition:all 0.15s;
           {%- if is_active -%}
-            background:#C9A84C;color:#080808;border:2px solid #C9A84C;
+            background:#C9A84C;color:#0a0a0a;border:2px solid #C9A84C;
           {%- else -%}
             background:transparent;color:#a3a3a3;border:2px solid #2a2a2a;
           {%- endif -%}"
@@ -80,7 +80,7 @@
           {%- if part.is_link -%}
             <a href="{{ part.url }}" style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid #2a2a2a;border-radius:3px;color:#a3a3a3;text-decoration:none;font-family:Arial,sans-serif;font-size:0.8rem;transition:all 0.15s;">{{ part.title }}</a>
           {%- elsif part.title == paginate.current_page -%}
-            <span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid #C9A84C;border-radius:3px;background:#C9A84C;color:#080808;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;">{{ part.title }}</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid #C9A84C;border-radius:3px;background:#C9A84C;color:#0a0a0a;font-family:'Arial Black',Arial,sans-serif;font-size:0.8rem;font-weight:900;">{{ part.title }}</span>
           {%- else -%}
             <span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;color:#333;font-family:Arial,sans-serif;font-size:0.8rem;">&hellip;</span>
           {%- endif -%}

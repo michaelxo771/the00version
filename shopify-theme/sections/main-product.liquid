@@ -1,4 +1,4 @@
-<section style="background-color:#080808;min-height:100vh;padding:2rem 0 4rem;">
+<section style="background-color:#0a0a0a;min-height:100vh;padding:2rem 0 4rem;">
   <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem">
 
     <!-- Breadcrumb -->
@@ -27,10 +27,10 @@
             <span style="background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">Sale</span>
           {%- endif -%}
           {%- if product.tags contains 'new' -%}
-            <span style="background:#e5e5e5;color:#080808;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">New</span>
+            <span style="background:#e5e5e5;color:#0a0a0a;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">New</span>
           {%- endif -%}
           {%- if product.tags contains 'bestseller' -%}
-            <span style="background:#C9A84C;color:#080808;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">Bestseller</span>
+            <span style="background:#C9A84C;color:#0a0a0a;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">Bestseller</span>
           {%- endif -%}
           {%- if product.tags contains 'limited' -%}
             <span style="background:#1a1a1a;color:#C9A84C;border:1px solid #C9A84C;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">Limited</span>
@@ -127,7 +127,7 @@
                       data-option-name="colour"
                       data-value="{{ value | escape }}"
                       onclick="selectOption(this)"
-                      style="padding:0.4rem 1rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#080808;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
+                      style="padding:0.4rem 1rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#0a0a0a;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
                     >{{ value }}</button>
                   {%- endfor -%}
                 </div>
@@ -151,7 +151,7 @@
                       data-option-name="size"
                       data-value="{{ value | escape }}"
                       onclick="selectOption(this)"
-                      style="width:52px;height:52px;font-family:'Arial Black',Arial,sans-serif;font-size:0.75rem;font-weight:900;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#080808;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
+                      style="width:52px;height:52px;font-family:'Arial Black',Arial,sans-serif;font-size:0.75rem;font-weight:900;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#0a0a0a;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
                     >{{ value }}</button>
                   {%- endfor -%}
                 </div>
@@ -174,7 +174,7 @@
                       data-option-name="{{ option.name | downcase | replace: ' ', '-' }}"
                       data-value="{{ value | escape }}"
                       onclick="selectOption(this)"
-                      style="padding:0.4rem 1rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#080808;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
+                      style="padding:0.4rem 1rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#0a0a0a;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
                     >{{ value }}</button>
                   {%- endfor -%}
                 </div>
@@ -223,33 +223,46 @@
           <span style="font-family:Arial,sans-serif;font-size:0.8rem;color:#737373;">Free shipping on orders over <strong style="color:#e5e5e5;">€150</strong></span>
         </div>
 
-        <!-- Divider -->
-        <div style="height:1px;background:#1a1a1a;"></div>
-
-        <!-- Product details -->
-        <div>
-          <p style="margin:0 0 0.75rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#e5e5e5;">Product Details</p>
-          <div style="font-family:Arial,sans-serif;font-size:0.85rem;color:#737373;line-height:1.9;">
-            {%- if product.description != blank -%}
-              {%- assign detail_lines = product.description | newline_to_br | split: '<br />' -%}
-              {%- for line in detail_lines limit: 6 -%}
-                {%- if line != blank -%}
-                  <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>{{ line | strip_html | strip }}</span></div>
-                {%- endif -%}
-              {%- endfor -%}
-            {%- else -%}
-              <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>100% Premium Cotton</span></div>
-              <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Pre-washed &amp; pre-shrunk</span></div>
-              <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Machine washable at 30&deg;C</span></div>
-            {%- endif -%}
+        <!-- Expandable: Product Details -->
+        <details class="product-accordion" style="border-top:1px solid #1a1a1a;">
+          <summary style="display:flex;align-items:center;justify-content:space-between;padding:1rem 0;cursor:pointer;list-style:none;-webkit-appearance:none;">
+            <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#e5e5e5;">Product Details</span>
+            <svg class="accordion-chevron" width="16" height="16" fill="none" stroke="#737373" viewBox="0 0 24 24" style="flex-shrink:0;transition:transform 0.2s ease;" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div style="padding-bottom:1rem;">
+            <div style="font-family:Arial,sans-serif;font-size:0.85rem;color:#737373;line-height:1.9;">
+              {%- if product.description != blank -%}
+                {%- assign detail_lines = product.description | newline_to_br | split: '<br />' -%}
+                {%- for line in detail_lines limit: 8 -%}
+                  {%- if line != blank -%}
+                    <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>{{ line | strip_html | strip }}</span></div>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- else -%}
+                <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>100% Premium Cotton</span></div>
+                <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Pre-washed &amp; pre-shrunk</span></div>
+                <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Machine washable at 30&deg;C</span></div>
+              {%- endif -%}
+            </div>
           </div>
-        </div>
+        </details>
 
-        <!-- Shipping note -->
-        <div style="padding:1rem;background:#0d0d0d;border:1px solid #1a1a1a;border-radius:3px;">
-          <p style="margin:0 0 0.25rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#e5e5e5;">Shipping</p>
-          <p style="margin:0;font-family:Arial,sans-serif;font-size:0.8rem;color:#737373;line-height:1.6;">Standard delivery 5&ndash;7 working days. Express 2&ndash;3 days. Free standard shipping on all EU orders over &euro;150.</p>
-        </div>
+        <!-- Expandable: Shipping -->
+        <details class="product-accordion" style="border-top:1px solid #1a1a1a;">
+          <summary style="display:flex;align-items:center;justify-content:space-between;padding:1rem 0;cursor:pointer;list-style:none;-webkit-appearance:none;">
+            <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#e5e5e5;">Shipping &amp; Returns</span>
+            <svg class="accordion-chevron" width="16" height="16" fill="none" stroke="#737373" viewBox="0 0 24 24" style="flex-shrink:0;transition:transform 0.2s ease;" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div style="padding-bottom:1rem;">
+            <p style="margin:0 0 0.5rem;font-family:Arial,sans-serif;font-size:0.85rem;color:#737373;line-height:1.7;">Standard delivery 5&ndash;7 working days. Express 2&ndash;3 days.</p>
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:0.85rem;color:#737373;line-height:1.7;">Free standard shipping on all EU orders over &euro;150. <a href="/pages/returns" style="color:#C9A84C;text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.4);">Returns policy &rarr;</a></p>
+          </div>
+        </details>
+        <div style="height:1px;background:#1a1a1a;"></div>
 
       </div>
     </div>
@@ -362,7 +375,7 @@
         btn.disabled             = false;
         btn.textContent          = 'Add to Cart';
         btn.style.background     = 'linear-gradient(135deg,#C9A84C,#A8892E)';
-        btn.style.color          = '#080808';
+        btn.style.color          = '#0a0a0a';
         btn.style.cursor         = 'pointer';
       } else {
         btn.disabled             = true;
@@ -391,7 +404,7 @@
         b.style.borderColor  = '#2a2a2a';
       });
     btn.style.background  = '#C9A84C';
-    btn.style.color       = '#080808';
+    btn.style.color       = '#0a0a0a';
     btn.style.borderColor = '#C9A84C';
 
     /* update label text */
