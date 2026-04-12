@@ -16,7 +16,7 @@
     </nav>
 
     <!-- Two-column layout -->
-    <div id="two-col-product" style="display:grid;grid-template-columns:1fr;gap:3rem;">
+    <div id="two-col-product" style="display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;">
 
       <!-- LEFT: Images -->
       <div style="position:relative;">
@@ -38,17 +38,17 @@
         </div>
 
         <!-- Main image -->
-        <div style="aspect-ratio:3/4;background:#111;border-radius:4px;overflow:hidden;position:relative;" id="main-image-wrap">
+        <div style="background:#111;border-radius:4px;overflow:hidden;position:relative;" id="main-image-wrap">
           {%- if product.featured_image -%}
             <img
               id="product-main-image"
               src="{{ product.selected_or_first_available_variant.image | default: product.featured_image | image_url: width: 800 }}"
               alt="{{ product.title | escape }}"
               loading="eager"
-              style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.2s ease;"
+              style="width:100%;height:auto;max-height:640px;object-fit:contain;display:block;transition:opacity 0.2s ease;"
             >
           {%- else -%}
-            <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#333;">
+            <div style="width:100%;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#333;">
               <span style="font-family:Arial,sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;">{{ product.type }}</span>
               <span style="font-family:'Arial Black',Arial,sans-serif;font-size:1rem;font-weight:900;color:#525252;margin-top:0.5rem;">{{ product.title }}</span>
             </div>
@@ -256,8 +256,9 @@
 </section>
 
 <style>
+  #two-col-product { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: start; }
   @media(min-width:768px){
-    #two-col-product { grid-template-columns: 1fr 1fr !important; }
+    #two-col-product { grid-template-columns: 55% 1fr; }
   }
 </style>
 
