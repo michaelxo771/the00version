@@ -16,7 +16,7 @@
     </nav>
 
     <!-- Two-column layout -->
-    <div id="two-col-product" style="display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;">
+    <div id="two-col-product" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;">
 
       <!-- LEFT: Images -->
       <div style="position:relative;">
@@ -270,9 +270,9 @@
 </section>
 
 <style>
-  #two-col-product { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: start; }
-  @media(min-width:768px){
-    #two-col-product { grid-template-columns: 55% 1fr; }
+  #two-col-product { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  @media(max-width:767px){
+    #two-col-product { grid-template-columns: 1fr; }
   }
 </style>
 
