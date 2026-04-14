@@ -971,22 +971,20 @@ ul { list-style: none; }
 
 /* ─── Product page two-column layout ─────────────────────────────────────── */
 #two-col-product {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: start;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 3rem !important;
+  align-items: start !important;
+}
+#product-main-image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 @media (max-width: 767px) {
   #two-col-product {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr !important;
   }
-}
-#product-main-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 
 /* ─── Email popup ─────────────────────────────────────────────────────────── */
