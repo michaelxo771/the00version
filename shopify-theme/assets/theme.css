@@ -972,20 +972,20 @@ ul { list-style: none; }
 /* ─── Product page two-column layout ─────────────────────────────────────── */
 #two-col-product {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 3rem;
   align-items: start;
 }
-@media (min-width: 768px) {
+@media (max-width: 767px) {
   #two-col-product {
-    grid-template-columns: 55% 1fr;
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 }
 #product-main-image {
   width: 100%;
-  height: auto;
-  max-height: 640px;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 
