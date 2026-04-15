@@ -23,7 +23,7 @@
     <!-- Category grid -->
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;" class="category-grid">
 
-      {%- assign cat_data = 'Hoodies|hoodies,T-Shirts|t-shirts,Bottoms|bottoms,Outerwear|outerwear,Sets|sets,Accessories|accessories' | split: ',' -%}
+      {%- assign cat_data = 'Tops|tops,Bottoms|bottoms,Sets|sets,Jackets|jackets,Accessories|accessories,New Drops|new-drops' | split: ',' -%}
 
       {%- for item in cat_data -%}
         {%- assign parts      = item | split: '|' -%}
