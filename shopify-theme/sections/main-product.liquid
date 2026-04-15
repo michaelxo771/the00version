@@ -1,61 +1,35 @@
-<section style="background-color:#0a0a0a;min-height:100vh;padding:2rem 0 4rem;">
-  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem">
-
-    <!-- Breadcrumb -->
-    <nav style="margin-bottom:2rem;font-family:Arial,sans-serif;font-size:0.75rem;letter-spacing:0.08em;color:#525252;">
-      <a href="/" style="color:#525252;text-decoration:none;">Home</a>
-      <span style="margin:0 0.5rem;color:#333;">/</span>
-      {%- if collection -%}
-        <a href="{{ collection.url }}" style="color:#525252;text-decoration:none;">{{ collection.title }}</a>
-        <span style="margin:0 0.5rem;color:#333;">/</span>
-      {%- else -%}
-        <a href="/collections/all" style="color:#525252;text-decoration:none;">Shop</a>
-        <span style="margin:0 0.5rem;color:#333;">/</span>
-      {%- endif -%}
-      <span style="color:#a3a3a3;">{{ product.title }}</span>
-    </nav>
-
-    <!-- Two-column layout -->
+<section style="background:#0a0a0a;min-height:100vh;padding:2rem 0 4rem;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem;">
     <div id="two-col-product" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;">
 
-      <!-- ══════════ LEFT: Image ══════════ -->
+      <!-- ══════ LEFT: Image ══════ -->
       <div>
 
-        <!-- Image wrapper: position:relative so corner brackets scope to it -->
+        <!-- Image wrapper – position:relative so brackets and badges layer correctly -->
         <div style="position:relative;">
 
-          <!-- SALE badge – top-left, z above image -->
-          {%- if product.tags contains 'sale' or product.compare_at_price > product.price -%}
-            <div style="position:absolute;top:1rem;left:1rem;z-index:10;display:flex;flex-direction:column;gap:0.4rem;">
-              <span style="background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">Sale</span>
-            </div>
-          {%- endif -%}
-          {%- if product.tags contains 'new' -%}
-            <div style="position:absolute;top:{%- if product.tags contains 'sale' or product.compare_at_price > product.price -%}3.2rem{%- else -%}1rem{%- endif -%};left:1rem;z-index:10;">
-              <span style="background:#e5e5e5;color:#0a0a0a;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">New</span>
-            </div>
-          {%- endif -%}
-          {%- if product.tags contains 'bestseller' -%}
-            <div style="position:absolute;top:1rem;left:1rem;z-index:10;">
-              <span style="background:#C9A84C;color:#0a0a0a;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;">Bestseller</span>
+          <!-- ── SALE badge (top-left) ── -->
+          {%- if product.compare_at_price > product.price or product.tags contains 'sale' -%}
+            <div style="position:absolute;top:0.85rem;left:0.85rem;z-index:10;">
+              <span style="background:#dc2626;color:#fff;font-family:Arial,sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;display:inline-block;">SALE</span>
             </div>
           {%- endif -%}
 
-          <!-- Corner bracket: top-right -->
+          <!-- ── Corner bracket: top-right ── -->
           <div aria-hidden="true" style="position:absolute;top:0;right:0;width:36px;height:36px;pointer-events:none;z-index:8;">
-            <div style="position:absolute;top:0;right:0;width:1px;height:36px;background:#C9A84C;opacity:0.75;"></div>
-            <div style="position:absolute;top:0;right:0;width:36px;height:1px;background:#C9A84C;opacity:0.75;"></div>
+            <div style="position:absolute;top:0;right:0;width:1px;height:36px;background:#C9A84C;opacity:0.8;"></div>
+            <div style="position:absolute;top:0;right:0;width:36px;height:1px;background:#C9A84C;opacity:0.8;"></div>
           </div>
 
-          <!-- Corner bracket: bottom-left -->
+          <!-- ── Corner bracket: bottom-left ── -->
           <div aria-hidden="true" style="position:absolute;bottom:0;left:0;width:36px;height:36px;pointer-events:none;z-index:8;">
-            <div style="position:absolute;bottom:0;left:0;width:1px;height:36px;background:#C9A84C;opacity:0.75;"></div>
-            <div style="position:absolute;bottom:0;left:0;width:36px;height:1px;background:#C9A84C;opacity:0.75;"></div>
+            <div style="position:absolute;bottom:0;left:0;width:1px;height:36px;background:#C9A84C;opacity:0.8;"></div>
+            <div style="position:absolute;bottom:0;left:0;width:36px;height:1px;background:#C9A84C;opacity:0.8;"></div>
           </div>
 
-          <!-- Main image container: aspect-ratio 3/4, overflow:hidden -->
-          {%- assign main_img = product.selected_or_first_available_variant.image | default: product.featured_image | default: product.images.first -%}
-          <div style="position:relative;aspect-ratio:3/4;background:#111111;border-radius:4px;overflow:hidden;" id="main-image-wrap">
+          <!-- ── Main image (aspect-ratio 3/4) ── -->
+          {%- assign main_img = product.featured_image -%}
+          <div style="position:relative;aspect-ratio:3/4;background:#111;border-radius:4px;overflow:hidden;">
 
             {%- if main_img -%}
               <img
@@ -65,64 +39,59 @@
                 loading="eager"
                 style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.2s ease;"
               >
-            {%- else -%}
-              <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;padding:1.5rem;box-sizing:border-box;">
-                <span style="font-family:Arial,sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#525252;">{{ product.type }}</span>
-                <span style="font-family:'Arial Black',Arial,sans-serif;font-size:1rem;font-weight:900;color:#737373;text-align:center;text-transform:uppercase;">{{ product.title }}</span>
-              </div>
             {%- endif -%}
 
-            <!-- Bottom gradient overlay: category + title + price -->
-            <div style="position:absolute;bottom:0;left:0;right:0;padding:2.5rem 1.25rem 1.25rem;background:linear-gradient(to top,rgba(0,0,0,0.90) 0%,rgba(0,0,0,0.55) 55%,transparent 100%);z-index:4;pointer-events:none;">
+            <!-- Bottom gradient overlay -->
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:2.5rem 1.25rem 1.25rem;background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.5) 55%,transparent 100%);z-index:4;pointer-events:none;">
               {%- if product.type != blank -%}
                 <p style="margin:0 0 0.2rem;font-family:Arial,sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#C9A84C;">{{ product.type }}</p>
               {%- endif -%}
-              <p style="margin:0 0 0.35rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.95rem;font-weight:900;text-transform:uppercase;color:#e5e5e5;line-height:1.2;letter-spacing:0.01em;">{{ product.title }}</p>
+              <p style="margin:0 0 0.35rem;font-family:'Arial Black',Arial,sans-serif;font-size:0.95rem;font-weight:900;text-transform:uppercase;color:#e5e5e5;line-height:1.2;">{{ product.title }}</p>
               <p style="margin:0;font-family:'Arial Black',Arial,sans-serif;font-size:1.1rem;font-weight:900;color:#C9A84C;" id="image-price">{{ product.selected_or_first_available_variant.price | money }}</p>
             </div>
 
             <!-- Out of stock overlay -->
             {%- unless product.available -%}
               <div style="position:absolute;inset:0;background:rgba(8,8,8,0.65);display:flex;align-items:center;justify-content:center;z-index:5;">
-                <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.7rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;color:#525252;border:1px solid #333;padding:0.4rem 0.85rem;border-radius:2px;background:rgba(8,8,8,0.8);">Out of Stock</span>
+                <span style="font-family:'Arial Black',Arial,sans-serif;font-size:0.7rem;font-weight:900;letter-spacing:0.2em;text-transform:uppercase;color:#525252;border:1px solid #333;padding:0.4rem 0.85rem;border-radius:2px;">Out of Stock</span>
               </div>
             {%- endunless -%}
 
-          </div><!-- /main-image-wrap -->
+          </div><!-- /main image -->
         </div><!-- /image wrapper -->
 
-        <!-- Thumbnail strip -->
+        <!-- ── Thumbnail strip ── -->
         {%- if product.images.size > 1 -%}
-          <div style="display:flex;gap:0.75rem;margin-top:1rem;overflow-x:auto;padding-bottom:0.5rem;" id="thumb-strip">
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;overflow-x:auto;padding-bottom:0.5rem;">
             {%- for image in product.images -%}
               <button
                 class="thumb-btn"
                 data-src="{{ image | img_url: '800x' }}"
                 onclick="setMainImage('{{ image | img_url: '800x' }}', this)"
-                style="flex-shrink:0;width:80px;height:80px;border:2px solid {%- if forloop.first -%}#C9A84C{%- else -%}#1a1a1a{%- endif -%};border-radius:3px;overflow:hidden;background:#111;padding:0;cursor:pointer;transition:border-color 0.15s;"
+                style="flex-shrink:0;width:80px;height:80px;border:2px solid {%- if forloop.first -%}#C9A84C{%- else -%}#1a1a1a{%- endif -%};border-radius:3px;overflow:hidden;background:#111;padding:0;cursor:pointer;"
                 aria-label="View image {{ forloop.index }}"
               >
-                <img src="{{ image | img_url: '160x' }}" loading="lazy" alt="Product thumbnail {{ forloop.index }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+                <img src="{{ image | img_url: '160x' }}" loading="lazy" alt="Thumbnail {{ forloop.index }}" style="width:100%;height:100%;object-fit:cover;display:block;">
               </button>
             {%- endfor -%}
           </div>
         {%- endif -%}
 
-      </div><!-- /LEFT column -->
+      </div><!-- /LEFT -->
 
-      <!-- ══════════ RIGHT: Product info ══════════ -->
+      <!-- ══════ RIGHT: Product info ══════ -->
       <div style="display:flex;flex-direction:column;gap:1.25rem;">
 
-        <!-- Category label -->
+        <!-- Category -->
         {%- if product.type != blank -%}
           <p style="margin:0;font-family:Arial,sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;">{{ product.type }}</p>
         {%- endif -%}
 
-        <!-- Product title -->
-        <h1 style="margin:0;font-family:'Arial Black',Arial,sans-serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:900;color:#e5e5e5;line-height:1.1;text-transform:uppercase;letter-spacing:-0.01em;">{{ product.title }}</h1>
+        <!-- Title -->
+        <h1 style="margin:0;font-family:'Arial Black',Arial,sans-serif;font-size:clamp(1.5rem,3vw,2.25rem);font-weight:900;color:#e5e5e5;line-height:1.1;text-transform:uppercase;">{{ product.title }}</h1>
 
-        <!-- Price row -->
-        <div style="display:flex;align-items:baseline;gap:0.75rem;flex-wrap:wrap;" id="price-block">
+        <!-- Price row (price + strikethrough + SAVE badge) -->
+        <div style="display:flex;align-items:baseline;gap:0.75rem;flex-wrap:wrap;">
           <span style="font-family:'Arial Black',Arial,sans-serif;font-size:1.75rem;font-weight:900;color:#C9A84C;" id="product-price">{{ product.selected_or_first_available_variant.price | money }}</span>
           <span id="product-compare-price" style="font-family:Arial,sans-serif;font-size:1.1rem;color:#737373;text-decoration:line-through;{%- unless product.compare_at_price > product.price -%}display:none;{%- endunless -%}">{{ product.compare_at_price | money }}</span>
           <span id="product-save-badge" style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;background:#dc2626;color:#fff;padding:0.15rem 0.45rem;border-radius:2px;{%- unless product.compare_at_price > product.price -%}display:none;{%- endunless -%}">
@@ -136,86 +105,38 @@
         {%- endif -%}
 
         <!-- Divider -->
-        <div style="height:1px;background:linear-gradient(to right,rgba(201,168,76,0.6),rgba(201,168,76,0.15),transparent);margin:0.1rem 0;"></div>
+        <div style="height:1px;background:linear-gradient(to right,rgba(201,168,76,0.6),rgba(201,168,76,0.15),transparent);"></div>
 
         <!-- Variant form -->
-        {%- form 'product', product, id: 'product-form', data-product-id: product.id -%}
-          <input type="hidden" name="id" id="variant-id" value="{{ product.selected_or_first_available_variant.id }}">
+        {%- form 'product', product, id: 'product-form' -%}
+          <input type="hidden" name="id"       id="variant-id"     value="{{ product.selected_or_first_available_variant.id }}">
           <input type="hidden" name="quantity" id="quantity-input" value="1">
 
           {%- for option in product.options_with_values -%}
-            {%- assign option_name_lower = option.name | downcase -%}
-
-            {%- if option_name_lower == 'color' or option_name_lower == 'colour' -%}
-              <!-- Colour selector -->
-              <div style="margin-bottom:1rem;">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
-                  <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#C9A84C;">
-                    Colour: <span style="color:#e5e5e5;" id="selected-colour">{{ option.selected_value }}</span>
-                  </span>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-                  {%- for value in option.values -%}
-                    <button
-                      type="button"
-                      class="opt-btn"
-                      data-option-position="{{ option.position }}"
-                      data-option-name="colour"
-                      data-value="{{ value | escape }}"
-                      onclick="selectOption(this)"
-                      style="padding:0.4rem 1rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#0a0a0a;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
-                    >{{ value }}</button>
-                  {%- endfor -%}
-                </div>
+            {%- assign opt_lower = option.name | downcase -%}
+            <div style="margin-bottom:1rem;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+                <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#C9A84C;">
+                  {{ option.name }}: <span style="color:#e5e5e5;" id="selected-{{ opt_lower | replace: ' ', '-' }}">{{ option.selected_value }}</span>
+                </span>
+                {%- if opt_lower == 'size' -%}
+                  <a href="/pages/size-guide" style="font-family:Arial,sans-serif;font-size:0.7rem;color:#C9A84C;text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.3);letter-spacing:0.08em;text-transform:uppercase;">Size Guide</a>
+                {%- endif -%}
               </div>
-
-            {%- elsif option_name_lower == 'size' -%}
-              <!-- Size selector -->
-              <div style="margin-bottom:1rem;">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
-                  <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#C9A84C;">
-                    Size: <span style="color:#e5e5e5;" id="selected-size">{{ option.selected_value }}</span>
-                  </span>
-                  <a href="/pages/size-guide" style="font-family:Arial,sans-serif;font-size:0.7rem;color:#C9A84C;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid rgba(201,168,76,0.3);">Size Guide</a>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-                  {%- for value in option.values -%}
-                    <button
-                      type="button"
-                      class="opt-btn"
-                      data-option-position="{{ option.position }}"
-                      data-option-name="size"
-                      data-value="{{ value | escape }}"
-                      onclick="selectOption(this)"
-                      style="width:52px;height:52px;font-family:'Arial Black',Arial,sans-serif;font-size:0.75rem;font-weight:900;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#0a0a0a;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
-                    >{{ value }}</button>
-                  {%- endfor -%}
-                </div>
+              <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                {%- for value in option.values -%}
+                  <button
+                    type="button"
+                    class="opt-btn"
+                    data-option-position="{{ option.position }}"
+                    data-option-name="{{ opt_lower | replace: ' ', '-' }}"
+                    data-value="{{ value | escape }}"
+                    onclick="selectOption(this)"
+                    style="{%- if opt_lower == 'size' -%}width:52px;height:52px;{%- else -%}padding:0.4rem 1rem;{%- endif -%}font-family:'Arial Black',Arial,sans-serif;font-size:0.75rem;font-weight:900;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#0a0a0a;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
+                  >{{ value }}</button>
+                {%- endfor -%}
               </div>
-
-            {%- else -%}
-              <!-- Generic option selector -->
-              <div style="margin-bottom:1rem;">
-                <div style="margin-bottom:0.75rem;">
-                  <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#C9A84C;">
-                    {{ option.name }}: <span style="color:#e5e5e5;" id="selected-{{ option.name | downcase | replace: ' ', '-' }}">{{ option.selected_value }}</span>
-                  </span>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-                  {%- for value in option.values -%}
-                    <button
-                      type="button"
-                      class="opt-btn"
-                      data-option-position="{{ option.position }}"
-                      data-option-name="{{ option.name | downcase | replace: ' ', '-' }}"
-                      data-value="{{ value | escape }}"
-                      onclick="selectOption(this)"
-                      style="padding:0.4rem 1rem;font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:3px;cursor:pointer;transition:all 0.15s;background:{%- if option.selected_value == value -%}#C9A84C;color:#0a0a0a;border:2px solid #C9A84C;{%- else -%}transparent;color:#a3a3a3;border:2px solid #2a2a2a;{%- endif -%}"
-                    >{{ value }}</button>
-                  {%- endfor -%}
-                </div>
-              </div>
-            {%- endif -%}
+            </div>
           {%- endfor -%}
 
           <!-- Stock badge -->
@@ -230,22 +151,23 @@
             {%- endif -%}
           </div>
 
-          <!-- Quantity stepper + Add to Cart on the same row -->
+          <!-- ── Quantity stepper + Add to Cart ── -->
           <div style="display:flex;gap:0.75rem;align-items:stretch;">
 
             <!-- Qty stepper -->
             <div style="display:inline-flex;align-items:center;border:2px solid #2a2a2a;border-radius:3px;flex-shrink:0;">
-              <button type="button" onclick="adjustQty(-1)" style="width:40px;height:52px;background:transparent;border:none;color:#e5e5e5;font-size:1.25rem;cursor:pointer;font-family:'Arial Black',Arial,sans-serif;display:flex;align-items:center;justify-content:center;" aria-label="Decrease quantity">&#8722;</button>
+              <button type="button" onclick="adjustQty(-1)" aria-label="Decrease quantity"
+                style="width:40px;height:52px;background:transparent;border:none;color:#e5e5e5;font-size:1.25rem;cursor:pointer;font-family:'Arial Black',Arial,sans-serif;display:flex;align-items:center;justify-content:center;">&#8722;</button>
               <span id="qty-display" style="min-width:32px;text-align:center;font-family:'Arial Black',Arial,sans-serif;font-size:0.9rem;font-weight:900;color:#e5e5e5;">1</span>
-              <button type="button" onclick="adjustQty(1)" style="width:40px;height:52px;background:transparent;border:none;color:#e5e5e5;font-size:1.25rem;cursor:pointer;font-family:'Arial Black',Arial,sans-serif;display:flex;align-items:center;justify-content:center;" aria-label="Increase quantity">&#43;</button>
+              <button type="button" onclick="adjustQty(1)" aria-label="Increase quantity"
+                style="width:40px;height:52px;background:transparent;border:none;color:#e5e5e5;font-size:1.25rem;cursor:pointer;font-family:'Arial Black',Arial,sans-serif;display:flex;align-items:center;justify-content:center;">&#43;</button>
             </div>
 
             <!-- Add to Cart -->
             <button
               type="submit"
               id="add-to-cart-btn"
-              class="btn-gold"
-              style="flex:1;padding:1rem;font-size:0.85rem;letter-spacing:0.15em;{%- unless cv.available -%}background:#1a1a1a;color:#525252;cursor:not-allowed;opacity:1;{%- endunless -%}"
+              style="flex:1;padding:1rem;background:{%- if cv.available -%}#C9A84C{%- else -%}#1a1a1a{%- endif -%};color:{%- if cv.available -%}#0a0a0a{%- else -%}#525252{%- endif -%};border:none;border-radius:3px;font-family:'Arial Black',Arial,sans-serif;font-size:0.85rem;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;cursor:{%- if cv.available -%}pointer{%- else -%}not-allowed{%- endif -%};"
               {%- unless cv.available -%}disabled{%- endunless -%}
             >
               {%- if cv.available -%}Add to Cart{%- else -%}Out of Stock{%- endif -%}
@@ -255,13 +177,13 @@
 
         {%- endform -%}
 
-        <!-- Free shipping notice -->
-        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.75rem;background:#0d0d0d;border:1px solid #1a1a1a;border-radius:3px;">
-          <span style="color:#C9A84C;font-size:1rem;line-height:1;">&#10003;</span>
+        <!-- ── Free shipping notice ── -->
+        <div style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem;background:#0d0d0d;border:1px solid #1a1a1a;border-radius:3px;">
+          <span style="color:#C9A84C;font-size:1rem;line-height:1;flex-shrink:0;">&#10003;</span>
           <span style="font-family:Arial,sans-serif;font-size:0.8rem;color:#737373;">Free shipping on orders over <strong style="color:#e5e5e5;">€150</strong></span>
         </div>
 
-        <!-- Accordion: Product Details -->
+        <!-- ── Accordion: Product Details ── -->
         <details class="product-accordion" style="border-top:1px solid #1a1a1a;">
           <summary style="display:flex;align-items:center;justify-content:space-between;padding:1rem 0;cursor:pointer;list-style:none;-webkit-appearance:none;">
             <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#e5e5e5;">Product Details</span>
@@ -282,13 +204,13 @@
                 <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>100% Premium Cotton</span></div>
                 <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Pre-washed &amp; pre-shrunk</span></div>
                 <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Machine washable at 30&deg;C</span></div>
-                <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Limited edition drop — not restocked</span></div>
+                <div style="display:flex;gap:0.5rem;"><span style="color:#C9A84C;flex-shrink:0;">&mdash;</span><span>Limited edition — not restocked</span></div>
               {%- endif -%}
             </div>
           </div>
         </details>
 
-        <!-- Accordion: Shipping & Returns -->
+        <!-- ── Accordion: Shipping & Returns ── -->
         <details class="product-accordion" style="border-top:1px solid #1a1a1a;">
           <summary style="display:flex;align-items:center;justify-content:space-between;padding:1rem 0;cursor:pointer;list-style:none;-webkit-appearance:none;">
             <span style="font-family:Arial,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#e5e5e5;">Shipping &amp; Returns</span>
@@ -303,33 +225,20 @@
         </details>
         <div style="height:1px;background:#1a1a1a;"></div>
 
-      </div><!-- /RIGHT column -->
+      </div><!-- /RIGHT -->
     </div><!-- /two-col-product -->
   </div>
 </section>
 
 <style>
-  /* Desktop default: side by side */
-  #two-col-product {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-  /* Mobile: stack */
-  @media (max-width: 767px) {
-    #two-col-product { grid-template-columns: 1fr; gap: 2rem; }
-  }
-  /* Accordion chevron rotation */
-  details[open] .accordion-chevron { transform: rotate(180deg); }
-  /* Summary marker removal (Firefox) */
-  details summary::-webkit-details-marker { display: none; }
+  #two-col-product { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+  @media (max-width:767px) { #two-col-product { grid-template-columns:1fr; gap:2rem; } }
+  details[open] .accordion-chevron { transform:rotate(180deg); }
+  details summary::-webkit-details-marker { display:none; }
 </style>
 
 <script>
 (function(){
-
-  /* ── Variant data from Liquid ─────────────────────────────────────── */
   var variants = [
     {%- for v in product.variants -%}
     {
@@ -346,7 +255,6 @@
     {%- endfor -%}
   ];
 
-  /* ── Track currently selected options (keyed by position 1/2/3) ──── */
   var sel = {
     1: {{ product.selected_or_first_available_variant.option1 | json }},
     2: {{ product.selected_or_first_available_variant.option2 | json }},
@@ -362,27 +270,23 @@
   }
 
   function money(cents) {
-    return '\u20ac' + (cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return '\u20ac' + (cents / 100).toFixed(2);
   }
 
   function applyVariant(v) {
     if (!v) return;
 
-    /* hidden id input */
     var idEl = document.getElementById('variant-id');
     if (idEl) idEl.value = v.id;
 
-    /* right-column price */
     var priceEl = document.getElementById('product-price');
     if (priceEl) priceEl.textContent = money(v.price);
 
-    /* image overlay price */
     var imgPriceEl = document.getElementById('image-price');
     if (imgPriceEl) imgPriceEl.textContent = money(v.price);
 
-    /* compare price + save badge */
-    var compEl = document.getElementById('product-compare-price');
-    var saveEl = document.getElementById('product-save-badge');
+    var compEl  = document.getElementById('product-compare-price');
+    var saveEl  = document.getElementById('product-save-badge');
     if (compEl && saveEl) {
       if (v.comparePrice && v.comparePrice > v.price) {
         compEl.textContent   = money(v.comparePrice);
@@ -396,7 +300,6 @@
       }
     }
 
-    /* image swap */
     if (v.image) {
       var img = document.getElementById('product-main-image');
       if (img) {
@@ -409,7 +312,6 @@
       }
     }
 
-    /* stock badge */
     var badge = document.getElementById('stock-badge');
     if (badge) {
       if (!v.available) {
@@ -421,13 +323,12 @@
       }
     }
 
-    /* add-to-cart button */
     var btn = document.getElementById('add-to-cart-btn');
     if (btn) {
       if (v.available) {
         btn.disabled         = false;
         btn.textContent      = 'Add to Cart';
-        btn.style.background = 'linear-gradient(135deg,#C9A84C,#A8892E)';
+        btn.style.background = '#C9A84C';
         btn.style.color      = '#0a0a0a';
         btn.style.cursor     = 'pointer';
       } else {
@@ -440,31 +341,28 @@
     }
   }
 
-  /* ── Called when any option button is clicked ────────────────────── */
   window.selectOption = function(btn) {
-    var pos   = parseInt(btn.dataset.optionPosition, 10);
-    var value = btn.dataset.value;
-    var name  = btn.dataset.optionName;
+    var pos  = parseInt(btn.dataset.optionPosition, 10);
+    var val  = btn.dataset.value;
+    var name = btn.dataset.optionName;
 
-    sel[pos] = value;
+    sel[pos] = val;
 
-    document.querySelectorAll('.opt-btn[data-option-position="' + pos + '"]')
-      .forEach(function(b) {
-        b.style.background  = 'transparent';
-        b.style.color       = '#a3a3a3';
-        b.style.borderColor = '#2a2a2a';
-      });
+    document.querySelectorAll('.opt-btn[data-option-position="' + pos + '"]').forEach(function(b) {
+      b.style.background  = 'transparent';
+      b.style.color       = '#a3a3a3';
+      b.style.borderColor = '#2a2a2a';
+    });
     btn.style.background  = '#C9A84C';
     btn.style.color       = '#0a0a0a';
     btn.style.borderColor = '#C9A84C';
 
     var labelEl = document.getElementById('selected-' + name);
-    if (labelEl) labelEl.textContent = value;
+    if (labelEl) labelEl.textContent = val;
 
     applyVariant(findVariant());
   };
 
-  /* ── Thumbnail click ─────────────────────────────────────────────── */
   window.setMainImage = function(src, clickedBtn) {
     var img = document.getElementById('product-main-image');
     if (img) {
@@ -477,7 +375,6 @@
     });
   };
 
-  /* ── Quantity stepper ────────────────────────────────────────────── */
   var _qty = 1;
   window.adjustQty = function(delta) {
     _qty = Math.max(1, _qty + delta);
@@ -496,10 +393,6 @@
   "tag": "section",
   "limit": 1,
   "settings": [],
-  "presets": [
-    {
-      "name": "Main Product"
-    }
-  ]
+  "presets": [{ "name": "Main Product" }]
 }
 {% endschema %}
