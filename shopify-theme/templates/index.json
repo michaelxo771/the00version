@@ -4,6 +4,10 @@
       "type": "hero",
       "settings": {}
     },
+    "trust-badges": {
+      "type": "trust-badges",
+      "settings": {}
+    },
     "marquee-ticker": {
       "type": "marquee-ticker",
       "settings": {}
@@ -43,6 +47,7 @@
   },
   "order": [
     "hero",
+    "trust-badges",
     "marquee-ticker",
     "featured-products",
     "countdown-timer",

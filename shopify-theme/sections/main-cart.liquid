@@ -74,14 +74,14 @@
           </div>
 
           <!-- Shipping note -->
-          {%- if cart.total_price >= 15000 -%}
+          {%- if cart.total_price >= 7500 -%}
             <div style="display:flex;align-items:center;gap:0.5rem;padding:0.6rem 0.75rem;background:#0a1a0a;border:1px solid #1a3a1a;border-radius:3px;">
               <span style="color:#22c55e;font-size:0.85rem;">&#10003;</span>
               <span style="font-family:Arial,sans-serif;font-size:0.75rem;color:#22c55e;">Free shipping unlocked!</span>
             </div>
           {%- else -%}
             <div style="display:flex;align-items:center;gap:0.5rem;padding:0.6rem 0.75rem;background:#111;border:1px solid #1a1a1a;border-radius:3px;">
-              <span style="font-family:Arial,sans-serif;font-size:0.75rem;color:#737373;">Add <strong style="color:#C9A84C;">{{ 15000 | minus: cart.total_price | money }}</strong> more for free shipping</span>
+              <span style="font-family:Arial,sans-serif;font-size:0.75rem;color:#737373;">Add <strong style="color:#C9A84C;">{{ 7500 | minus: cart.total_price | money }}</strong> more for free shipping</span>
             </div>
           {%- endif -%}
 

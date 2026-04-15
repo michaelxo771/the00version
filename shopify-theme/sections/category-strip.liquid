@@ -20,49 +20,74 @@
       <h2 style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 900; text-transform: uppercase; color: #e5e5e5; letter-spacing: -0.01em;">Shop by Category</h2>
     </div>
 
-    <!-- Category grid — 6 categories matching Next.js exactly -->
+    <!-- Category grid -->
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;" class="category-grid">
 
-      {%- assign cat_data = 'Hoodies|hoodies|2 styles,T-Shirts|t-shirts|2 styles,Bottoms|bottoms|2 styles,Outerwear|outerwear|1 style,Sets|sets|1 style,Accessories|accessories|1 style' | split: ',' -%}
+      {%- assign cat_data = 'Hoodies|hoodies,T-Shirts|t-shirts,Bottoms|bottoms,Outerwear|outerwear,Sets|sets,Accessories|accessories' | split: ',' -%}
 
       {%- for item in cat_data -%}
         {%- assign parts      = item | split: '|' -%}
         {%- assign cat_label  = parts[0] -%}
         {%- assign cat_handle = parts[1] -%}
-        {%- assign cat_count  = parts[2] -%}
+        {%- assign cat_col    = collections[cat_handle] -%}
 
         <a
           href="/collections/{{ cat_handle }}"
           style="
             position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            display: block;
+            aspect-ratio: 3/4;
             background-color: #111111;
             border: 1px solid #1a1a1a;
             border-radius: 2px;
-            padding: 32px;
-            text-decoration: none;
             overflow: hidden;
-            transition: border-color 0.2s ease, background-color 0.2s ease;
+            text-decoration: none;
+            transition: border-color 0.2s ease;
           "
           class="category-card"
           onmouseenter="
             this.style.borderColor='rgba(201,168,76,0.40)';
-            this.style.backgroundColor='rgba(17,17,17,0.8)';
             this.querySelector('.cat-corner').style.opacity='1';
             this.querySelector('.cat-name').style.color='#C9A84C';
             this.querySelector('.cat-arrow').style.transform='translateX(4px)';
           "
           onmouseleave="
             this.style.borderColor='#1a1a1a';
-            this.style.backgroundColor='#111111';
             this.querySelector('.cat-corner').style.opacity='0';
             this.querySelector('.cat-name').style.color='#e5e5e5';
             this.querySelector('.cat-arrow').style.transform='translateX(0)';
           "
         >
-          <!-- Top-right corner accent -->
+
+          <!-- Background image (collection image, then first product, then nothing) -->
+          {%- if cat_col.image -%}
+            <img
+              src="{{ cat_col.image | img_url: '600x' }}"
+              alt="{{ cat_label }}"
+              loading="lazy"
+              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;"
+            >
+          {%- elsif cat_col.products.first.featured_image -%}
+            <img
+              src="{{ cat_col.products.first.featured_image | img_url: '600x' }}"
+              alt="{{ cat_label }}"
+              loading="lazy"
+              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;"
+            >
+          {%- endif -%}
+
+          <!-- Gradient overlay — strong at bottom for legibility -->
+          <div
+            aria-hidden="true"
+            style="
+              position: absolute;
+              inset: 0;
+              background: linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.40) 55%, rgba(0,0,0,0.15) 100%);
+              pointer-events: none;
+            "
+          ></div>
+
+          <!-- Corner bracket: top-right (appears on hover) -->
           <div
             class="cat-corner"
             aria-hidden="true"
@@ -70,35 +95,25 @@
               position: absolute;
               top: 0;
               right: 0;
-              width: 0;
-              height: 0;
-              overflow: hidden;
+              width: 32px;
+              height: 32px;
               opacity: 0;
               transition: opacity 0.2s ease;
+              pointer-events: none;
             "
           >
             <div style="position: absolute; top: 0; right: 0; width: 1px; height: 32px; background: #C9A84C;"></div>
             <div style="position: absolute; top: 0; right: 0; width: 32px; height: 1px; background: #C9A84C;"></div>
           </div>
 
-          <div>
-            <p
-              style="
-                margin: 0 0 8px;
-                font-family: Arial, sans-serif;
-                font-size: 0.625rem;
-                font-weight: 700;
-                letter-spacing: 0.2em;
-                text-transform: uppercase;
-                color: #C9A84C;
-              "
-            >{{ cat_count }}</p>
+          <!-- Text — pinned to bottom -->
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem;">
             <h3
               class="cat-name"
               style="
-                margin: 0;
+                margin: 0 0 10px;
                 font-family: 'Arial Black', Arial, sans-serif;
-                font-size: 1.125rem;
+                font-size: 1.2rem;
                 font-weight: 900;
                 text-transform: uppercase;
                 letter-spacing: 0.02em;
@@ -106,39 +121,32 @@
                 transition: color 0.2s ease;
               "
             >{{ cat_label }}</h3>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span
+                style="
+                  font-family: Arial, sans-serif;
+                  font-size: 0.6875rem;
+                  font-weight: 700;
+                  letter-spacing: 0.2em;
+                  text-transform: uppercase;
+                  color: #C9A84C;
+                "
+              >Shop Now</span>
+              <svg
+                class="cat-arrow"
+                width="12"
+                height="12"
+                fill="none"
+                stroke="#C9A84C"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                style="transition: transform 0.2s ease;"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </div>
           </div>
 
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              gap: 8px;
-              margin-top: 24px;
-            "
-          >
-            <span
-              style="
-                font-family: Arial, sans-serif;
-                font-size: 0.6875rem;
-                font-weight: 700;
-                letter-spacing: 0.2em;
-                text-transform: uppercase;
-                color: #525252;
-              "
-            >Shop</span>
-            <svg
-              class="cat-arrow"
-              width="12"
-              height="12"
-              fill="none"
-              stroke="#525252"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              style="transition: transform 0.2s ease;"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </div>
         </a>
 
       {%- endfor -%}
@@ -150,6 +158,7 @@
 <style>
   @media (min-width: 768px) {
     .category-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 16px !important; }
+    .category-card { aspect-ratio: 2/3 !important; }
   }
 </style>
 

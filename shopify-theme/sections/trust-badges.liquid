@@ -1,0 +1,74 @@
+<section
+  id="trust-badges"
+  style="
+    background-color: #0a0a0a;
+    border-top: 1px solid #1a1a1a;
+    border-bottom: 1px solid #1a1a1a;
+    padding: 20px 0;
+  "
+>
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 1.5rem;">
+    <div class="trust-badges-row" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center;">
+
+      <!-- Secure Checkout -->
+      <div class="trust-badge" style="display: flex; align-items: center; gap: 10px; padding: 12px 28px; border-right: 1px solid #1a1a1a;">
+        <span style="font-size: 1.25rem; line-height: 1;" aria-hidden="true">&#128274;</span>
+        <div>
+          <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #e5e5e5;">Secure Checkout</p>
+          <p style="margin: 2px 0 0; font-family: Arial, sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: #525252;">SSL Encrypted</p>
+        </div>
+      </div>
+
+      <!-- Free Shipping -->
+      <div class="trust-badge" style="display: flex; align-items: center; gap: 10px; padding: 12px 28px; border-right: 1px solid #1a1a1a;">
+        <span style="font-size: 1.25rem; line-height: 1;" aria-hidden="true">&#128230;</span>
+        <div>
+          <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #C9A84C;">Free Shipping &euro;75+</p>
+          <p style="margin: 2px 0 0; font-family: Arial, sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: #525252;">EU Wide</p>
+        </div>
+      </div>
+
+      <!-- Easy Returns -->
+      <div class="trust-badge" style="display: flex; align-items: center; gap: 10px; padding: 12px 28px; border-right: 1px solid #1a1a1a;">
+        <span style="font-size: 1.25rem; line-height: 1;" aria-hidden="true">&#8617;</span>
+        <div>
+          <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #e5e5e5;">Easy Returns</p>
+          <p style="margin: 2px 0 0; font-family: Arial, sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: #525252;">14-Day Window</p>
+        </div>
+      </div>
+
+      <!-- Premium Quality -->
+      <div class="trust-badge" style="display: flex; align-items: center; gap: 10px; padding: 12px 28px;">
+        <span style="font-size: 1.25rem; line-height: 1;" aria-hidden="true">&#11088;</span>
+        <div>
+          <p style="margin: 0; font-family: 'Arial Black', Arial, sans-serif; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #e5e5e5;">Premium Quality</p>
+          <p style="margin: 2px 0 0; font-family: Arial, sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: #525252;">100% Cotton</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 767px) {
+    .trust-badges-row { gap: 0; }
+    .trust-badge {
+      flex: 0 0 50%;
+      border-right: none !important;
+      border-bottom: 1px solid #1a1a1a;
+      justify-content: center;
+    }
+    .trust-badge:nth-child(odd) { border-right: 1px solid #1a1a1a !important; }
+    .trust-badge:nth-last-child(-n+2) { border-bottom: none; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Trust Badges",
+  "limit": 1,
+  "settings": [],
+  "presets": [{ "name": "Trust Badges" }]
+}
+{% endschema %}
